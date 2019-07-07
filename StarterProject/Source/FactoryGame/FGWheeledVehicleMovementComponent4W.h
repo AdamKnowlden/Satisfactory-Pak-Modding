@@ -1,4 +1,6 @@
 #pragma once
+#include "Array.h"
+#include "UObject/Class.h"
 
 #include "WheeledVehicleMovementComponent4W.h"
 #include "PhysicsPublic.h"

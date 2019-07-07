@@ -3,24 +3,30 @@
 #include "FGSignificanceManager.h"
 
 UFGSignificanceManager::UFGSignificanceManager(){ }
-void UFGSignificanceManager::RegisterSignificanceObject( UObject* Object, EFGSignificanceType SignificanceType ){ }
-void UFGSignificanceManager::Update( TArrayView<const FTransform> Viewpoints ){ }
-FGainSignificanceData UFGSignificanceManager::GetClosestGainSignificanceData( UObject* inObject, float desiredDistance ){ return FGainSignificanceData(); }
-float UFGSignificanceManager::GenericTickSignificance( UObject* Object, const FTransform& Viewpoint ){ return float(); }
-void UFGSignificanceManager::GenericTickPostSignificance( UObject* ObjectInfo, float OldSignificance, float NewSignificance, bool bFinal ){ }
-float UFGSignificanceManager::FactorySignificance( UObject* Object, const FTransform& Viewpoint ){ return float(); }
-void UFGSignificanceManager::FactoryPostSignificance( UObject* ObjectInfo, float OldSignificance, float NewSignificance, bool bFinal ){ }
-float UFGSignificanceManager::ConveyorBeltSignificance( UObject* Object, const FTransform& Viewpoint ){ return float(); }
-void UFGSignificanceManager::ConveyorBeltPostSignificance( UObject* ObjectInfo, float OldSignificance, float NewSignificance, bool bFinal ){ }
-float UFGSignificanceManager::LowDistanceSignificance( UObject* Object, const FTransform& Viewpoint ){ return float(); }
-float UFGSignificanceManager::MidDistanceSignificance( UObject* Object, const FTransform& Viewpoint ){ return float(); }
-float UFGSignificanceManager::HighDistanceSignificance( UObject* Object, const FTransform& Viewpoint ){ return float(); }
-float UFGSignificanceManager::CustomDistanceSignificance( UObject* Object, const FTransform& Viewpoint ){ return float(); }
-void UFGSignificanceManager::GainSignificanceOnDistancePostSignificance( UObject* ObjectInfo, float OldSignificance, float NewSignificance, bool bFinal ){ }
-float UFGSignificanceManager::AudioVolumeSignificance( UObject* Object, const FTransform& Viewpoint ){ return float(); }
-void UFGSignificanceManager::AudioVolumePostSignificance( UObject* ObjectInfo, float OldSignificance, float NewSignificance, bool bFinal ){ }
-float UFGSignificanceManager::AmbientSoundSplineSignificance( UObject* Object, const FTransform& Viewpoint ){ return float(); }
-void UFGSignificanceManager::AmbientSoundSplinePostSignificance( UObject* ObjectInfo, float OldSignificance, float NewSignificance, bool bFinal ){ }
-FVector UFGSignificanceManager::GetObjectLocation( UObject* obj ){ return FVector(); }
-void UFGSignificanceManager::SetObjectTickRate( UObject* obj, float NewTickRate ){ }
-void UFGSignificanceManager::SetObjectTicks( UObject* obj, bool NewTicks ){ }
+void UFGSignificanceManager::RegisterSignificanceObject( UObject* Object, EFGSignificanceType SignificanceType){ }
+void UFGSignificanceManager::Update( TArrayView<const FTransform> Viewpoints){ }
+FGainSignificanceData UFGSignificanceManager::GetClosestGainSignificanceData( UObject* inObject, float desiredDistance){ return FGainSignificanceData(); }
+void UFGSignificanceManager::UpdateConveyorBelts(){ }
+void UFGSignificanceManager::UpdateFactories(){ }
+FName UFGSignificanceManager::GetTagFromTagEnum( EFGSignificanceType InType){ return FName(); }
+void UFGSignificanceManager::OnComponentActivationChange( UParticleSystemComponent* PSC, bool bActivated){ }
+float UFGSignificanceManager::GenericTickSignificance( FManagedObjectInfo* Object, const FTransform& Viewpoint){ return float(); }
+void UFGSignificanceManager::GenericTickPostSignificance( FManagedObjectInfo* ObjectInfo, float OldSignificance, float NewSignificance, bool bFinal){ }
+float UFGSignificanceManager::ParticleTickSignificance( FManagedObjectInfo* Object, const FTransform& Viewpoint){ return float(); }
+void UFGSignificanceManager::ParticleTickPostSignificance( FManagedObjectInfo* ObjectInfo, float OldSignificance, float NewSignificance, bool bFinal){ }
+float UFGSignificanceManager::FactorySignificance( FManagedObjectInfo* Object, const FTransform& Viewpoint){ return float(); }
+void UFGSignificanceManager::FactoryPostSignificance( FManagedObjectInfo* ObjectInfo, float OldSignificance, float NewSignificance, bool bFinal){ }
+float UFGSignificanceManager::ConveyorBeltSignificance( FManagedObjectInfo* Object, const FTransform& Viewpoint){ return float(); }
+void UFGSignificanceManager::ConveyorBeltPostSignificance( FManagedObjectInfo* ObjectInfo, float OldSignificance, float NewSignificance, bool bFinal){ }
+float UFGSignificanceManager::LowDistanceSignificance( FManagedObjectInfo* Object, const FTransform& Viewpoint){ return float(); }
+float UFGSignificanceManager::MidDistanceSignificance( FManagedObjectInfo* Object, const FTransform& Viewpoint){ return float(); }
+float UFGSignificanceManager::HighDistanceSignificance( FManagedObjectInfo* Object, const FTransform& Viewpoint){ return float(); }
+float UFGSignificanceManager::CustomDistanceSignificance( FManagedObjectInfo* Object, const FTransform& Viewpoint){ return float(); }
+void UFGSignificanceManager::GainSignificanceOnDistancePostSignificance( FManagedObjectInfo* ObjectInfo, float OldSignificance, float NewSignificance, bool bFinal){ }
+float UFGSignificanceManager::AudioVolumeSignificance( FManagedObjectInfo* Object, const FTransform& Viewpoint){ return float(); }
+void UFGSignificanceManager::AudioVolumePostSignificance( FManagedObjectInfo* ObjectInfo, float OldSignificance, float NewSignificance, bool bFinal){ }
+float UFGSignificanceManager::AmbientSoundSplineSignificance( FManagedObjectInfo* Object, const FTransform& Viewpoint){ return float(); }
+void UFGSignificanceManager::AmbientSoundSplinePostSignificance( FManagedObjectInfo* ObjectInfo, float OldSignificance, float NewSignificance, bool bFinal){ }
+FVector UFGSignificanceManager::GetObjectLocation( UObject* obj){ return FVector(); }
+void UFGSignificanceManager::SetObjectTickRate( UObject* obj, float newTickRate){ }
+void UFGSignificanceManager::SetObjectTicks( UObject* obj, bool newTicks){ }

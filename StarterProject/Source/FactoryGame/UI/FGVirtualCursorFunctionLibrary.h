@@ -2,6 +2,7 @@
 
 */
 #pragma once
+#include "UObject/Class.h"
 
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "FGVirtualCursorFunctionLibrary.generated.h"

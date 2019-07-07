@@ -1,4 +1,7 @@
 #pragma once
+#include "Engine/Scene.h"
+#include "GameFramework/Actor.h"
+#include "UObject/Class.h"
 
 #include "Interfaces/Interface_PostProcessVolume.h"
 #include "Curves/CurveFloat.h"

@@ -1,6 +1,12 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Engine/StaticMesh.h"
+#include "Engine/World.h"
+#include "Array.h"
+#include "UnrealString.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "Object.h"
 #include "Styling/SlateBrush.h"
@@ -68,7 +74,6 @@ class FACTORYGAME_API UFGItemDescriptor : public UObject
 {
 	GENERATED_BODY()
 public:
-	/** Ctor */
 	UFGItemDescriptor();
 
 	// Begin UObject interface
@@ -77,53 +82,58 @@ public:
 	// End UObject interface
 
 	/** The state of this resource. */
-	UFUNCTION( BlueprintPure, Category = "Item" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Descriptor|Item" )
 	static EResourceForm GetForm( TSubclassOf< UFGItemDescriptor > inClass );
 
 	/** Energy value for this resource if used as fuel. */
-	UFUNCTION( BlueprintPure, Category = "Item" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Descriptor|Item" )
 	static float GetEnergyValue( TSubclassOf< UFGItemDescriptor > inClass );
 
 	/** How much radiation this item gives out, 0 means it's not radioactive. */
-	UFUNCTION( BlueprintPure, Category = "Item" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Descriptor|Item" )
 	static float GetRadioactiveDecay( TSubclassOf< UFGItemDescriptor > inClass );
 
 	/** Used to get the resource name in blueprints */
-	UFUNCTION( BlueprintPure, Category = "Item" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Descriptor|Item" )
 	static FText GetItemName( TSubclassOf< UFGItemDescriptor > inClass );
 
 	/** Used to get the resource description in blueprints */
-	UFUNCTION( BlueprintPure, Category = "Item" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Descriptor|Item" )
 	static FText GetItemDescription( TSubclassOf< UFGItemDescriptor > inClass );
 
 	/** Get the view to use when previewing this item */
-	UFUNCTION( BlueprintPure, Category = "Item|Preview" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Descriptor|Item" )
 	static void GetPreviewView( TSubclassOf< UFGItemDescriptor > inClass, FItemView& out_previewView );
 
 	/** Get the view to use when previewing this item */
-	UFUNCTION( BlueprintPure, Category = "Item|Icon", meta = ( DevelopmentOnly ) )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Descriptor|Item", meta = ( DevelopmentOnly ) )
 	static void GetIconView( TSubclassOf< UFGItemDescriptor > inClass, FItemView& out_itemView );
 
+	//@todo This has been deprecated for a while, cleanup crew? G2 2019-06-12
 	/** The icon to be used in UI. */
-	UFUNCTION( BlueprintPure, Category = "Item", meta=( DeprecatedFunction, DeprecationMessage = "Don't use the brush anymore, please use GetSmallIcon or GetBigIcon" ) )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Descriptor|Item", meta=( DeprecatedFunction, DeprecationMessage = "Don't use the brush anymore, please use GetSmallIcon or GetBigIcon" ) )
 	static FSlateBrush GetItemIcon( TSubclassOf< UFGItemDescriptor > inClass );
 
 	/** The small icon of the item */
-	UFUNCTION( BlueprintPure, Category = "UI" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Descriptor|Item" )
 	static UTexture2D* GetSmallIcon( TSubclassOf< UFGItemDescriptor > inClass );
 
 	/** The big icon of the item */
-	UFUNCTION( BlueprintPure, Category = "UI" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Descriptor|Item" )
 	static UTexture2D* GetBigIcon( TSubclassOf< UFGItemDescriptor > inClass );
 
 	/** The static mesh we want for representing the resource when they are in the production line.
 	 * @return The items mesh; a default mesh if the item has no mesh specified, nullptr if inClass is nullptr. */
-	UFUNCTION( BlueprintPure, Category = "Item" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Descriptor|Item" )
 	static class UStaticMesh* GetItemMesh( TSubclassOf< UFGItemDescriptor > inClass );
 
 	/** Returns the number of items of a certain type we can stack in one inventory slot */
-	UFUNCTION( BlueprintPure, Category = "Item" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Descriptor|Item" )
 	static int32 GetStackSize( TSubclassOf< UFGItemDescriptor > inClass );
+
+	/** Returns if this item can be discarded */
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Descriptor|Item" )
+	static bool CanBeDiscarded( TSubclassOf< UFGItemDescriptor > inClass );
 
 #if WITH_EDITOR
 	/** Delete all icons in the game that's referenced by a FGItemDescriptor */
@@ -183,7 +193,7 @@ public:
 	 * This is specified in the native constructor and is meant to be per class.
 	 * E.g. vehicle descriptors get name and description from the vehicle class so the defaults are useless.
 	 */
-	UPROPERTY( EditDefaultsOnly, Transient )
+	UPROPERTY( EditDefaultsOnly, Transient ) // MODDING EDIT
 	bool mUseDisplayNameAndDescription;
 
 	/** Readable name of the item */
@@ -194,11 +204,15 @@ public:
 	UPROPERTY( EditDefaultsOnly, Category = "Item", meta = ( EditCondition = mUseDisplayNameAndDescription, HideEditConditionToggle, MultiLine = true ) )
 	FText mDescription;
 
+protected:
 	/** How many of this item can be in the same slot in an inventory */
 	UPROPERTY( EditDefaultsOnly, Category = "Item" )
 	EStackSize mStackSize;
 
-protected:
+	/** Indicates if this item can be thrown in the trash or not */
+	UPROPERTY( EditDefaultsOnly, Category = "Item" )
+	bool mCanBeDiscarded;
+
 	/** Energy value for this resource if used as fuel. In megawatt seconds (MWs), a.k.a. mega joule (MJ) */
 	UPROPERTY( EditDefaultsOnly, Category = "Item" )
 	float mEnergyValue;
@@ -212,7 +226,7 @@ protected:
 	float mRadioactiveDecay;
 
 	/** The state of this resource (cannot change during it's lifetime). */
-	UPROPERTY( EditDefaultsOnly, Category = "Item", Meta = (NoAutoJSON = true) )
+	UPROPERTY( EditDefaultsOnly, Category = "Item" )
 	EResourceForm mForm;
 
 	//@todo @save Maybe clean this up at a later point? /G2 2018-10-25
@@ -266,6 +280,7 @@ protected:
 	UPROPERTY( EditDefaultsOnly, Category = "Icon", meta=( ShowOnlyInnerProperties, NoAutoJSON = true) )
 	FItemView mIconView;
 #endif
+
 private:
 	friend class FItemDescriptorDetails;
 	friend class FFGItemDescriptorPropertyHandle;

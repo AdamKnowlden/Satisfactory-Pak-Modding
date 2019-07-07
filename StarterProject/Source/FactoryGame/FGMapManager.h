@@ -1,7 +1,11 @@
 // Copyright 2016-2019 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
-
+#include "Engine/World.h"
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "UObject/Class.h"
+#include "RHI.h"
 #include "FGSubsystem.h"
 #include "FGSaveInterface.h"
 #include "FGActorRepresentationInterface.h"

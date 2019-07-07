@@ -1,4 +1,5 @@
 #pragma once
+#include "Array.h"
 
 #include "Serialization/ArchiveUObject.h"
 #include "EngineGlobals.h"

@@ -1,4 +1,7 @@
 #pragma once
+#include "Engine/StaticMesh.h"
+#include "Array.h"
+#include "UObject/Class.h"
 
 #include "FGBuildable.h"
 #include "FGBuildableDecor.generated.h" 

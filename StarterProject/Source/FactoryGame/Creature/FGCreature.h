@@ -1,9 +1,13 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
-#include "FGCharacterBase.h"
-#include "FGUseableInterface.h"
+#include "../FGCharacterBase.h"
+#include "../FGUseableInterface.h"
 #include "FGCreature.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam( FRotationDoneDelegate, APawn*, PawnRotated );
@@ -53,6 +57,7 @@ public:
 
 	// Begin AActor Interface
 	virtual void BeginPlay() override;
+	virtual void PreInitializeComponents() override;
 	virtual void Tick( float deltaTime ) override;
 	// End AActor Interface
 

@@ -1,7 +1,10 @@
 #pragma once
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "UObject/Interface.h"
+#include "UObject/Class.h"
 
 #include "FGInventoryComponent.h"
-#include "UObject/Interface.h"
 #include "FGDismantleInterface.generated.h"
 
 /**
@@ -11,7 +14,9 @@
 UINTERFACE( Blueprintable )
 class UFGDismantleInterface : public UInterface
 {
-	GENERATED_BODY()
+	
+ GENERATED_BODY()
+	UFGDismantleInterface(const class FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {} 
 };
 
 /**

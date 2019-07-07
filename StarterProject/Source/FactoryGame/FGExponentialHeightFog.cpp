@@ -4,7 +4,7 @@
 
 FExponentialFogSettings::FExponentialFogSettings(){ }
 #if WITH_EDITOR
-void AFGDynamicExponentialFogVolume::PostEditChangeProperty( FPropertyChangedEvent& propertyChangedEvent ){ }
+void AFGDynamicExponentialFogVolume::PostEditChangeProperty( FPropertyChangedEvent& propertyChangedEvent){ }
 #endif 
 #if WITH_EDITOR
 #endif 
@@ -13,10 +13,10 @@ void AFGDynamicExponentialFogVolume::PostEditChangeProperty( FPropertyChangedEve
 AFGDynamicExponentialFogVolume::AFGDynamicExponentialFogVolume(){ }
 bool AFGDynamicExponentialFogVolume::EncompassesPoint( FVector point, float sphereRadius , float* out_distanceToPoint ){ return bool(); }
 FPostProcessVolumeProperties AFGDynamicExponentialFogVolume::GetProperties() const{ return FPostProcessVolumeProperties(); }
-void AFGDynamicExponentialFogVolume::GetSettings( FExponentialFogSettings& out_settings ) const{ }
-void AFGDynamicExponentialFogVolume::GetSettings( float atTime, FExponentialFogSettings& out_settings ) const{ }
-void AFGDynamicExponentialFogVolume::GetSkySphereSettings( float atTime, FSkySphereSettings& out_settings ) const{ }
-void AFGDynamicExponentialFogVolume::PostUnregisterAllComponents( void ){ }
+void AFGDynamicExponentialFogVolume::GetSettings( FExponentialFogSettings& out_settings) const{ }
+void AFGDynamicExponentialFogVolume::GetSettings( float atTime, FExponentialFogSettings& out_settings) const{ }
+void AFGDynamicExponentialFogVolume::GetSkySphereSettings( float atTime, FSkySphereSettings& out_settings) const{ }
+void AFGDynamicExponentialFogVolume::PostUnregisterAllComponents( void){ }
 void AFGDynamicExponentialFogVolume::PostRegisterAllComponents(){ }
 void AFGDynamicExponentialFogVolume::AddVolume(){ }
 void AFGDynamicExponentialFogVolume::RemoveVolume(){ }

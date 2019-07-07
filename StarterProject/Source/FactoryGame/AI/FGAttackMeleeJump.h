@@ -1,9 +1,11 @@
 // Copyright 2016-2018 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "CoreMinimal.h"
-#include "AI/FGAttackMelee.h"
+#include "FGAttackMelee.h"
 #include "FGAttackMeleeJump.generated.h"
 
 /**
@@ -22,15 +24,15 @@ public:
 	virtual void PerformAttack( TScriptInterface< IFGAggroTargetInterface >	aggroTarget, class AFGEnemy* sourceActor ) override;
 
 	/** Range of the jump attack */
-	UFUNCTION( BlueprintPure, Category = "Attack" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Enemy|Attack" )
 	static float GetJumpRange( TSubclassOf< UFGAttackMeleeJump > inClass ) { return inClass->GetDefaultObject< UFGAttackMeleeJump >()->mJumpRange; }
 
 	/** Get Velocity when jumping ( excluding the Z velocity which is handled by the Jump() in Character */
-	UFUNCTION( BlueprintPure, Category = "Attack" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Enemy|Attack" )
 	static FVector GetJumpVelocity( TSubclassOf< UFGAttackMeleeJump > inClass ) { return inClass->GetDefaultObject< UFGAttackMeleeJump >()->mJumpVelocity; }
 
 	/** Get pre jump montage */
-	UFUNCTION( BlueprintPure, Category = "Attack" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Enemy|Attack" )
 	static UAnimMontage* GetPreJumpMontage( TSubclassOf< UFGAttack > inClass ) { return inClass->GetDefaultObject< UFGAttackMeleeJump >()->mPreJumpMontage; }
 protected:
 	/** From where in relation to the target should the jump start */

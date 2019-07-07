@@ -3,7 +3,7 @@
 #include "FGBuildableGeneratorGeoThermal.h"
 
 void AFGBuildableGeneratorGeoThermal::Destroyed(){ }
-void AFGBuildableGeneratorGeoThermal::SetResourceNode(  AFGResourceNode* resourceNode ){ }
+void AFGBuildableGeneratorGeoThermal::SetResourceNode(  AFGResourceNode* resourceNode){ }
 bool AFGBuildableGeneratorGeoThermal::CanStartPowerProduction_Implementation() const{ return bool(); }
 void AFGBuildableGeneratorGeoThermal::Factory_StartPowerProduction_Implementation(){ }
 void AFGBuildableGeneratorGeoThermal::Factory_StopPowerProduction_Implementation(){ }

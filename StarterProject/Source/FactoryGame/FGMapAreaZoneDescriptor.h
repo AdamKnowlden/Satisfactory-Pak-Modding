@@ -1,4 +1,6 @@
 #pragma once
+#include "UnrealString.h"
+#include "UObject/Class.h"
 
 #include "FGMapAreaZoneDescriptor.generated.h"
 

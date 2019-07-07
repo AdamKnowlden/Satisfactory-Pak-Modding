@@ -1,6 +1,9 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Array.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "ItemAmount.h"
 #include "FGRecipe.generated.h"
@@ -90,9 +93,4 @@ protected:
 	/** Defines where this recipe can be produced */
 	UPROPERTY( EditDefaultsOnly, Meta = ( MustImplement = "FGRecipeProducerInterface", Category = "Recipe" ) )
 	TArray< TSoftClassPtr< UObject > > mProducedIn;
-
-private:
-	/** @todo Deprecated since 2018-10-23, but have been unused since MAM refactor. */
-	UPROPERTY()
-	TArray< TSubclassOf< UFGRecipe > > mRewardedRecipes_DEPRECATED;
 };

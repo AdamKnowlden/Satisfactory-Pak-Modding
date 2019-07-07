@@ -1,11 +1,14 @@
 // Copyright 2016-2019 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Array.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "CoreMinimal.h"
 #include "UMG.h"
 #include "Blueprint/UserWidget.h"
-#include "UI/FGPopupWidget.h"
+#include "FGPopupWidget.h"
 #include "FGBaseUI.generated.h"
 
 /**
@@ -31,7 +34,7 @@ public:
 	/** Adds a popup to the queue */
 	void AddPopupToQueue( FPopupData inPopupData );
 
-	/** Adds a popup to the qué */
+	/** Adds a popup to the quï¿½ */
 	UFUNCTION( BlueprintCallable, Category = "UI", meta = ( AutoCreateRefTerm = "ConfirmClickDelegate", DeprecatedFunction, DeprecationMessage="Use AddPopupWithCloseDelegate instead" ) )
 	void AddPopup( FText Title, FText Body, const FPopupConfirmClicked& ConfirmClickDelegate, EPopupId PopupID = PID_OK, TSubclassOf< UUserWidget > popupClass = nullptr );
 	

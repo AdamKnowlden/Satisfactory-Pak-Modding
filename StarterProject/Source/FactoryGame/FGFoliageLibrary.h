@@ -1,7 +1,9 @@
 // Copyright 2016-2018 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
-
+#include "Array.h"
+#include "UObject/Class.h"
+#include "FGInventoryComponent.h"
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "FGFoliageLibrary.generated.h"

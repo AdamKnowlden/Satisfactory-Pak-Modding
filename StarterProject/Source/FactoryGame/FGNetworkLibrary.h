@@ -1,4 +1,8 @@
 #pragma once
+#include "Array.h"
+#include "UnrealString.h"
+#include "Kismet/BlueprintFunctionLibrary.h"
+#include "UObject/Class.h"
 
 #include "FGLocalPlayer.h"
 #include "NAT.h"

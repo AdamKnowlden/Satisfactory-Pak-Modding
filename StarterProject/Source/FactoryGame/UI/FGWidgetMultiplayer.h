@@ -1,4 +1,6 @@
 #pragma once
+#include "UnrealString.h"
+#include "UObject/Class.h"
 
 #include "Blueprint/UserWidget.h"
 #include "FGWidgetMultiplayer.generated.h"

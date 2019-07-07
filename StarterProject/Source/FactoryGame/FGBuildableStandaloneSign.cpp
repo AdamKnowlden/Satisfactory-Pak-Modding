@@ -3,17 +3,19 @@
 #include "FGBuildableStandaloneSign.h"
 
 AFGBuildableStandaloneSign::AFGBuildableStandaloneSign(){ }
-void AFGBuildableStandaloneSign::GetLifetimeReplicatedProps( TArray<FLifetimeProperty>& OutLifetimeProps ) const{ }
+void AFGBuildableStandaloneSign::GetLifetimeReplicatedProps( TArray<FLifetimeProperty>& OutLifetimeProps) const{ }
 void AFGBuildableStandaloneSign::BeginPlay(){ }
-void AFGBuildableStandaloneSign::EndPlay( const EEndPlayReason::Type EndPlayReason ){ }
+void AFGBuildableStandaloneSign::EndPlay( const EEndPlayReason::Type EndPlayReason){ }
+void AFGBuildableStandaloneSign::SetSignData_Implementation( const FSignData& data, bool bUpdate ){ }
+FSignData AFGBuildableStandaloneSign::GetSignData_Implementation(){ return FSignData(); }
+int32 AFGBuildableStandaloneSign::GetAvailableElementID_Implementation(){ return int32(); }
+FVector2D AFGBuildableStandaloneSign::GetSignDimensions_Implementation(){ return FVector2D(); }
 void AFGBuildableStandaloneSign::GainedSignificance_Implementation(){ }
 void AFGBuildableStandaloneSign::LostSignificance_Implementation(){ }
-void AFGBuildableStandaloneSign::SetSignData( FStandaloneSignData signData, bool bUpdate ){ }
 void AFGBuildableStandaloneSign::UpdateSignElements(){ }
 void AFGBuildableStandaloneSign::UpdateBackgroundMaterial(){ }
 void AFGBuildableStandaloneSign::UpdateSignText(){ }
-const FStandaloneSignData& AFGBuildableStandaloneSign::GetSignData(){ return *(new FStandaloneSignData); }
-float AFGBuildableStandaloneSign::GetCurrentNormalizedTextScale( ){ return float(); }
+float AFGBuildableStandaloneSign::GetCurrentNormalizedTextScale(){ return float(); }
 float AFGBuildableStandaloneSign::GetCurrentNormalizedTextOffsetZ(){ return float(); }
-float AFGBuildableStandaloneSign::GetTextScaleFromNormalizedValue( float value ){ return float(); }
+float AFGBuildableStandaloneSign::GetTextScaleFromNormalizedValue( float value){ return float(); }
 void AFGBuildableStandaloneSign::OnRep_SignData(){ }

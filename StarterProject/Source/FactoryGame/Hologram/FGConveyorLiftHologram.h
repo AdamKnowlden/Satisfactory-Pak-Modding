@@ -1,10 +1,14 @@
 // Copyright 2016-2019 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Engine/StaticMesh.h"
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "UObject/Class.h"
 
 #include "CoreMinimal.h"
-#include "Hologram/FGSplineHologram.h"
-#include "FGFactoryConnectionComponent.h"
+#include "FGSplineHologram.h"
+#include "../FGFactoryConnectionComponent.h"
 #include "FGConveyorLiftHologram.generated.h"
 
 

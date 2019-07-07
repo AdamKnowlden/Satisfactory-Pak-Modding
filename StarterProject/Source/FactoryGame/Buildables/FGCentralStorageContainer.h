@@ -1,9 +1,11 @@
 // Copyright 2016-2018 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "GameFramework/Actor.h"
+#include "UObject/Class.h"
 
 #include "CoreMinimal.h"
-#include "Buildables/FGBuildableStorage.h"
+#include "FGBuildableStorage.h"
 #include "FGCentralStorageContainer.generated.h"
 
 /**

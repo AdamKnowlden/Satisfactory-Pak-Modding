@@ -1,6 +1,12 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Engine/World.h"
+#include "Array.h"
+#include "UnrealString.h"
+#include "GameFramework/Actor.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #if WITH_EDITOR
 #include "UnrealEdMisc.h"
@@ -66,7 +72,7 @@ public:
 	FORCEINLINE class AFGSkySphere* GetSkySphere() const { return mSkySphere; }
 
 	/** Get the event to post when we start the level */
-	UFUNCTION( BlueprintPure, Category = "Audio" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Level|Audio" )
 	FORCEINLINE class UAkAudioEvent* GetLevelStartedAkEvent() const{ return mLevelStartedEvent; }
 
 	/** Save we will load by default when entering the map */
@@ -79,7 +85,7 @@ public:
 	FORCEINLINE class AFGMinimapCaptureActor* GetMinimapCaptureActor() const{ return mMinimapCaptureActor; }
 
 	/** Update the world bounds */
-	UFUNCTION( Category="PigmentMap", meta=(CallInEditor="true") )
+	UFUNCTION( Category="FactoryGame|Level", meta=(CallInEditor="true") )
 	void UpdateWorldBounds();
 protected:
 	/** Called whenever a actor is spawned in editor */

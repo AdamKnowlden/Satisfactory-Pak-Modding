@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Array.h"
 #include "Serialization/Archive.h"
 
 class FSaveCollectorArchive : public FArchive

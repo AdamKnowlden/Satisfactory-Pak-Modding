@@ -2,11 +2,11 @@
 
 #include "FGWeapon.h"
 
-void AFGWeapon::GetLifetimeReplicatedProps( TArray< FLifetimeProperty >& OutLifetimeProps ) const{ }
+void AFGWeapon::GetLifetimeReplicatedProps( TArray< FLifetimeProperty >& OutLifetimeProps) const{ }
 AFGWeapon::AFGWeapon(){ }
 bool AFGWeapon::ShouldSaveState() const{ return bool(); }
 void AFGWeapon::UnEquip(){ }
-void AFGWeapon::Equip(  AFGCharacterPlayer* character ){ }
+void AFGWeapon::Equip(  AFGCharacterPlayer* character){ }
 void AFGWeapon::AssignHud( AFGHUD * assoiatedHud ){ }
 void AFGWeapon::OnPrimaryFirePressed(){ }
 void AFGWeapon::Server_StartPrimaryFire_Implementation(){ }

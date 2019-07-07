@@ -3,10 +3,10 @@
 #include "FGCheatManager.h"
 
 void UFGCheatManager::InitCheatManager(){ }
-void UFGCheatManager::NoCost( bool enabled ){ }
-void UFGCheatManager::NoPower( bool enabled ){ }
-void UFGCheatManager::TurboMode( bool enabled ){ }
-void UFGCheatManager::GiveItem( TSubclassOf<  UFGItemDescriptor > resource, int32 amount ){ }
+void UFGCheatManager::NoCost( bool enabled){ }
+void UFGCheatManager::NoPower( bool enabled){ }
+void UFGCheatManager::TurboMode( bool enabled){ }
+void UFGCheatManager::GiveItem( TSubclassOf<  UFGItemDescriptor > resource, int32 amount){ }
 void UFGCheatManager::ClearGiveItemPopularList(){ }
 void UFGCheatManager::GiefALLSchematics(){ }
 void UFGCheatManager::GiefAllSchematicsAndPhases(){ }
@@ -15,29 +15,29 @@ void UFGCheatManager::GiefCheatSchematics(){ }
 void UFGCheatManager::GiefStorySchematics(){ }
 void UFGCheatManager::GiefStartingResearch(){ }
 void UFGCheatManager::RebuildPowerCircuits(){ }
-void UFGCheatManager::EnableBuildableTick( bool enable ){ }
-void UFGCheatManager::EnablePlayerFOV( bool enable ){ }
+void UFGCheatManager::EnableBuildableTick( bool enable){ }
+void UFGCheatManager::EnablePlayerFOV( bool enable){ }
 void UFGCheatManager::DestroyPawn(){ }
 void UFGCheatManager::RemoveAllFoliage( int32 maxNumInstances ){ }
 void UFGCheatManager::PardonAllPlayers(){ }
 void UFGCheatManager::ClearPardon(){ }
 void UFGCheatManager::SetTimeOfDay( int32 hour, int32 minute ){ }
-void UFGCheatManager::ShowFactoryOnly( bool environmentHidden ){ }
-void UFGCheatManager::HideFactoryOnly( bool factoryHidden ){ }
+void UFGCheatManager::ShowFactoryOnly( bool environmentHidden){ }
+void UFGCheatManager::HideFactoryOnly( bool factoryHidden){ }
 void UFGCheatManager::DumpAllAvailableRecipes(){ }
 void UFGCheatManager::ToggleAudioDebug(){ }
-void UFGCheatManager::SetSlomo( float slomo ){ }
+void UFGCheatManager::SetSlomo( float slomo){ }
 void UFGCheatManager::OpenModMap(){ }
-void UFGCheatManager::PumpiMode( bool enable ){ }
+void UFGCheatManager::PumpiMode( bool enable){ }
 void UFGCheatManager::SplitAllConveyors(){ }
 void UFGCheatManager::MergeAllConveyors(){ }
-void UFGCheatManager::SetTimeSpeedMultiplier( float speed ){ }
-void UFGCheatManager::SetFactoryDetailReplication( bool enable ){ }
+void UFGCheatManager::SetTimeSpeedMultiplier( float speed){ }
+void UFGCheatManager::SetFactoryDetailReplication( bool enable){ }
 void UFGCheatManager::ResetFuses(){ }
 void UFGCheatManager::ToggleCameraMode(){ }
 void UFGCheatManager::DumpFactoryStatsToLog(){ }
-void UFGCheatManager::GiefSchematicsOfTier( int32 tier ){ }
-void UFGCheatManager::SetGamePhase( EGamePhase phase ){ }
+void UFGCheatManager::GiefSchematicsOfTier( int32 tier){ }
+void UFGCheatManager::SetGamePhase( EGamePhase phase){ }
 void UFGCheatManager::TestSharedInventoryPtr(){ }
 void UFGCheatManager::ForceSpawnCreatures(){ }
 void UFGCheatManager::DumpNonDormantActors(){ }
@@ -46,32 +46,32 @@ void UFGCheatManager::DumpAttachedToSkelMesh( bool detailed ){ }
 void UFGCheatManager::DumpTicking( bool detailed ){ }
 void UFGCheatManager::DumpActiveGPUParticles(){ }
 void UFGCheatManager::ReplayBuildingEffects(){ }
-void UFGCheatManager::HideAllBuildings( bool inVisibility ){ }
+void UFGCheatManager::HideAllBuildings( bool inVisibility){ }
 void UFGCheatManager::RandomizeBuildingsColorSlot( uint8 slotIndex ){ }
 void UFGCheatManager::UpdateSessionToOSS(){ }
 void UFGCheatManager::VisitAllMapAreas(){ }
-void UFGCheatManager::SetAITickDistance( float distance ){ }
+void UFGCheatManager::SetAITickDistance( float distance){ }
 void UFGCheatManager::DumpPlayerStates(){ }
-void UFGCheatManager::EnableInstancingOnFactory( bool enabled ){ }
+void UFGCheatManager::EnableInstancingOnFactory( bool enabled){ }
 void UFGCheatManager::DumpActorRepresentations(){ }
-void UFGCheatManager::PurgeInactiveClientsFromSave( bool fetchInventories ){ }
+void UFGCheatManager::PurgeInactiveClientsFromSave( bool fetchInventories){ }
 void UFGCheatManager::PurgeAllBeaconsFromSave(){ }
 void UFGCheatManager::ListItemPickups(){ }
-void UFGCheatManager::SetTradingPostLevel( int32 inLevel ){ }
+void UFGCheatManager::SetTradingPostLevel( int32 inLevel){ }
 void UFGCheatManager::ListUnlockedRecipesAndSchematics(){ }
-void UFGCheatManager::SaveWithNewSessionName( const FString& saveName, const FString& sessionName ){ }
+void UFGCheatManager::SaveWithNewSessionName( const FString& saveName, const FString& sessionName){ }
 void UFGCheatManager::GetVehicleInfo(){ }
 void UFGCheatManager::RunDebugMetric(){ }
-void UFGCheatManager::MCP_Login( FString username, FString password ){ }
+void UFGCheatManager::MCP_Login( FString username, FString password){ }
 void UFGCheatManager::MCP_Logout(){ }
 void UFGCheatManager::MCP_GetOnlineStatus( int32 localPlayerNum ){ }
-void UFGCheatManager::MCP_UpdatePresence( FString key, FString value ){ }
-void UFGCheatManager::MCP_UpdatePresenceString( FString string ){ }
+void UFGCheatManager::MCP_UpdatePresence( FString key, FString value){ }
+void UFGCheatManager::MCP_UpdatePresenceString( FString string){ }
 void UFGCheatManager::MCP_LogPresence(){ }
 void UFGCheatManager::MCP_GetFriends(){ }
 void UFGCheatManager::TriggerPresenceUpdate(){ }
 void UFGCheatManager::ShowSequenceList(){ }
-void UFGCheatManager::SendInviteToFriend( FString friendName ){ }
+void UFGCheatManager::SendInviteToFriend( FString friendName){ }
 void UFGCheatManager::DebugCrash(){ }
 void UFGCheatManager::ResetHubTutorial(){ }
 void UFGCheatManager::ResetSchematics(){ }
@@ -80,6 +80,7 @@ void UFGCheatManager::FixupBuiltByRecipeInOldSave( bool reapplyRecipeIfBetterMat
 void UFGCheatManager::PrintStatichMeshesHirarchy(){ }
 void UFGCheatManager::FlipVehicle(){ }
 void UFGCheatManager::ListDebugStartingPoint(){ }
-void UFGCheatManager::SetDebugStartingPoint( FName startingPoint ){ }
+void UFGCheatManager::SetDebugStartingPoint( FName startingPoint){ }
 void UFGCheatManager::SetRandomDebugStartingPoint(){ }
 void UFGCheatManager::CompleteResearch(){ }
+void UFGCheatManager::PurgeAllTrainState(){ }

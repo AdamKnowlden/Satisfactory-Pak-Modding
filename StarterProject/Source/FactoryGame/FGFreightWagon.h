@@ -1,6 +1,10 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Engine/StaticMesh.h"
+#include "Array.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "FGRailroadVehicle.h"
 #include "FGFreightWagon.generated.h"
@@ -14,13 +18,9 @@ class FACTORYGAME_API AFGFreightWagon : public AFGRailroadVehicle
 	GENERATED_BODY()
 	
 public:
-	/** Decide on what properties to replicate. */
-	virtual void GetLifetimeReplicatedProps( TArray<FLifetimeProperty>& OutLifetimeProps ) const override;
-
-	/** Ctor */
 	AFGFreightWagon();
 
-	/** BP! */
+	virtual void GetLifetimeReplicatedProps( TArray<FLifetimeProperty>& OutLifetimeProps ) const override;
 	virtual void BeginPlay() override;
 
 	// Begin Movement
@@ -33,26 +33,46 @@ public:
 	virtual bool IsUseable_Implementation() const override;
 	//~ End IFGUseableInterface
 
-	//~ Begin IFGDockableInterface
-	virtual bool CanDock_Implementation( EDockStationType atStation ) const override;
-	virtual class UFGInventoryComponent* GetDockInventory_Implementation() const override;
-	virtual class UFGInventoryComponent* GetDockFuelInventory_Implementation() const override;
-	virtual void WasDocked_Implementation( class AFGBuildableDockingStation* atStation ) override;
-	virtual void WasUndocked_Implementation() override;
-	//~ End IFGDockableInterface
+	/** Get the inventory where we store the cargo. */
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Railroad|FreightCar" )
+	class UFGInventoryComponent* GetFreightInventory() const;
 
 	/** Get the inventory where we store the cargo. */
-	UFUNCTION( BlueprintCallable, Category = "FreightWagon" )
-	class UFGInventoryComponent* GetFreightInventory() const;
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|FreightCar" )
+	float GetFreightInventoryFilledPercent() const { return 0.23f; } //@todotrains return a correct value
+
+	/** Sets the visibility on the cargo mesh component. Toggled during load / unload sequences. As well when there is no inventory present or some is added */
+	void SetCargoMeshVisibility( bool isVisible );
 
 	/** Debug */
 	virtual void DisplayDebug( class UCanvas* canvas, const class FDebugDisplayInfo& debugDisplay, float& YL, float& YPos ) override;
+
+private:
+	UFUNCTION()
+	void OnItemAddedToFreight( TSubclassOf< class UFGItemDescriptor > itemClass, int32 numAdded );
+
+	UFUNCTION()
+	void OnItemRemovedFromFreight( TSubclassOf< class UFGItemDescriptor > itemClass, int32 numRemoved );
+
+	UFUNCTION()
+	void InitializeInventoryComponent();
+
+	void BeginLaunchOverlappedCharacter( class UPrimitiveComponent* OverlappedComp, class AFGCharacterPlayer* otherCharacter );
+
+	void EndLaunchOverlappedCharacters( );
 
 public:
 	/** Name of the VehicleMovement. Use this name if you want to use a different class (with ObjectInitializer.SetDefaultSubobjectClass). */
 	static FName VehicleMovementComponentName;
 
+	/** Name of the cargo mesh component */
+	static FName CargoMeshComponentName;
+
 private:
+
+	UPROPERTY()
+	TArray<AFGCharacterPlayer*> mLaunchedCharacters;
+
 	/** vehicle simulation component */
 	UPROPERTY( VisibleDefaultsOnly, BlueprintReadOnly, Category = Vehicle, meta = ( AllowPrivateAccess = "true" ) )
 	class UFGRailroadVehicleMovementComponent* mVehicleMovement;
@@ -64,4 +84,13 @@ private:
 	/** The size of the inventory for this wagon. */
 	UPROPERTY( EditDefaultsOnly, Category = "Inventory" )
 	int32 mInventorySize;
+
+	UPROPERTY()
+	class UStaticMeshComponent* mCargoMeshComponent;
+
+	UPROPERTY(EditDefaultsOnly, Category = "FreightWagon")
+	float mLaunchCharacterScalar;
+
+	UPROPERTY( VisibleAnywhere )
+	class UBoxComponent* mCargoOverlapCollision;
 };

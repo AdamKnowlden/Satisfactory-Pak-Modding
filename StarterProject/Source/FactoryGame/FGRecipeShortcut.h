@@ -1,4 +1,7 @@
 #pragma once
+#include "Array.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "FGHotbarShortcut.h"
 #include "FGRecipe.h"

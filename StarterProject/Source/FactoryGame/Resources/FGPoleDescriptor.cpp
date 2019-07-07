@@ -2,8 +2,8 @@
 
 #include "FGPoleDescriptor.h"
 
-void UFGPoleDescriptor::GetHeightMeshes( TSubclassOf< UFGPoleDescriptor > inClass, TArray< FPoleHeightMesh >& out_heightMeshes ){ }
-FPoleHeightMesh UFGPoleDescriptor::FindBestHeightMesh( TSubclassOf< UFGPoleDescriptor > inClass, float height ){ return FPoleHeightMesh(); }
-int32 UFGPoleDescriptor::NumHeightMeshes( TSubclassOf< UFGPoleDescriptor > inClass ){ return int32(); }
-FName UFGPoleDescriptor::mPoleMeshComponentTag = FName();
+void UFGPoleDescriptor::GetHeightMeshes( TSubclassOf< UFGPoleDescriptor > inClass, TArray< FPoleHeightMesh >& out_heightMeshes){ }
+FPoleHeightMesh UFGPoleDescriptor::FindBestHeightMesh( TSubclassOf< UFGPoleDescriptor > inClass, float height){ return FPoleHeightMesh(); }
+int32 UFGPoleDescriptor::NumHeightMeshes( TSubclassOf< UFGPoleDescriptor > inClass){ return int32(); }
 FName UFGPoleDescriptor::mPoleHeightComponentTag = FName();
+FName UFGPoleDescriptor::mPoleMeshComponentTag = FName();

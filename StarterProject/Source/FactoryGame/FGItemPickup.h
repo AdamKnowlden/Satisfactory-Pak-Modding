@@ -1,4 +1,7 @@
 #pragma once
+#include "Array.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "GameFramework/Actor.h"
 #include "FGUseableInterface.h"
@@ -98,6 +101,8 @@ public:
 	/** Get the pickup items*/
 	UFUNCTION( BlueprintPure, Category = "Pickup" )
 	FORCEINLINE FInventoryStack GetPickupItems() const{ return mPickupItems; }
+
+	FORCEINLINE const TSubclassOf< class UFGItemDescriptor >& GetPickupItemClass() const { return mPickupItems.Item.ItemClass; }
 protected:
 	/**
 	* SERVER and Client picking up: Called right after this item is added to the players inventory, for GameplayEffects.

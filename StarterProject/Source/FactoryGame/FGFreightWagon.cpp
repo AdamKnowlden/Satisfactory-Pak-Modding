@@ -2,17 +2,18 @@
 
 #include "FGFreightWagon.h"
 
-void AFGFreightWagon::GetLifetimeReplicatedProps( TArray<FLifetimeProperty>& OutLifetimeProps ) const{ }
 AFGFreightWagon::AFGFreightWagon(){ }
+void AFGFreightWagon::GetLifetimeReplicatedProps( TArray<FLifetimeProperty>& OutLifetimeProps) const{ }
 void AFGFreightWagon::BeginPlay(){ }
 UPawnMovementComponent* AFGFreightWagon::GetMovementComponent() const{ return nullptr; }
 UFGRailroadVehicleMovementComponent* AFGFreightWagon::GetRailroadVehicleMovementComponent() const{ return nullptr; }
-void AFGFreightWagon::OnUse_Implementation(  AFGCharacterPlayer* byCharacter, const FUseState& state ){ }
+void AFGFreightWagon::OnUse_Implementation(  AFGCharacterPlayer* byCharacter, const FUseState& state){ }
 bool AFGFreightWagon::IsUseable_Implementation() const{ return bool(); }
-bool AFGFreightWagon::CanDock_Implementation( EDockStationType atStation ) const{ return bool(); }
-UFGInventoryComponent* AFGFreightWagon::GetDockInventory_Implementation() const{ return nullptr; }
-UFGInventoryComponent* AFGFreightWagon::GetDockFuelInventory_Implementation() const{ return nullptr; }
-void AFGFreightWagon::WasDocked_Implementation(  AFGBuildableDockingStation* atStation ){ }
-void AFGFreightWagon::WasUndocked_Implementation(){ }
 UFGInventoryComponent* AFGFreightWagon::GetFreightInventory() const{ return nullptr; }
-void AFGFreightWagon::DisplayDebug(  UCanvas* canvas, const  FDebugDisplayInfo& debugDisplay, float& YL, float& YPos ){ }
+void AFGFreightWagon::SetCargoMeshVisibility( bool isVisible){ }
+void AFGFreightWagon::DisplayDebug(  UCanvas* canvas, const  FDebugDisplayInfo& debugDisplay, float& YL, float& YPos){ }
+void AFGFreightWagon::OnItemAddedToFreight( TSubclassOf<  UFGItemDescriptor > itemClass, int32 numAdded){ }
+void AFGFreightWagon::OnItemRemovedFromFreight( TSubclassOf<  UFGItemDescriptor > itemClass, int32 numRemoved){ }
+void AFGFreightWagon::InitializeInventoryComponent(){ }
+void AFGFreightWagon::BeginLaunchOverlappedCharacter(  UPrimitiveComponent* OverlappedComp,  AFGCharacterPlayer* otherCharacter){ }
+void AFGFreightWagon::EndLaunchOverlappedCharacters(){ }

@@ -1,8 +1,9 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "UObject/Class.h"
 
-#include "Hologram/FGWallHologram.h"
+#include "FGWallHologram.h"
 #include "FGPoweredWallHologram.generated.h"
 
 /**

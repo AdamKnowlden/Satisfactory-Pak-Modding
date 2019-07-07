@@ -1,4 +1,6 @@
 #pragma once
+#include "UnrealString.h"
+#include "UObject/Class.h"
 
 #include "Animation/AnimNotifies/AnimNotify.h"
 #include "FGAnimNotify_Landed.generated.h"

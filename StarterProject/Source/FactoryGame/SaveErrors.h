@@ -1,4 +1,5 @@
 #pragma once
+#include "UnrealString.h"
 
 #include "FGObjectReference.h"
 #include "SaveErrors.generated.h"

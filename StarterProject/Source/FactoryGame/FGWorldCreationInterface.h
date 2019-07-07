@@ -1,6 +1,9 @@
 #pragma once
-
+#include "Engine/World.h"
+#include "UnrealString.h"
 #include "UObject/Interface.h"
+#include "UObject/Class.h"
+
 #include "FGWorldCreationInterface.generated.h"
 
 /**
@@ -10,7 +13,9 @@
 UINTERFACE( Blueprintable )
 class UFGWorldCreationInterface : public UInterface
 {
-	GENERATED_BODY()
+	
+ GENERATED_BODY()
+	UFGWorldCreationInterface(const class FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {} 
 };
 
 /**

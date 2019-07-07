@@ -1,4 +1,5 @@
 #pragma once
+#include "UObject/Class.h"
 
 #include "AkComponent.h"
 #include "FGSoundSplineComponent.generated.h"

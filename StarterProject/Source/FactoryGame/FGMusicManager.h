@@ -1,4 +1,7 @@
 #pragma once
+#include "Engine/World.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "GameFramework/Actor.h"
 #include "FGMusicManager.generated.h"

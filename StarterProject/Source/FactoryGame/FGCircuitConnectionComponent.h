@@ -1,10 +1,14 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
-
+#include "Array.h"
+#include "UObject/Class.h"
+#include "GameFramework/Actor.h"
 #include "FGConnectionComponent.h"
 #include "FGSaveInterface.h"
 #include "FGCircuitConnectionComponent.generated.h"
+
+#define IS_PUBLIC_BUILD 1
 
 DECLARE_MULTICAST_DELEGATE_OneParam( FConnectionChanged, class UFGCircuitConnectionComponent* );
 
@@ -17,10 +21,8 @@ class FACTORYGAME_API UFGCircuitConnectionComponent : public UFGConnectionCompon
 {
 	GENERATED_BODY()
 public:
-	/** Ctor */
 	UFGCircuitConnectionComponent();
 
-	/** Replication */
 	void GetLifetimeReplicatedProps( TArray< FLifetimeProperty >& OutLifetimeProps ) const;
 
 	// Begin UActorComponent interface
@@ -31,9 +33,20 @@ public:
 	virtual void PostLoadGame_Implementation( int32 saveVersion, int32 gameVersion ) override;
 	// End IFGSaveInterface interface
 
+	/** Set if this connection is hidden. */
+	void SetIsHidden( bool isHidden ) { mIsHiddenConnection = isHidden; }
+
 	/** Get the number of connections to this connection, excluding hidden. */
 	UFUNCTION( BlueprintPure, Category = "Connection" )
-	FORCEINLINE int32 GetNumConnections() const { return mWires.Num(); }
+	FORCEINLINE int32 GetNumConnections() const { 
+#if !IS_PUBLIC_BUILD
+		if( GetOwner() && GetOwner()->HasAuthority() )
+		{
+			check( mWires.Num() == mNbWiresConnected );
+		}
+#endif
+		return mNbWiresConnected;
+	}
 
 	/** Get the number of hidden connections to this connection. */
 	UFUNCTION( BlueprintPure, Category = "Connection" )
@@ -91,6 +104,9 @@ public:
 	 */
 	void RemoveHiddenConnection( class UFGCircuitConnectionComponent* other );
 
+	/** Clear all hidden connections. */
+	void ClearHiddenConnections();
+
 	/** Is this a hidden connection, you cannot connect a wire to it but connect it through code. */
 	UFUNCTION( BlueprintPure, Category = "Connection" )
 	FORCEINLINE bool IsHidden() const { return mIsHiddenConnection; }
@@ -133,17 +149,21 @@ private:
 	bool mIsHiddenConnection;
 
 	/** The wired connections to this. */
-	UPROPERTY( SaveGame, Replicated )
+	UPROPERTY( VisibleAnywhere, SaveGame, Replicated, Category = "Connection" )
 	TArray< AFGBuildableWire* > mWires;
 
+	/** The wired connections to this. */
+	UPROPERTY( VisibleAnywhere, SaveGame, Replicated, Category = "Connection" )
+	uint8 mNbWiresConnected = 0;
+
 	/** The non-wired (if this or the other is hidden) connections to this. */
-	UPROPERTY( SaveGame )
+	UPROPERTY( VisibleAnywhere, SaveGame )
 	TArray< UFGCircuitConnectionComponent* > mHiddenConnections;
 
 	/**
 	 * The circuit this connection is connected to. INDEX_NONE if not connected.
 	 * @note - This ID may change at any time when changes occurs in the circuitry. Do not save copies of it!
 	 */
-	UPROPERTY( Replicated, SaveGame )
+	UPROPERTY( VisibleAnywhere, Replicated, SaveGame, Category = "Connection" )
 	int32 mCircuitID;
 };

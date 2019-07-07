@@ -1,4 +1,8 @@
 #pragma once
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "Object.h"
 #include "FGDamageOverTime.generated.h"

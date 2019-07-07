@@ -1,4 +1,9 @@
 #pragma once
+#include "UObject/CoreNet.h"
+#include "Array.h"
+#include "UnrealString.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "SharedInventoryStatePtr.h"
 #include "FGSaveInterface.h"
@@ -123,12 +128,6 @@ public:
 	virtual void PreReplication( IRepChangedPropertyTracker& ChangedPropertyTracker ) override;
 	virtual void PreNetReceive() override;
 
-	FORCEINLINE void SetReplicateDetails( bool replicateDetails ) { mReplicateDetails = replicateDetails; }
-
-	/** Setter for whether stacks in component are actively replicating. */
-	/** @todo: does somewhat the same thing as SetReplicateDetails(), clean up either function. See protected variable for more info. */
-	FORCEINLINE void SetStacksShouldReplicate( bool replicateStacks ) { mShouldReplicate = replicateStacks; }
-
 	UFGInventoryComponent();
 
 	//~ Begin UObject interface
@@ -146,6 +145,7 @@ public:
 	// End IFSaveInterface
 
 	// Begin UActorComponent interface
+	virtual void OnRegister() override;
 	// End UActorComponent interface
 
 	/**
@@ -400,10 +400,10 @@ public:
 	UFUNCTION( BlueprintCallable, Category = "Inventory" )
 	void SetCanBeRearranged( bool canBeRearranged );
 
-protected:
-	/** If we should replicate detailed information. */
-	bool IsReplicatingDetails() const { return mReplicateDetails; }
+	/** Duplicates and overrides all relevant values from the other component */
+	void CopyFromOtherComponent( UFGInventoryComponent* otherComponent );
 
+protected:
 	/** Used to call OnItemAdded/OnItemRemoved on clients */
 	UFUNCTION()
 	void OnRep_InventoryStacks();
@@ -449,17 +449,6 @@ protected:
 	UPROPERTY( SaveGame )
 	int32 mAdjustedSizeDiff;
 private:
-	/** If we should replicate detailed information, use this to optimize replication of inventories not actively used by client. */
-	bool mReplicateDetails;
-
-	/** If mInventoryStacks should is actively replicated. 
-	* @todo: This does the same thing as mReplicateDetails. Look into clean up of either. This bool was added because SetReplicateDetails is set from a lot of different places.
-	*/
-	bool mShouldReplicate;
-
-	/** Used along with mShouldReplicate. Used to get an initial replication happen for component which otherwise caused issues. */
-	uint32 mHasAttemptedInitialReplication : 1;
-
 	/** All items in the inventory */
 	UPROPERTY( SaveGame, ReplicatedUsing = OnRep_InventoryStacks )
 	TArray< FInventoryStack > mInventoryStacks;

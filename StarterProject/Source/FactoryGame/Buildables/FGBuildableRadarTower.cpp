@@ -3,11 +3,11 @@
 #include "FGBuildableRadarTower.h"
 
 AFGBuildableRadarTower::AFGBuildableRadarTower(){ }
-void AFGBuildableRadarTower::GetLifetimeReplicatedProps( TArray<FLifetimeProperty>& OutLifetimeProps ) const{ }
+void AFGBuildableRadarTower::GetLifetimeReplicatedProps( TArray<FLifetimeProperty>& OutLifetimeProps) const{ }
 void AFGBuildableRadarTower::Factory_StartProducing(){ }
 void AFGBuildableRadarTower::Factory_StopProducing(){ }
-void AFGBuildableRadarTower::Factory_TickProducing( float dt ){ }
-void AFGBuildableRadarTower::PostLoadGame_Implementation( int32 saveVersion, int32 gameVersion ){ }
+void AFGBuildableRadarTower::Factory_TickProducing( float dt){ }
+void AFGBuildableRadarTower::PostLoadGame_Implementation( int32 saveVersion, int32 gameVersion){ }
 float AFGBuildableRadarTower::GetCurrentRevealRadius(){ return float(); }
 void AFGBuildableRadarTower::Destroyed(){ }
 void AFGBuildableRadarTower::Multicast_ExpandRadarRadius_Implementation(){ }

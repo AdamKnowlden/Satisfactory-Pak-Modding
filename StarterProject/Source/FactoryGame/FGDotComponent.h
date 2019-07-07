@@ -1,4 +1,8 @@
 #pragma once
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "Components/SceneComponent.h"
 #include "FGDotComponent.generated.h"
@@ -20,6 +24,8 @@ public:
 	//~ End UObject interface
 
 	//~ Begin ActorComponent interface
+	virtual void OnRegister() override;
+	virtual void OnUnregister() override;
 	virtual void Activate( bool reset = false ) override;
 	virtual void Deactivate() override;
 	//~ End ActorComponent interface

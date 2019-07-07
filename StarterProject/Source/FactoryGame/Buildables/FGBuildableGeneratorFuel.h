@@ -1,8 +1,16 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "UObject/CoreNet.h"
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
-#include "Buildables/FGBuildableGenerator.h"
+#include "FGBuildableGenerator.h"
+#include "../Replication/FGReplicationDetailInventoryComponent.h"
+#include "../Replication/FGReplicationDetailActorOwnerInterface.h"
+#include "../Replication/FGReplicationDetailActor_GeneratorFuel.h"
 #include "FGBuildableGeneratorFuel.generated.h"
 
 /**
@@ -29,6 +37,14 @@ public:
 	virtual void Factory_Tick( float dt ) override;
 	// End Factory_ interface
 
+	// Begin IFGReplicationDetailActorOwnerInterface
+	virtual UClass* GetReplicationDetailActorClass() const override { return AFGReplicationDetailActor_GeneratorFuel::StaticClass(); };
+	// End IFGReplicationDetailActorOwnerInterface
+
+	// Begin IFGDismantleInterface
+	virtual void GetDismantleRefund_Implementation( TArray< FInventoryStack >& out_refund ) const override;
+	// End IFGDismantleInterface
+
 	/**
 	 * Check if a resource is valid as fuel for this generator.
 	 * @param resource - Resource class to check.
@@ -38,10 +54,10 @@ public:
 	bool IsValidFuel( TSubclassOf< class UFGItemDescriptor > resource ) const;
 
 	/**
-	 * @return a valid pointer to the inventory if this machine runs on fuel
+	 * @return a valid pointer to the inventory if this machine runs on fuel. Can be nullptr on client.
 	 */
 	UFUNCTION( BlueprintPure, Category = "Inventory" )
-	FORCEINLINE class UFGInventoryComponent* GetFuelInventory() const { return mFuelInventory; };
+	FORCEINLINE class UFGInventoryComponent* GetFuelInventory() const { return mFuelInventoryHandler->GetActiveInventoryComponent(); };
 
 	/**
 	 * Check if this generator has fuel.
@@ -73,6 +89,9 @@ protected:
 	virtual void Factory_TickPowerProduction_Implementation( float dt ) override;
 	// End AFGBuildableGenerator interface
 
+	/** Can we load fuel in to the generator */
+	virtual bool CanLoadFuel( ) const;
+
 private:
 	/**
 	 * Filter out what we consider as fuel for our fuel inventory.
@@ -85,7 +104,17 @@ private:
 	UFUNCTION()
 	void OnRep_FuelInventory();
 
+	virtual void OnRep_ReplicationDetailActor() override;
+
+	class AFGReplicationDetailActor_GeneratorFuel* GetCastRepDetailsActor() const;
+
 protected:
+	friend class AFGReplicationDetailActor_GeneratorFuel;
+
+	/** Maintainer of the active storage component for this actor. Use this to get the active inventory component. */
+	UPROPERTY()
+	class UFGReplicationDetailInventoryComponent* mFuelInventoryHandler;
+
 	/** Fuel classes this machine can run on. Leave empty if it does not run on fuel. */
 	UPROPERTY()
 	TArray< TSubclassOf< class UFGItemDescriptor > > mFuelClasses_DEPRECATED;
@@ -109,7 +138,12 @@ protected:
 	UPROPERTY( SaveGame, Replicated, Meta = (NoAutoJson = true) )
 	float mCurrentFuelAmount;
 
+	/** Used so clients know how if they have available fuel or not. Could be removed later if we start syncing the production indicator state */
+	UPROPERTY( SaveGame, Replicated, Meta = ( NoAutoJson = true ) )
+	mutable bool mHasFuleCached;
+	
+
 	/** Type of the currently burned piece of fuel. */
-	UPROPERTY( SaveGame, Meta = (NoAutoJson = true) )
+	UPROPERTY( SaveGame, Replicated, Meta = (NoAutoJson = true) )
 	TSubclassOf< class UFGItemDescriptor > mCurrentFuelClass;
 };

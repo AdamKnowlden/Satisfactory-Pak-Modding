@@ -1,12 +1,14 @@
 // Copyright 2016-2018 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Array.h"
+#include "UObject/Class.h"
 
 #include "CoreMinimal.h"
-#include "Buildables/FGBuildable.h"
-#include "FSplinePointData.h"
+#include "FGBuildable.h"
+#include "../FSplinePointData.h"
 #include "Components/SplineComponent.h"
-#include "FGSplineComponent.h"
+#include "../FGSplineComponent.h"
 #include "FGBuildableRailroadBridge.generated.h"
 
 /**

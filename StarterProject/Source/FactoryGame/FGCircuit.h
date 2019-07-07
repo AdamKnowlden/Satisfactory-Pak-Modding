@@ -1,10 +1,13 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "UObject/CoreNet.h"
+#include "Engine/World.h"
+#include "Array.h"
+#include "UObject/Class.h"
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
-#include "UObject/CoreNet.h"
 #include "FGSaveInterface.h"
 #include "FGCircuit.generated.h"
 

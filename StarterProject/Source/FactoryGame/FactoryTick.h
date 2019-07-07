@@ -1,4 +1,5 @@
 #pragma once
+#include "UnrealString.h"
 
 #include "Engine/EngineBaseTypes.h"
 #include "FactoryTick.generated.h"
@@ -12,7 +13,7 @@ struct FFactoryTickFunction : public FTickFunction
 	GENERATED_USTRUCT_BODY()
 
 	/** Buildable that is the target of this tick. */
-	class AFGBuildable*	Target;
+	class AFGBuildableSubsystem* Target;
 
 	/**
 	 * Abstract function actually execute the tick.

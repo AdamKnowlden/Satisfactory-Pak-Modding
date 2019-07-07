@@ -1,8 +1,9 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "UObject/Class.h"
 
-#include "AI/FGAttack.h"
+#include "FGAttack.h"
 #include "FGAttackMelee.generated.h"
 
 /**

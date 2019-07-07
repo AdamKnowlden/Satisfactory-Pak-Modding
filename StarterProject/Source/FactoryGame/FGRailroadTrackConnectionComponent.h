@@ -1,6 +1,8 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Array.h"
+#include "UObject/Class.h"
 
 #include "FGConnectionComponent.h"
 #include "FGRailroadInterface.h"
@@ -17,7 +19,6 @@ class FACTORYGAME_API UFGRailroadTrackConnectionComponent : public UFGConnection
 	GENERATED_BODY()
 
 public:	
-	/** Ctor */
 	UFGRailroadTrackConnectionComponent();
 
 	// Begin ActorComponent interface
@@ -30,6 +31,11 @@ public:
 	virtual FRailroadTrackPosition GetTrackPosition_Implementation() const override;
 	// End IFGRailroadInterface
 
+	/** Return the connectors world location. */
+	FORCEINLINE FVector GetConnectorLocation() const { return GetComponentTransform().GetLocation(); }
+	/** Return the connectors world normal. */
+	FORCEINLINE FVector GetConnectorNormal() const { return GetComponentRotation().Vector(); }
+
 	/**
 	 * Add a connected component.
 	 * @note Sets both ends of the connection.
@@ -39,7 +45,7 @@ public:
 	/**
 	 * @return The connected connection at switch position; nullptr if not connected or bad index.
 	 */
-	UFUNCTION( BlueprintPure, Category = "TrackConnection" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|Track" )
 	FORCEINLINE UFGRailroadTrackConnectionComponent* GetConnection( int32 position ) const { return mConnectedComponents.IsValidIndex( position ) ? mConnectedComponents[ position ] : nullptr; }
 
 	/**
@@ -88,20 +94,20 @@ public:
 	 *
 	 * @return The number of connections, i.e. switch positions.
 	 */
-	UFUNCTION( BlueprintPure, Category = "TrackConnection" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|Track" )
 	FORCEINLINE int32 GetNumSwitchPositions() const { return mConnectedComponents.Num(); }
 
 	/**
 	 * @return The current switch position [0,n]; 0 if not a switch.
 	 */
-	UFUNCTION( BlueprintPure, Category = "TrackConnection" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|Track" )
 	FORCEINLINE int32 GetSwitchPosition() const { return mSwitchPosition; }
 
 	/**
 	 * Set the current switch position.
 	 * @param position Clamped to the valid range [0,n].
 	 */
-	UFUNCTION( BlueprintCallable, Category = "TrackConnection" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Railroad|Track" )
 	void SetSwitchPosition( int32 position );
 
 	/**
@@ -114,6 +120,13 @@ public:
 	 * Get the connection opposite to this one on the track segment.
 	 */
 	UFGRailroadTrackConnectionComponent* GetOpposite() const;
+
+	/** Find the closest overlapping connection matching all search criteria. */
+	static UFGRailroadTrackConnectionComponent* FindOverlappingConnections(
+		class UFGRailroadTrackConnectionComponent* component,
+		const FVector& location,
+		float radius,
+		bool allowPlatformTracks = false );
 
 private:
 	/** Internal helper functions to add/remove connection. */

@@ -2,7 +2,7 @@
 
 #include "FGManufacturingButton.h"
 
-void UFGManufacturingButton::SetButton(  UButton* inButton ){ }
+void UFGManufacturingButton::SetButton(  UButton* inButton){ }
 void UFGManufacturingButton::OnPressedButton(){ }
 void UFGManufacturingButton::OnReleasedButton(){ }
-void UFGManufacturingButton::NativeTick( const FGeometry& MyGeometry, float InDeltaTime ){ }
+void UFGManufacturingButton::NativeTick( const FGeometry& MyGeometry, float InDeltaTime){ }

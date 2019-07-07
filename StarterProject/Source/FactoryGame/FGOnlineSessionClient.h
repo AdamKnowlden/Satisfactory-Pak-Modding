@@ -1,4 +1,8 @@
 #pragma once
+#include "Engine/World.h"
+#include "Array.h"
+#include "UnrealString.h"
+#include "UObject/Class.h"
 
 #include "OnlineSessionClient.h"
 #include "FGOnlineSessionClient.generated.h"

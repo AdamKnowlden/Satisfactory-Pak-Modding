@@ -1,6 +1,8 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Engine/StaticMesh.h"
+#include "UObject/Class.h"
 
 #include "FGUseableInterface.h"
 #include "GameFramework/Actor.h"

@@ -2,7 +2,7 @@
 
 #include "FGRailroadHologram.h"
 
-void AFGRailroadHologram::ScrollRotate( int32 delta, int32 step ){ }
-void AFGRailroadHologram::SetHologramLocationAndRotation( const FHitResult& hitResult ){ }
+void AFGRailroadHologram::ScrollRotate( int32 delta, int32 step){ }
+void AFGRailroadHologram::SetHologramLocationAndRotation( const FHitResult& hitResult){ }
 void AFGRailroadHologram::CheckValidPlacement(){ }
-void AFGRailroadHologram::ConfigureActor(  AFGBuildable* inBuildable ) const{ }
+void AFGRailroadHologram::ConfigureActor(  AFGBuildable* inBuildable) const{ }

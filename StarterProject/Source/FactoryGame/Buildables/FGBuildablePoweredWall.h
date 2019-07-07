@@ -1,6 +1,7 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "UObject/Class.h"
 
 #include "FGBuildableWall.h"
 #include "FGBuildablePoweredWall.generated.h"

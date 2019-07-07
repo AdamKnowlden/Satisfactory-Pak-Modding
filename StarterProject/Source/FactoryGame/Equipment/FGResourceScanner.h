@@ -1,7 +1,10 @@
-#include "Equipment/FGEquipment.h"
-#include "FGResourceScanner.generated.h"
-
 #pragma once
+#include "Array.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
+
+#include "FGEquipment.h"
+#include "FGResourceScanner.generated.h"
 
 /** Holds information about resource node clusters. This could be saved in actors on the level for optimization. */
 USTRUCT( BlueprintType )

@@ -14,6 +14,13 @@
 DECLARE_STATS_GROUP( TEXT( "DynamicHeightFog" ), STATGROUP_DynamicHeightFog, STATCAT_Advanced );
 DECLARE_STATS_GROUP( TEXT( "FactoryTick" ), STATGROUP_FactoryTick, STATCAT_Advanced );
 
+
+#define IS_PUBLIC_BUILD 1
+// Useful for removing stuff that shouldn't be in public versions
+#ifndef IS_PUBLIC_BUILD
+#define IS_PUBLIC_BUILD 0
+#endif
+
 /** Debug flags */
 #define DEBUG_SPLINE_HOLOGRAM_AUTO_ROUTER 0
 #define DEBUG_FACTORY_IO 0
@@ -48,13 +55,21 @@ DECLARE_LOG_CATEGORY_EXTERN( LogFactory, Warning, All );
 DECLARE_LOG_CATEGORY_EXTERN( LogNetConveyorBelt, Warning, All );
 DECLARE_LOG_CATEGORY_EXTERN( LogNetFoliageRemoval, Warning, All );
 DECLARE_LOG_CATEGORY_EXTERN( LogPower, Warning, All );
-DECLARE_LOG_CATEGORY_EXTERN( LogRailroad, Warning, All );
+DECLARE_LOG_CATEGORY_EXTERN( LogRailroad, Log, All );
 DECLARE_LOG_CATEGORY_EXTERN( LogBuildGun, Warning, All );
 DECLARE_LOG_CATEGORY_EXTERN( LogHologram, Warning, All );
 DECLARE_LOG_CATEGORY_EXTERN( LogSave, Display, All );
 DECLARE_LOG_CATEGORY_EXTERN( LogWidget, Warning, All );
 DECLARE_LOG_CATEGORY_EXTERN( LogEquipment, Warning, All );
 DECLARE_LOG_CATEGORY_EXTERN( LogFoundation, Warning, All );
+#if IS_PUBLIC_BUILD
+DECLARE_LOG_CATEGORY_EXTERN( LogConveyorNetDelta, Warning, Warning );
+DECLARE_LOG_CATEGORY_EXTERN( LogConveyorSpacingNetDelta, Warning, Warning );
+#else
+DECLARE_LOG_CATEGORY_EXTERN( LogConveyorNetDelta, Warning, All );
+DECLARE_LOG_CATEGORY_EXTERN( LogConveyorSpacingNetDelta, Warning, All );
+#endif
+
 
 /** Helpers when using interfaces */
 #define VALID_INTERFACE( interface ) IsValid( interface.GetObject() )
@@ -99,6 +114,7 @@ static const FName CollisionProfileResource( TEXT( "Resource" ) );
 static const FName CollisionProfileResourceNoCollision( TEXT( "ResourceNoCollision" ) );
 static const FName CollisionProfileWireMesh( TEXT( "WireMesh" ) );
 static const FName CollisionProfileConveyorSpline( TEXT( "ConveyorSpline" ) );
+static const FName CollisionProfileRailroadTrack( TEXT( "RailroadTrack" ) );
 static const FName CollisionProfileBuildingMesh( TEXT( "BuildingMesh" ) );
 static const FName CollisionProfileClearanceDetector( TEXT( "ClearanceDetector" ) );
 
@@ -347,10 +363,6 @@ FString RemoveStandalonePrefix( const FString& string );
 	#define checkfDev(expr, format,  ...)				{ CA_ASSUME(expr); }
 #endif
 
-// Useful for removing stuff that shouldn't be in public versions
-#ifndef IS_PUBLIC_BUILD
-	#define IS_PUBLIC_BUILD 0
-#endif
 
 #ifndef WITH_CHEATS
 #define WITH_CHEATS	(!IS_PUBLIC_BUILD)

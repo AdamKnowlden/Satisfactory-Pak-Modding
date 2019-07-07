@@ -1,7 +1,13 @@
 #pragma once
+#include "Engine/StaticMesh.h"
+#include "Array.h"
+#include "UnrealString.h"
+#include "GameFramework/Actor.h"
+#include "UObject/Class.h"
 
 #include "Components/SceneComponent.h"
 #include "FGSaveInterface.h"
+#include "DefaultValueHelper.h"
 #include "FGFactoryLegsComponent.generated.h"
 
 USTRUCT()
@@ -11,8 +17,8 @@ struct FFeetOffset
 
 	FFeetOffset(){}
 
-	FFeetOffset( const FName& inFeetName ) :
-		FeetName( inFeetName ),
+	FFeetOffset( const uint8 inFeetIndex ) :
+		FeetIndex( inFeetIndex ),
 		OffsetZ( 0.f ),
 		ShouldShow( true ),
 		IsValidOffset( true )
@@ -21,7 +27,7 @@ struct FFeetOffset
 
 	/** The name of the foot's socket. */
 	UPROPERTY( SaveGame )
-	FName FeetName;
+	uint8 FeetIndex;
 
 	/** The offset along the Z axis from the parent mesh origo. */
 	UPROPERTY( SaveGame )
@@ -35,6 +41,28 @@ struct FFeetOffset
 	/** Does this foot have a valid offset. */
 	UPROPERTY( )
 	uint8 IsValidOffset : 1;
+
+	FName GetSocketNameFromIndex() const
+	{
+		TArray<FStringFormatArg> args;
+		args.Add( FString::FromInt( FeetIndex ) );
+		const FName socketName( *FString::Format( TEXT( "foot_0{0}" ), args ) );
+		return socketName;
+	}
+
+	static uint8 GetFeetIndexFromSocket( const FName& socketName )
+	{
+		FString socketIndexString = socketName.ToString( );
+		socketIndexString.ReplaceInline( TEXT("foot_"), TEXT(""), ESearchCase::IgnoreCase );
+
+		int32 value;
+		if( FDefaultValueHelper::ParseInt( socketIndexString, value ) )
+		{
+			return uint8( value );
+		}
+
+		return 0;
+	}
 };
 
 UCLASS( ClassGroup = ( Custom ), meta = ( BlueprintSpawnableComponent ) )
@@ -50,6 +78,8 @@ public:
 
 	//~ Begin UActorComponent interface
 #if WITH_EDITOR
+	virtual void OnRegister() override;
+	virtual void OnUnregister() override;
 #endif
 	virtual void BeginPlay() override;
 	virtual void EndPlay( const EEndPlayReason::Type endPlayReason ) override;
@@ -81,6 +111,8 @@ public:
 
 	float GetMaxLegLength() const;
 
+	static bool GetTracedFeetOffsetFromGround( const FTransform& actorTransform, UFGFactoryLegsComponent* legsComp, TArray<FFeetOffset>& out_tracedFeetOffsets, float& out_highestFootOffset, float& out_longestLeg );
+
 private:
 	FFeetOffset TraceFootOffset( FName socket, const FTransform& actorTransform ) const;
 
@@ -91,6 +123,8 @@ private:
 	void RemoveLegs();
 
 	void CreateFoot( const FFeetOffset& offset );
+
+	bool CachedFeetOffsetsAreValid();
 
 protected:
 	/** Socket names on the parent mesh */
@@ -118,7 +152,7 @@ private:
 	UPROPERTY( transient )
 	TArray< UStaticMeshComponent* > mFootMeshComponents;
 
-	/** Stored so that we know the offset of the feets */
+	/** Stored so that we know the offset of the feet */
 	UPROPERTY( SaveGame, Replicated )
 	TArray< FFeetOffset > mCachedFeetOffset;
 };

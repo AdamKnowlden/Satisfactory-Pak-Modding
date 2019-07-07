@@ -3,13 +3,13 @@
 #include "FGBuildableWire.h"
 
 AFGBuildableWire::AFGBuildableWire(){ }
-void AFGBuildableWire::GetLifetimeReplicatedProps( TArray< FLifetimeProperty >& OutLifetimeProps ) const{ }
-void AFGBuildableWire::Serialize(FArchive& ar){ Super::Serialize(ar); }
+void AFGBuildableWire::GetLifetimeReplicatedProps( TArray< FLifetimeProperty >& OutLifetimeProps) const{ }
+void AFGBuildableWire::Serialize( FArchive& ar){ Super::Serialize(ar ); }
 void AFGBuildableWire::BeginPlay(){ }
 void AFGBuildableWire::Destroyed(){ }
-UFGCircuitConnectionComponent* AFGBuildableWire::GetOppositeConnection( const  UFGCircuitConnectionComponent* connection ) const{ return nullptr; }
+UFGCircuitConnectionComponent* AFGBuildableWire::GetOppositeConnection( const  UFGCircuitConnectionComponent* connection) const{ return nullptr; }
 void AFGBuildableWire::Disconnect(){ }
-void AFGBuildableWire::DisplayDebug(  UCanvas* canvas, const  FDebugDisplayInfo& debugDisplay, float& YL, float& YPos ){ }
-void AFGBuildableWire::Connect(  UFGCircuitConnectionComponent* first,  UFGCircuitConnectionComponent* second ){ }
+void AFGBuildableWire::DisplayDebug(  UCanvas* canvas, const  FDebugDisplayInfo& debugDisplay, float& YL, float& YPos){ }
+void AFGBuildableWire::Connect(  UFGCircuitConnectionComponent* first,  UFGCircuitConnectionComponent* second){ }
 bool AFGBuildableWire::IsConnected() const{ return bool(); }
 FName AFGBuildableWire::mWireMeshTag = FName();

@@ -1,4 +1,6 @@
 #pragma once
+#include "Array.h"
+#include "UnrealString.h"
 
 #include "Engine/NetSerialization.h"
 #include "FGNetSerialization.generated.h"

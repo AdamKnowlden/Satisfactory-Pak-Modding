@@ -1,6 +1,10 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Engine/World.h"
+#include "Array.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "FGConnectionComponent.h"
 #include "FGInventoryComponent.h"
@@ -53,9 +57,18 @@ class FACTORYGAME_API UFGFactoryConnectionComponent : public UFGConnectionCompon
 public:
 	UFGFactoryConnectionComponent();
 
+	/** Replication */
+	void GetLifetimeReplicatedProps( TArray< FLifetimeProperty >& OutLifetimeProps ) const;
+
 	// Begin ActorComponent interface
 	virtual void OnComponentDestroyed( bool isDestroyingHierarchy ) override;
+	virtual void OnRegister() override;
+	virtual void OnUnregister() override;
 	// End ActorComponent interface
+
+	// Begin save interface
+	virtual void PostLoadGame_Implementation( int32 saveVersion, int32 gameVersion ) override;
+	// End save interface
 
 	/** Set our direction after creation time */
 	FORCEINLINE void SetDirection( EFactoryConnectionDirection newDirection ){ mDirection = newDirection; }
@@ -123,6 +136,8 @@ public:
 
 	/** Return the connectors world location with or without considering the clearance. */
 	FVector GetConnectorLocation( bool withClearance = false ) const;
+	/** Return the connectors world normal. */
+	FVector GetConnectorNormal() const { return GetComponentRotation().Vector(); }
 
 	/**
 	 * Check this connection has a output
@@ -200,6 +215,9 @@ protected:
 	/** Connection to another component. If this is set we're connected. */
 	UPROPERTY( SaveGame )
 	class UFGFactoryConnectionComponent* mConnectedComponent;
+
+	UPROPERTY( Replicated )
+	bool mHasConnectedComponent = false;
 
 	/** The inventory of this connection */
 	UPROPERTY( SaveGame )

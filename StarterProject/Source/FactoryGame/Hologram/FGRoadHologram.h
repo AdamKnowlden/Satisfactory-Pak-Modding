@@ -1,8 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "UObject/Class.h"
 
-#include "Hologram/FGSplineHologram.h"
+#include "FGSplineHologram.h"
 #include "FGRoadHologram.generated.h"
 
 //@todonow Broke this when making the lifts

@@ -1,8 +1,11 @@
 // Copyright 2016-2019 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Array.h"
+#include "UObject/Class.h"
 
 #include "CoreMinimal.h"
+#include "FGSignInterface.h"
 #include "FGSettings.h"
 #include "Materials/Material.h"
 #include "FGSignSettings.generated.h"
@@ -21,11 +24,15 @@ struct FSignColorData
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category = "Sign Data Settings" )
 	FText ColorName;
 
-	/** The material instance is created at runtime and stored here when it is needed */
+	/** The TEXT material instance is created at runtime and stored here when it is needed */
 	UPROPERTY()
 	UMaterialInstanceDynamic* TextMaterialInstance;
 
-	/** The material instance is created at runtime and stored here when it is needed */
+	/** The ICON material instance is created at runtime and stored here when it is needed */
+	UPROPERTY()
+	UMaterialInstanceDynamic* IconMaterialInstance;
+
+	/** The BACKGROUND material instance is created at runtime and stored here when it is needed */
 	UPROPERTY()
 	UMaterialInstanceDynamic* BackgroundMaterialInstance;
 };
@@ -53,6 +60,10 @@ public:
 	UFUNCTION( BlueprintPure, Category = "Sign Data Settings" )
 	static UMaterialInterface* GetTextMaterialInstanceFromIndex( int32 index );
 
+	/** Returns the corresponding icon material instance from the sign color data array. If one does not exist yet it is created */
+	UFUNCTION( BlueprintPure, Category = "Sign Data Settings" )
+	static UMaterialInterface* GetIconMaterialInstanceFromIndex( int32 index );
+
 	/** Returns the corresponding background material instance from the sign color data array. If one does not exist yet it is created */
 	UFUNCTION( BlueprintPure, Category = "Sign Data Settings" )
 	static UMaterialInterface* GetBackgroundMaterialInstanceFromIndex( int32 index );
@@ -65,6 +76,10 @@ public:
 	UPROPERTY( EditDefaultsOnly, Category = "Sign Data Settings" )
 	UMaterial* mTextMaterial;
 
+	/** Base material to be used for icon material instances */
+	UPROPERTY( EditDefaultsOnly, Category = "Sign Data Settings" )
+	UMaterial* mIconMaterial;
+
 	/** Base material to be used for sign background material instances */
 	UPROPERTY( EditDefaultsOnly, Category = "Sign Data Settings" )
 	UMaterial* mBackgroundMaterial;
@@ -76,6 +91,10 @@ public:
 	/** Parameter name of color adjustment FVector inside the text material */
 	UPROPERTY( EditDefaultsOnly, Category = "Sign Data Settings" )
 	FName mTextMaterialColorParam;
+
+	/** Parameter name of color adjustment FVector inside the icon material */
+	UPROPERTY( EditDefaultsOnly, Category = "Sign Data Settings" )
+	FName mIconMaterialColorParam;
 
 	/** Parameter name of color adjustment FVector inside the background material */
 	UPROPERTY( EditDefaultsOnly, Category = "Sign Data Settings" )

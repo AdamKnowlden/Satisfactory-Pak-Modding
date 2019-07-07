@@ -1,9 +1,10 @@
 // Copyright 2017 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "UObject/Class.h"
 
 #include "CoreMinimal.h"
-#include "Buildables/FGBuildableFactory.h"
+#include "FGBuildableFactory.h"
 #include "FGBuildableConveyorAttachment.generated.h"
 
 /**

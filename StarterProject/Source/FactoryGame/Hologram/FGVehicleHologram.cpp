@@ -2,9 +2,9 @@
 
 #include "FGVehicleHologram.h"
 
-void AFGVehicleHologram::GetLifetimeReplicatedProps( TArray< FLifetimeProperty >& OutLifetimeProps ) const{ }
-void AFGVehicleHologram::SetVehicleClass( TSubclassOf<  AFGVehicle > vehicleClass ){ }
+void AFGVehicleHologram::GetLifetimeReplicatedProps( TArray< FLifetimeProperty >& OutLifetimeProps) const{ }
+void AFGVehicleHologram::SetVehicleClass( TSubclassOf<  AFGVehicle > vehicleClass){ }
 void AFGVehicleHologram::BeginPlay(){ }
-AActor* AFGVehicleHologram::Construct( TArray< AActor* >& out_children ){ return nullptr; }
+AActor* AFGVehicleHologram::Construct( TArray< AActor* >& out_children){ return nullptr; }
 TSubclassOf< AActor > AFGVehicleHologram::GetActorClass() const{ return TSubclassOf<AActor>(); }
 AFGVehicle* AFGVehicleHologram::ConstructVehicle() const{ return nullptr; }

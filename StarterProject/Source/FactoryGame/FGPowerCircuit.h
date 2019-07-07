@@ -1,6 +1,9 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "UObject/CoreNet.h"
+#include "Array.h"
+#include "UObject/Class.h"
 
 #include "CoreMinimal.h"
 #include "FGCircuit.h"

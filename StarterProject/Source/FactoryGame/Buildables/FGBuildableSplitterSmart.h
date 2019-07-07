@@ -1,9 +1,12 @@
 // Copyright 2016-2018 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Array.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "CoreMinimal.h"
-#include "Buildables/FGBuildableAttachmentSplitter.h"
+#include "FGBuildableAttachmentSplitter.h"
 #include "FGBuildableSplitterSmart.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE( FOnSortRulesChanged );

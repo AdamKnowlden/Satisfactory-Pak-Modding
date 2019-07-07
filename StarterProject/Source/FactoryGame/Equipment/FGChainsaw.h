@@ -1,7 +1,12 @@
 #pragma once
+#include "Engine/StaticMesh.h"
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "FGEquipment.h"
-#include "FGInventoryComponent.h"
+#include "../FGInventoryComponent.h"
 #include "FGChainsaw.generated.h"
 
 

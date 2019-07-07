@@ -1,9 +1,10 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "UnrealString.h"
+#include "UObject/Class.h"
 
 #include "FGRailroadVehicleMovementComponent.h"
-#include "UObject/Interface.h"
 #include "FGLocomotiveMovementComponent.generated.h"
 
 /**
@@ -86,18 +87,23 @@ struct FRailroadVehicleInputRate
 UCLASS()
 class FACTORYGAME_API UFGLocomotiveMovementComponent : public UFGRailroadVehicleMovementComponent
 {
+	// MODDING EDIT
 	GENERATED_BODY()
-	
+	UFGLocomotiveMovementComponent(const class FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {}
 public:
-	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const override; // MODDING EDIT: LNK2001
 	// Begin UActorComponent Interface
 	virtual void TickComponent( float dt, enum ELevelTick tickType, FActorComponentTickFunction *thisTickFunction ) override;
 	// End UActorComponent Interface
 
+	virtual void GetLifetimeReplicatedProps(class TArray<class FLifetimeProperty, class FDefaultAllocator> & OutReplicatedProps) const override; // MODDING EDIT
+
 	//~ Begin UFGRailroadVehicleMovementComponent interface
 	virtual void ComputeConstants() override;
+	virtual void TickSlaveInput( float dt, const UFGLocomotiveMovementComponent* master ) override;
 	virtual void TickTractionAndFriction( float dt ) override;
 	//~ End UFGRailroadVehicleMovementComponent interface
+
+	void TickMasterInput( float dt );
 
 	/**
 	 * Set the value of the reverser control.
@@ -105,59 +111,58 @@ public:
      * -1: Reverse, locomotive goes backwards.
 	 *  0: Neutral, locomotive goes nowhere!
 	 */
-	UFUNCTION( BlueprintCallable, Category = "Game|Components|RailroadVehicleMovement" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Railroad|Movement" )
 	void SetReverserInput( int32 reverser );
 
 	/**
 	 * Set the user input for the vehicle throttle. Range [-1, 1].
 	 * If negative and the vehicle is moving forward this applies dynamic braking (not same as handbrake).
 	 */
-	UFUNCTION( BlueprintCallable, Category = "Game|Components|RailroadVehicleMovement" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Railroad|Movement" )
 	void SetThrottleInput( float throttle );
 
-	//@todotrains Look at GearUp/Down is made as this is not a continuous thing.
 	/**
 	 * Set the user input for the vehicle steering
 	 * Negative: Flip turnout ahead to the right.
 	 * Positive: Flip turnout ahead to the left.
 	 * Zero: Do nothing and go with the flow.
 	 */
-	UFUNCTION( BlueprintCallable, Category = "Game|Components|RailroadVehicleMovement" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Railroad|Movement" )
 	void SetSteeringInput( float steering );
 
 	/** Set the user input for air brakes (handbrake). */
-	UFUNCTION( BlueprintCallable, Category = "Game|Components|RailroadVehicleMovement" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Railroad|Movement" )
 	void SetAirBrakeInput( float brake );
 
 	/** Sets all brakes to max and the throttle to zero. */
-	UFUNCTION( BlueprintCallable, Category = "Game|Components|RailroadVehicleMovement" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Railroad|Movement" )
 	void SetEmergencyBrake();
 
 	/** Returns the value of the reverser control. @see SetReverserInput */
-	UFUNCTION( BlueprintPure, Category = "Game|Components|RailroadVehicleMovement" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|Movement" )
 	FORCEINLINE int32 GetReverser() const { return mReverserInput; }
 
 	/** Get the throttle value in range [0,1]. This is not the same as the raw data passed to SetThrottleInput */
-	UFUNCTION( BlueprintPure, Category = "Game|Components|RailroadVehicleMovement" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|Movement" )
 	FORCEINLINE float GetThrottle() const { return mThrottleInput; }
 	
 	/** Get the amount of pressure applied to the air brakes in range [0,1]. This is the trains version of hand brake. */
-	UFUNCTION( BlueprintPure, Category = "Game|Components|RailroadVehicleMovement" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|Movement" )
 	FORCEINLINE float GetAirBrake() const { return mAirBrakeInput; }
 
 	/**
 	 * Get the amount of dynamic braking in range [0,1]. This is the trains version of a cars engine brake.
 	 * It is applied when moving forward and applying reverse throttle.
 	 */
-	UFUNCTION( BlueprintPure, Category = "Game|Components|RailroadVehicleMovement" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|Movement" )
 	FORCEINLINE float GetDynamicBrake() const { return mDynamicBrakeInput; }
 
 	/** Get max dynamic braking force. [N] [kg cm/s^2] */
-	UFUNCTION( BlueprintPure, Category = "Game|Components|RailroadVehicleMovement" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|Movement" )
 	FORCEINLINE float GetMaxDynamicBrakingEffort() const { return mMaxDynamicBrakingEffort; }
 
 	/** Get maximum tractive force for this vehicle. [N] [kg cm/s^2] */
-	UFUNCTION( BlueprintPure, Category = "Game|Components|RailroadVehicleMovement" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|Movement" )
 	FORCEINLINE float GetMaxTractiveEffort() const { return mMaxTractiveEffort; }
 
 protected:
@@ -189,7 +194,7 @@ protected:
 	void ClearInput();
 
 	/** Read current state for simulation */
-	void UpdateState( float deltaTime );
+	void UpdateState( float dt, const UFGLocomotiveMovementComponent* master );
 
 	/** Pass current state to server */
 	UFUNCTION( Reliable, Server, WithValidation )
@@ -274,12 +279,18 @@ protected:
 	/** The maximum tractive force [N] [kg cm/s^2] that can be delivered. */
 	float mMaxTractiveEffort;
 
+	/** The traction we want, may not get it due to power restrictions. */
+	float mTargetTractiveEffort;
+
 	/** The maximum dynamic braking force [kN] [kg m/s^2 * 1000] that can be delivered at a given speed [km/h]. */
 	UPROPERTY( EditAnywhere, Category = "VehicleSetup" )
 	FRuntimeFloatCurve mDynamicBrakingEffortCurve;
 
 	/** The maximum dynamic braking force [N] [kg cm/s^2] that can be delivered. */
 	float mMaxDynamicBrakingEffort;
+
+	/** How much power do we get [0,1] */
+	float mPowerFactor;
 };
 
 // Some helper functions for converting units

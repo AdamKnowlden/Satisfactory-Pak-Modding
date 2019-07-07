@@ -3,4 +3,3 @@
 #include "FGAttack.h"
 
 UFGAttack::UFGAttack(){ }
-//void UFGAttack::PerformAttack( TScriptInterface< IFGAggroTargetInterface >	aggroTarget,  AFGEnemy* sourceActor ){ }

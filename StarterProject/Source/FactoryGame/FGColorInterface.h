@@ -1,6 +1,7 @@
 #pragma once
-
 #include "UObject/Interface.h"
+#include "UObject/Class.h"
+
 #include "FGColorInterface.generated.h"
 
 /**
@@ -10,7 +11,9 @@
 UINTERFACE( Blueprintable )
 class UFGColorInterface : public UInterface
 {
-	GENERATED_BODY()	
+	
+ GENERATED_BODY()
+	UFGColorInterface(const class FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {} 
 };
 
 /**

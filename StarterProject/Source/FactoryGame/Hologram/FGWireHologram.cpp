@@ -3,24 +3,24 @@
 #include "FGWireHologram.h"
 
 AFGWireHologram::AFGWireHologram(){ }
-void AFGWireHologram::GetLifetimeReplicatedProps( TArray< FLifetimeProperty >& OutLifetimeProps ) const{ }
+void AFGWireHologram::GetLifetimeReplicatedProps( TArray< FLifetimeProperty >& OutLifetimeProps) const{ }
 void AFGWireHologram::BeginPlay(){ }
-void AFGWireHologram::Tick( float dt ){ }
-AActor* AFGWireHologram::Construct( TArray< AActor* >& out_children ){ return nullptr; }
-TArray< FItemAmount > AFGWireHologram::GetCost( bool includeChildren ) const{ return TArray<FItemAmount>(); }
+void AFGWireHologram::Tick( float dt){ }
+AActor* AFGWireHologram::Construct( TArray< AActor* >& out_children){ return nullptr; }
+TArray< FItemAmount > AFGWireHologram::GetCost( bool includeChildren) const{ return TArray<FItemAmount>(); }
 bool AFGWireHologram::MultiStepPlacement(){ return bool(); }
-void AFGWireHologram::SetHologramLocationAndRotation( const FHitResult& hitResult ){ }
+void AFGWireHologram::SetHologramLocationAndRotation( const FHitResult& hitResult){ }
 void AFGWireHologram::OnInvalidHitResult(){ }
-void AFGWireHologram::SpawnChildren(  UFGBuildGunStateBuild* state ){ }
-void AFGWireHologram::ConfigureActor(  AFGBuildable* inBuildable ) const{ }
+void AFGWireHologram::SpawnChildren(  UFGBuildGunStateBuild* state){ }
+void AFGWireHologram::ConfigureActor(  AFGBuildable* inBuildable) const{ }
 void AFGWireHologram::Destroyed(){ }
 void AFGWireHologram::CheckValidPlacement(){ }
-void AFGWireHologram::SetupDepthMeshComponent( USceneComponent* attachParent, UMeshComponent* componentTemplate ){ }
+void AFGWireHologram::SetupDepthMeshComponent( USceneComponent* attachParent, UMeshComponent* componentTemplate){ }
 void AFGWireHologram::CheckClearance(){ }
 void AFGWireHologram::CheckValidSnap(){ }
 void AFGWireHologram::CheckLength(){ }
-UFGCircuitConnectionComponent* AFGWireHologram::FindOverlappingCircuitConnectionComponent( const FVector& location,  AActor* actor,  UFGCircuitConnectionComponent* ignoredConnectionComponent ){ return nullptr; }
-void AFGWireHologram::StartLookAtBuilding( UFGCircuitConnectionComponent* overlappingComponent ){ }
+UFGCircuitConnectionComponent* AFGWireHologram::FindOverlappingCircuitConnectionComponent( const FVector& location,  AActor* actor,  UFGCircuitConnectionComponent* ignoredConnectionComponent){ return nullptr; }
+void AFGWireHologram::StartLookAtBuilding( UFGCircuitConnectionComponent* overlappingComponent){ }
 void AFGWireHologram::StopLookAtBuilding(){ }
-void AFGWireHologram::StartLookAtTooManyConnectionsBuilding( UFGCircuitConnectionComponent* overlappingConnection ){ }
+void AFGWireHologram::StartLookAtTooManyConnectionsBuilding( UFGCircuitConnectionComponent* overlappingConnection){ }
 float AFGWireHologram::GetLength() const{ return float(); }

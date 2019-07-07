@@ -1,12 +1,16 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Engine/World.h"
+#include "Array.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "GameFramework/Actor.h"
-#include "Equipment/FGEquipment.h"
-#include "FGRecipeProducerInterface.h"
-#include "Equipment/FGEquipmentAttachment.h"
-#include "Inventory.h"
+#include "FGEquipment.h"
+#include "../FGRecipeProducerInterface.h"
+#include "FGEquipmentAttachment.h"
+#include "../Inventory.h"
 #include "FGBuildGun.generated.h"
 
  /**

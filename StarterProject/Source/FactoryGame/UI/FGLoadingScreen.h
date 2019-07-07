@@ -1,10 +1,12 @@
 // Copyright 2016-2019 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "UnrealString.h"
 
 #include "CoreMinimal.h"
 #include "Widgets/SCompoundWidget.h"
 #include "Animation/CurveSequence.h"
+#include "UMG.h"
 #include "Styling/ISlateStyle.h"
 
 /**

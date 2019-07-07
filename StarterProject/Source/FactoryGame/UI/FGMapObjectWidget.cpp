@@ -2,7 +2,6 @@
 
 #include "FGMapObjectWidget.h"
 
-//void UFGMapObjectWidget::OnActorRepresentationUpdated(){ }
 void UFGMapObjectWidget::NativeConstruct(){ }
-void UFGMapObjectWidget::NativeTick( const FGeometry& MyGeometry, float InDeltaTime ){ }
+void UFGMapObjectWidget::NativeTick( const FGeometry& MyGeometry, float InDeltaTime){ }
 void UFGMapObjectWidget::initMapObject(){ }

@@ -1,6 +1,7 @@
 // Copyright 2016-2017 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "UObject/Class.h"
 
 #include "FGConnectionComponent.h"
 #include "FGRoadConnectionComponent.generated.h"

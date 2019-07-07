@@ -1,9 +1,13 @@
 // Copyright 2016-2018 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
-#include "Equipment/FGEquipment.h"
-#include "FGSchematic.h"
+#include "FGEquipment.h"
+#include "../FGSchematic.h"
 #include "FGEquipmentAttachment.h"
 #include "FGObjectScanner.generated.h"
 

@@ -1,5 +1,9 @@
 // Copyright 1998-2016 Epic Games, Inc. All Rights Reserved.
 #pragma once
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "GameFramework/Character.h"
 #include "FGSaveInterface.h"
@@ -454,4 +458,8 @@ protected:
 	/** Bone names that result in a weakspot hit */
 	UPROPERTY( EditDefaultsOnly, Category = "Damage" )
 	TArray< FName > mWeakspotBoneNames;
+
+	/** Multiplier for this creature and normal damage taken */
+	UPROPERTY( EditDefaultsOnly, Category = "Damage" )
+	float mNormalDamageMultiplier;
 };

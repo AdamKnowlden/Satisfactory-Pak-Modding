@@ -1,4 +1,6 @@
 #pragma once
+#include "GameFramework/Actor.h"
+#include "UObject/Class.h"
 
 #include "UObject/Interface.h"
 #include "FGAggroTargetInterface.generated.h"
@@ -10,7 +12,9 @@
 UINTERFACE( Blueprintable )
 class UFGAggroTargetInterface : public UInterface
 {
-	GENERATED_BODY()
+	
+ GENERATED_BODY()
+	UFGAggroTargetInterface(const class FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {} 
 };
 
 /**
@@ -20,31 +24,31 @@ class IFGAggroTargetInterface
 {
 	GENERATED_IINTERFACE_BODY()
 
-	UFUNCTION( BlueprintNativeEvent, Category = "Aggro" )
+	UFUNCTION( BlueprintNativeEvent, Category = "FactoryGame|AI|Aggro" )
 	bool ShouldAutoregisterAsTargetable() const;
 
-	UFUNCTION(BlueprintNativeEvent,Category="Aggro")
+	UFUNCTION(BlueprintNativeEvent,Category="FactoryGame|AI|Aggro")
 	void RegisterIncomingAttacker( class AFGEnemyController* forController );
 
-	UFUNCTION( BlueprintNativeEvent, Category = "Aggro" )
+	UFUNCTION( BlueprintNativeEvent, Category = "FactoryGame|AI|Aggro" )
 	void UnregisterAttacker( class AFGEnemyController* forController );
 
-	UFUNCTION( BlueprintCallable, BlueprintNativeEvent, Category = "Aggro" )
+	UFUNCTION( BlueprintCallable, BlueprintNativeEvent, Category = "FactoryGame|AI|Aggro" )
 	AActor* GetActor();
 
 	/**
 	 * Primitive component that we will try to attack
 	 */
-	UFUNCTION( BlueprintCallable, BlueprintNativeEvent, Category = "Aggro" )
+	UFUNCTION( BlueprintCallable, BlueprintNativeEvent, Category = "FactoryGame|AI|Aggro" )
 	class UPrimitiveComponent* GetTargetComponent();
 
-	UFUNCTION( BlueprintNativeEvent, Category = "Aggro" )
+	UFUNCTION( BlueprintNativeEvent, Category = "FactoryGame|AI|Aggro" )
 	float GetEnemyTargetDesirability( class AFGEnemyController* forController );
 
-	UFUNCTION( BlueprintCallable, BlueprintNativeEvent, Category = "Aggro" )
+	UFUNCTION( BlueprintCallable, BlueprintNativeEvent, Category = "FactoryGame|AI|Aggro" )
 	bool IsAlive() const;
 
-	UFUNCTION( BlueprintCallable, BlueprintNativeEvent, Category = "Aggro" )
+	UFUNCTION( BlueprintCallable, BlueprintNativeEvent, Category = "FactoryGame|AI|Aggro" )
 	FVector GetAttackLocation() const;
 
 

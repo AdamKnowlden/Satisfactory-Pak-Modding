@@ -1,6 +1,9 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Array.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "GameFramework/Actor.h"
 #include "FGEquipment.h"
@@ -67,6 +70,12 @@ public:
 	UFUNCTION( BlueprintNativeEvent, Category = "Attachment" )
 	void PlayUseEffect( FVector useLocation );
 
+	/** Get the arms animation to play on the player */
+	FORCEINLINE EArmEquipment GetArmsAnimation() const{ return mArmAnimation; }
+
+	/** Get the back animation to play on the player */
+	FORCEINLINE EBackEquipment GetBackAnimation() const{ return mBackAnimation; }
+
 protected:
 	/** @return character this is attached to; nullptr if not attached. */
 	UFUNCTION( BlueprintPure, Category = "Equipment|Attachment" )
@@ -98,6 +107,14 @@ protected:
 	/** If this equipment should attach to a socket, this is the socket. */
 	UPROPERTY( EditDefaultsOnly, Category = "Attachment" )
 	FName mAttachSocket;
+
+	/** Arms animation this should play on the when the equipment is equipped (only used if mEquipmentSlot == ES_ARMS) */
+	UPROPERTY( EditDefaultsOnly, Category = "Equipment|Animation" )
+	EArmEquipment mArmAnimation;
+
+	/** Arms animation this should play on the when the equipment is equipped (only used if mEquipmentSlot == ES_BACK) */
+	UPROPERTY( EditDefaultsOnly, Category = "Equipment|Animation" )
+	EBackEquipment mBackAnimation;
 
 	/** If this attachment is attached */
 	bool mIsAttached;

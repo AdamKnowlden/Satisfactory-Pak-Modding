@@ -1,6 +1,11 @@
 // Copyright 2016-2019 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Engine/World.h"
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "CoreMinimal.h"
 #include "FGSubsystem.h"
@@ -52,10 +57,6 @@ public:
 	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Recipe" )
 	void GetAvailableRecipesForProducer( TSubclassOf< UObject > forProducer, TArray< TSubclassOf< UFGRecipe > >& out_recipes );
 
-	/** Gets the available recipes for the given producer class class and game phase, may not be null. */
-	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Recipe", meta = ( DeprecatedFunction, DeprecationMessage = "This functions have some problems with parallel unlock paths (i.e. caterium), talk to G2." ) )
-	void GetAvailableRecipesForProducerAndPhase( TSubclassOf< UObject > forProducer, EGamePhase gamePhase, TArray< TSubclassOf< UFGRecipe > >& out_recipes );
-
 	/** Is the past recipe available? */
 	UFUNCTION( BlueprintPure, Category = "FactoryGame|Recipe" )
 	bool IsRecipeAvailable( TSubclassOf< UFGRecipe > recipeClass );
@@ -72,9 +73,6 @@ public:
 	void Debug_DumpStateToLog() const;
 
 private:
-	/** Filters recipes for a given game phase. @see GetAvailableRecipesForProducerAndPhase for the reason to why this is deprecated and should not be used. */
-	void FilterRecipesByGamePhase_DEPRECATED( const TArray< TSubclassOf< UFGRecipe > >& inRecipes, EGamePhase gamePhase, TArray< TSubclassOf< UFGRecipe > >& out_recipes );
-
 	/** Filters recipes for a given producer. */
 	void FilterRecipesByProducer( const TArray< TSubclassOf< UFGRecipe > >& inRecipes, TSubclassOf< UObject > forProducer, TArray< TSubclassOf< UFGRecipe > >& out_recipes );
 

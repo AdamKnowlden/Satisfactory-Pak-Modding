@@ -1,6 +1,6 @@
 #pragma once
-
 #include "SubclassOf.h"
+
 #include "ItemDrop.generated.h"
 
 /** */

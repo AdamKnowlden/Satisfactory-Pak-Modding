@@ -1,9 +1,11 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Engine/StaticMesh.h"
+#include "UObject/Class.h"
 
-#include "Hologram/FGBuildableHologram.h"
-#include "Buildables/FGBuildableFactoryBuilding.h"
+#include "FGBuildableHologram.h"
+#include "../Buildables/FGBuildableFactoryBuilding.h"
 #include "FGFactoryBuildingHologram.generated.h"
 
 

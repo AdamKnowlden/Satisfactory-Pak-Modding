@@ -1,6 +1,6 @@
 #pragma once
-
 #include "UObject/Interface.h"
+#include "Text.h"
 #include "TextProperty.h"
 #include "FGActorRepresentationInterface.generated.h"
 
@@ -11,7 +11,9 @@
 UINTERFACE( Blueprintable )
 class UFGActorRepresentationInterface : public UInterface
 {
-	GENERATED_BODY()
+	
+ GENERATED_BODY()
+	UFGActorRepresentationInterface(const class FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {} 
 };
 
 /**

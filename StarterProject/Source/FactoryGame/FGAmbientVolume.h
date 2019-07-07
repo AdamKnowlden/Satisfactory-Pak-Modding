@@ -1,4 +1,7 @@
 #pragma once
+#include "GameFramework/Actor.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "UndefinedBool.h"
 #include "GameFramework/Volume.h"

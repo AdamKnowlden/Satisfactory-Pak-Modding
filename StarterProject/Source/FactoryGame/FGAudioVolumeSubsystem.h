@@ -1,4 +1,6 @@
 #pragma once
+#include "Engine/World.h"
+#include "UObject/Class.h"
 
 #include "FGSubsystem.h"
 #include "FGAudioVolumeSubsystem.generated.h"

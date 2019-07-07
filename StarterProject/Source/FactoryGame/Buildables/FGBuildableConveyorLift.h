@@ -1,6 +1,10 @@
 // Copyright 2016-2019 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Engine/StaticMesh.h"
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "UObject/Class.h"
 
 #include "CoreMinimal.h"
 #include "FGBuildableConveyorBase.h"
@@ -37,7 +41,7 @@ private:
 		MeshConstructor meshConstructor );
 
 	static FBoxCenterAndExtent FitClearance(
-		const FTransform& endTransform,
+		float transformZ,
 		float stepHeight,
 		const FVector2D& extend2D,
 		const FVector& extentBias = FVector::ZeroVector );
@@ -79,7 +83,12 @@ private:
 	 * If the input and output is reversed so the input is at the top, the reverse flag is set.
 	 * From this the mesh and connection transform is calculated.
 	 */
-	UPROPERTY( SaveGame, Replicated )
+
+
+	UFUNCTION()
+	void OnRep_TopTransform();
+
+	UPROPERTY( SaveGame, ReplicatedUsing= OnRep_TopTransform )
 	FTransform mTopTransform;
 	UPROPERTY( SaveGame, Replicated )
 	bool mIsReversed;

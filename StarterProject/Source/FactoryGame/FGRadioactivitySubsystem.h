@@ -1,6 +1,11 @@
 // Copyright 2016-2018 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Engine/World.h"
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "FGSubsystem.h"
 #include "ItemAmount.h"
@@ -115,6 +120,9 @@ public:
 	/** Remove all emitters and free the memory allocations. */
 	void RemoveEmitters( UObject* owner );
 
+	/** Calculates the radiation intensity at a given distance */
+	static float calculateIntensity( int32 itemAmount, float itemDecay, float distance, float radiationFalloffByDistance );
+
 private:
 	FRadioactiveSource& FindOrAddSource( UObject* owner );
 	FRadioactiveSource* FindSource( UObject* owner );
@@ -123,19 +131,15 @@ private:
 
 private:
 	/** Radiation levels lower than this are ignored. (A good number is around 0.0001) */
-	UPROPERTY( EditDefaultsOnly, Category = "Radiation", meta = ( ClampMin = 0, ClampMax = 10, UIMin = 0, UIMax = 10 ) )
 	float mMinRadiationThreshold;
 
 	/** How much radiation falls off during distance. (A good number is around 0.08) */
-	UPROPERTY( EditDefaultsOnly, Category = "Radiation", meta = ( ClampMin = 0, ClampMax = 1, UIMin = 0, UIMax = 1 ) )
 	float mRadiationFalloffByDistance;
 
-	/** The closest we can get to any radiation source [centimeters]. This can greatly limit the radiation received from items in the players inventory.. */
-	UPROPERTY( EditDefaultsOnly, Category = "Radiation", meta = ( ClampMin = 1, ClampMax = 100, UIMin = 1, UIMax = 100 ) )
+	/** The closest we can get to any radiation source. This can greatly limit the radiation received from items in the players inventory.. */
 	float mMinDistanceToSource;
 
 	/** The type of damage radiation deals. */
-	UPROPERTY( EditDefaultsOnly, Category = "Radiation" )
 	TSubclassOf< class UFGDamageType > mRadiationDamageType;
 
 	//@todooptimize This can be optimized with an array if profiler says anything.
@@ -150,4 +154,7 @@ private:
 	/** All actors cached locations and exposures to radiation, this becomes invalid when a pawn is added/removed. */
 	TArray< FVector > mCachedLocations;
 	TArray< float > mCachedExposures;
+
+	/** The max accumulated intensity that can be registered from radioactive emitters */
+	float mMaxIntensity;
 };

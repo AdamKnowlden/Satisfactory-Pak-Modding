@@ -4,12 +4,13 @@
 * Base VehicleSim for the 6W PhysX vehicle class
 */
 #pragma once
+#include "Array.h"
+#include "UObject/Class.h"
 #include "WheeledVehicleMovementComponent.h"
 #include "Curves/CurveFloat.h"
 #include "PhysicsPublic.h"
 #include "PhysXPublic.h"
 #include "FGWheeledVehicle.h"
-#include "UObject/Interface.h"
 #include "FGWheeledVehicleMovementComponent6W.generated.h"
 
 
@@ -142,7 +143,9 @@ struct FVehicleTransmissionData6W
 UCLASS(meta = (BlueprintSpawnableComponent))
 class UFGWheeledVehicleMovementComponent6W : public UWheeledVehicleMovementComponent
 {
-	GENERATED_BODY()
+	// MODDING EDIT
+	GENERATED_BODY() 
+	UFGWheeledVehicleMovementComponent6W(const class FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {}
 
 	/** Engine */
 	UPROPERTY(EditAnywhere, Category = MechanicalSetup)

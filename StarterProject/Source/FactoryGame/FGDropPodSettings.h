@@ -1,10 +1,13 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Engine/World.h"
+#include "Array.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "ItemDrop.h"
 #include "FGSettings.h"
-#include "SubclassOf.h"
 #include "FGDropPodSettings.generated.h"
 
 /** Describes a package of items you can get in a drop. */

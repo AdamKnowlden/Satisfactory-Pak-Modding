@@ -1,9 +1,12 @@
 // Copyright 2016-2018 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Array.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "CoreMinimal.h"
-#include "UI/Message/FGMessageBase.h"
+#include "FGMessageBase.h"
 #include "FGAudioMessage.generated.h"
 
 DECLARE_DYNAMIC_DELEGATE( FAudioMessageConcludedDelegate );

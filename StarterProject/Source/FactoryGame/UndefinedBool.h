@@ -1,4 +1,5 @@
 #pragma once
+#include "UObject/Class.h"
 
 #include "CoreMinimal.h"
 #include "UObject/ObjectMacros.h"

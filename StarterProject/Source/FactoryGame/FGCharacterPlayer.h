@@ -1,5 +1,10 @@
 // Copyright 1998-2016 Epic Games, Inc. All Rights Reserved.
 #pragma once
+#include "Engine/World.h"
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 #include "FGCharacterBase.h"
 #include "AI/FGAggroTargetInterface.h"
 #include "FGInventoryComponent.h"
@@ -12,9 +17,9 @@
 #include "FGCharacterPlayer.generated.h"
 
 // Callbacks used by the replication graph to build dependency lists
-DECLARE_MULTICAST_DELEGATE_TwoParams( FOnPersistentEquipmentSpawned, class AFGCharacterPlayer*, class AFGEquipment* );
-DECLARE_MULTICAST_DELEGATE_ThreeParams( FOnEquipmentEquipped, class AFGCharacterPlayer*, class AFGEquipment*, class AFGEquipmentAttachment* );
-DECLARE_MULTICAST_DELEGATE_ThreeParams( FOnEquipmentUnequipped, class AFGCharacterPlayer*, class AFGEquipment*, class AFGEquipmentAttachment* );
+DECLARE_MULTICAST_DELEGATE_TwoParams( FOnPersistentEquipmentSpawned, class AFGCharacterPlayer*, class IFGReplicationDependencyActorInterface* );
+DECLARE_MULTICAST_DELEGATE_TwoParams( FOnEquipmentEquipped, class AFGCharacterPlayer*, class AFGEquipment* );
+DECLARE_MULTICAST_DELEGATE_TwoParams( FOnEquipmentUnequipped, class AFGCharacterPlayer*, class AFGEquipment* );
 DECLARE_MULTICAST_DELEGATE_TwoParams( FOnFoliagePickupSpawned, class AFGCharacterPlayer*, class AFGFoliagePickup* );
 
 UENUM( BlueprintType )
@@ -135,7 +140,7 @@ public:
 	// End IFGUseableInterface
 
 	// Begin IFGRadiationInterface
-	virtual void ReceiveRadiation_Implementation( float amount, float duration, TSubclassOf< class UFGDamageType > damageType );
+	virtual void ReceiveRadiation_Implementation( float amount, float duration, FVector direction, TSubclassOf< class UFGDamageType > damageType );
 	// End IFGRadiationInterface
 
 	// Begin IFGAggroTargetInterface
@@ -403,6 +408,13 @@ public:
 	/** Name of the inventory component for the back */
 	static const FName BackInvComponentName;
 
+	/** Adds or removes an amount of radiation */
+	UFUNCTION( BlueprintCallable, Category = "Radiation" )
+	void AddRadiationImmunity( float toAdd );
+
+	/** Sets an amount of radiation */
+	UFUNCTION( BlueprintCallable, Category = "Radiation" )
+	void SetRadiationImmunity( float newImmunity );
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent( class UInputComponent* InputComponent ) override;
@@ -533,25 +545,35 @@ protected:
 	UFUNCTION( BlueprintImplementableEvent, Category = "Radiation" )
 	void OnReceiveRadiationStart();
 
-	/** Called when we are receiving radiation. */
+	/** Called when we have updated radiation intensity. */
 	UFUNCTION( BlueprintImplementableEvent, Category = "Radiation" )
-	void OnReceiveRadiationTick( float amount, float duration, TSubclassOf< class UFGDamageType > damageType );
+	void OnRadiationIntensityUpdated( float radiationIntensity, float radiationImmunity );
 
 	/** Called when we stop receiving radiation. */
 	UFUNCTION( BlueprintImplementableEvent, Category = "Radiation" )
 	void OnReceiveRadiationStop();
 
+	UFUNCTION()
+	void StartReceivingRadiation();
+
+	UFUNCTION()
+	void StopReceivingRadiation();
+
 	/** Called when we respawn but didn't get a death crate, so we can find our last death location. */
 	UFUNCTION( BlueprintImplementableEvent, Category = "Death" )
 	void OnSpawnDeathMarker();
 
-	/** Replication functions for handling radiation effects on client */
-	UFUNCTION( Client, Reliable, Category = "Radiation" )
-	void Client_OnReceiveRadiationStart();
+	/** Returns accumulated normalized radiation intensity at the the players location **/
+	UFUNCTION( BlueprintPure, Category = "Radiation" )
+	FORCEINLINE float GetRadiationIntensity() const { return mRadiationIntensity; }
 
-	/** Replication functions for handling radiation effects on client */
-	UFUNCTION( Client, Reliable, Category = "Radiation" )
-	void Client_OnReceiveRadiationStop();
+	/** Returns accumulated radioation immunity **/
+	UFUNCTION( BlueprintPure, Category = "Radiation" )
+	FORCEINLINE float GetRadiationImmunity() const { return mRadiationImmunity; }
+
+	/** Returns the angle from the players view to the accumulated radiation damage **/
+	UFUNCTION( BlueprintPure, Category = "Radiation" )
+	FORCEINLINE float GetRadiationDamageAngle() const { return mRadiationDamageAngle; }
 
 	/** Start the pending removal of the character */
 	virtual void TornOff() override;
@@ -601,6 +623,14 @@ private:
 
 	void NotifyGameStatePlayerAdded();
 
+	UFGGameUI* GetGameUI();
+
+	/** Update the UI with status if we are in radioactive zone or not*/
+	void UpdateGameUIRadiationStatus();
+
+	/** Update the UI with radiation intensity*/
+	void UpdateGameUIRadiationIntensity();
+
 	/** Server function that are called from public clients of the same name */
 	UFUNCTION( Reliable, Server, WithValidation )
 	void Server_EquipEquipment( AFGEquipment* newEquipment );
@@ -625,6 +655,10 @@ private:
 	void OnRep_DrivenVehicle();
 	UFUNCTION()
 	void OnRep_PickupCounter();
+	UFUNCTION()
+	void OnRep_InRadioactiveZone();
+	UFUNCTION()
+	void OnRep_RadiationIntensity();
 
 public:
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
@@ -809,13 +843,6 @@ private:
 	/** Revive timer handle, duh. */
 	FTimerHandle mReviveTimerHandle;
 
-	/** How much damage to take from radiation. */
-	UPROPERTY( EditDefaultsOnly, Category = "Damage" )
-	float mMaxDPSFromRadiation;
-
-	/** Timer that keeps track of our exposure to radiation. */
-	FTimerHandle mRadiationTimerHandle;
-
 	/** Indicates if the player is sprinting and wants to use the sprint bobbing */
 	bool mWantsSprintBobbing;
 
@@ -856,4 +883,35 @@ private:
 
 	float mHealthGenerationTimer;
 	float mLastDamageTakenTime;
+
+	/** The minimum damage interval ( 0.2 = every 5 second, 10.0 = 10 times per second ) */
+	float mRadiationMinDamageInterval;
+
+	/** The maximum damage interval ( 0.2 = every 5 second, 10.0 = 10 times per second ) */
+	float mRadiationMaxDamageInterval;
+
+	/** How much damage we should apply during each damage event. Once per interval */
+	float mRadiationDamagePerInterval;
+
+	/** Counter to know when we should take damage from radiation" */
+	float mRadiationCounter;
+
+	/** Timer that keeps track of our exposure to radiation. */
+	FTimerHandle mRadiationTimerHandle;
+
+	/** The accumulated normalized radiation intensity of the players current location */
+	UPROPERTY( ReplicatedUsing=OnRep_RadiationIntensity )
+	float mRadiationIntensity;
+
+	/** The angle from the players view to the accumulated radiation damage **/
+	UPROPERTY( Replicated )
+	float mRadiationDamageAngle;
+
+	/** How much immunity do we have for radiation */
+	UPROPERTY( Replicated )
+	float mRadiationImmunity;
+	
+	/** Are we in a radioactive zone */
+	UPROPERTY( ReplicatedUsing=OnRep_InRadioActiveZone )
+	bool mInRadioactiveZone;
 };

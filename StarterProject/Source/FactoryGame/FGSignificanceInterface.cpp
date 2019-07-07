@@ -2,16 +2,5 @@
 
 #include "FGSignificanceInterface.h"
 
-//void IFGSignificanceInterface::LostSignificance()
-//{
-//}
-
-float IFGSignificanceInterface::GetSignificanceBias()
-{
-	return 0.0f;
-}
-
-float IFGSignificanceInterface::GetSignificanceRange()
-{
-	return 0.0f;
-}
+float IFGSignificanceInterface::GetSignificanceBias(){ return float(); }
+float IFGSignificanceInterface::GetSignificanceRange(){ return float(); }

@@ -6,12 +6,12 @@ float FVehicleEngineData6W::FindPeakTorque() const{ return float(); }
 #if WITH_EDITOR
 void UFGWheeledVehicleMovementComponent6W::PostEditChangeProperty( FPropertyChangedEvent& PropertyChangedEvent){ }
 #endif 
-void UFGWheeledVehicleMovementComponent6W::Serialize(FArchive& ar){ Super::Serialize(ar); }
+void UFGWheeledVehicleMovementComponent6W::Serialize(FArchive & Ar){ Super::Serialize(Ar); }
 void UFGWheeledVehicleMovementComponent6W::ComputeConstants(){ }
 void UFGWheeledVehicleMovementComponent6W::GenerateTireForces( UVehicleWheel* Wheel, const FTireShaderInput& Input, FTireShaderOutput& Output){ }
 void UFGWheeledVehicleMovementComponent6W::SetupWheelMassProperties_AssumesLocked(const uint32 NumWheels, physx::PxVehicleWheelsSimData* PWheelsSimData, physx::PxRigidBody* PVehicleActor){ }
 void UFGWheeledVehicleMovementComponent6W::SetupWheels(physx::PxVehicleWheelsSimData* PWheelsSimData){ }
-void UFGWheeledVehicleMovementComponent6W::PreTick( float DeltaTime ){ }
+void UFGWheeledVehicleMovementComponent6W::PreTick( float DeltaTime){ }
 void UFGWheeledVehicleMovementComponent6W::SetupVehicleShapes(){ }
 void UFGWheeledVehicleMovementComponent6W::SetupVehicleDrive(physx::PxVehicleWheelsSimData* PWheelsSimData){ }
 void UFGWheeledVehicleMovementComponent6W::UpdateSimulation(float DeltaTime){ }

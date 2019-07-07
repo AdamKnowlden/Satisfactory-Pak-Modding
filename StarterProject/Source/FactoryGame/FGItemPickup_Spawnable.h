@@ -1,4 +1,10 @@
 #pragma once
+#include "Engine/StaticMesh.h"
+#include "Engine/World.h"
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "FGItemPickup.h"
 #include "FGItemPickup_Spawnable.generated.h"
@@ -28,6 +34,16 @@ public:
 	 * @copydoc AFGItemPickup_Spawnable::CreateItemDrop
 	 */
 	static class AFGItemPickup_Spawnable* CreateItemDrop( class UWorld* world, const FInventoryStack& item, FVector spawnLocation, FRotator spawnRotation, TSubclassOf<class AFGItemPickup_Spawnable> itemDropClass = nullptr );
+
+	/**
+	*will drop item at location if there are no stack fonud on location that have enough space available
+	*/
+	static class AFGItemPickup_Spawnable* AddItemToWorldStackAtLocation( class UWorld* world, const FInventoryStack& item, FVector spawnLocation, FRotator spawnRotation, TSubclassOf<class AFGItemPickup_Spawnable> itemDropClass = nullptr );
+	UFUNCTION( BlueprintCallable, Category = "ItemDrop", meta = ( DefaultToSelf = "worldContext" ) )
+	static class AFGItemPickup_Spawnable* AddItemToWorldStackAtLocation( class UObject* worldContext, const FInventoryStack& item, FVector spawnLocation, FRotator spawnRotation, TSubclassOf<class AFGItemPickup_Spawnable> itemDropClass = nullptr )
+	{
+		return AddItemToWorldStackAtLocation( worldContext->GetWorld(), item, spawnLocation, spawnRotation, itemDropClass );
+	}
 
 	/**
 	 * @copydoc AFGItemPickup_Spawnable::CreateItemDropsInCylinder
@@ -101,6 +117,20 @@ public:
 	{
 		FindGroundLocationAndRotation( worldContext->GetWorld(), fromLocation, actorsToIgnore, out_location, out_rotation );
 	}
+
+	/**
+	* Finds a suitable drop location in front of an actor, taking into account roofs, walls and such.
+	*
+	* @param world - the world we try to find the ground in
+	* @param fromLocation - the location we want to try to find the ground above/below
+	* @param actorsToIgnore - the actors we want to ignore when trying to find the ground
+	* @param out_location - location to put the item on the ground
+	* @param out_rotation - rotation to put the item on the ground
+	*
+	* @return a valid item drop if everything went well
+	*/
+	UFUNCTION( BlueprintCallable, Category = "ItemDrop", meta = ( DefaultToSelf = "worldContext" ) )
+	static void FindGroundLocationInfrontOfActor( const AActor* sourceActor, float offsetLength, const FInventoryStack& item, FVector& out_location, FRotator& out_rotation );
 
 	/** Place to play spawn effect */
 	UFUNCTION( BlueprintImplementableEvent, Category = "ItemDrop" )

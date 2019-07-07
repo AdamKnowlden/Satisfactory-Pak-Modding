@@ -1,4 +1,6 @@
 #pragma once
+#include "GameFramework/Actor.h"
+#include "SubclassOf.h"
 
 
 DECLARE_DELEGATE_RetVal_ThreeParams( class USceneComponent*, FComponentDuplicator, class USceneComponent*, class UActorComponent*, const FName& );

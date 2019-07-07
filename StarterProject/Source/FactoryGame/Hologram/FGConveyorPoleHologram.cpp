@@ -3,4 +3,4 @@
 #include "FGConveyorPoleHologram.h"
 
 void AFGConveyorPoleHologram::BeginPlay(){ }
-void AFGConveyorPoleHologram::SnapToConnection( UFGFactoryConnectionComponent* connection,  AFGConveyorBeltHologram* parentConveyor ){ }
+void AFGConveyorPoleHologram::SnapToConnection( UFGFactoryConnectionComponent* connection,  AFGConveyorBeltHologram* parentConveyor){ }

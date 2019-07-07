@@ -1,4 +1,6 @@
 #pragma once
+#include "UnrealString.h"
+#include "UObject/Class.h"
 
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "FGVersionFunctionLibrary.generated.h"

@@ -1,4 +1,7 @@
 #pragma once
+#include "Engine/StaticMesh.h"
+#include "Array.h"
+#include "UObject/Class.h"
 //<CSS>
 // Copyright 2016-2018 Coffee Stain Studios. All Rights Reserved.
 
@@ -32,6 +35,8 @@ public:
 	UFGProductionIndicatorInstanceManager();
 
 
+	virtual void OnUnregister() override;
+	virtual void OnRegister() override;
 
 	void ClearInstances();
 

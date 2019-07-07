@@ -1,4 +1,7 @@
 #pragma once
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "UObject/Class.h"
 
 #include "FGDriveablePawn.h"
 #include "FGPassengerSeat.generated.h"

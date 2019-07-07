@@ -3,8 +3,8 @@
 #include "FGBuildDescriptor.h"
 
 #if WITH_EDITOR
-void UFGBuildDescriptor::PostEditChangeProperty(  FPropertyChangedEvent& propertyChangedEvent ){ }
+void UFGBuildDescriptor::PostEditChangeProperty(  FPropertyChangedEvent& propertyChangedEvent){ }
 #endif 
-TSubclassOf< class UFGBuildCategory > UFGBuildDescriptor::GetBuildCategory( TSubclassOf< UFGBuildDescriptor > inClass ){ return TSubclassOf<class UFGBuildCategory>(); }
-void UFGBuildDescriptor::GetSubCategories( TSubclassOf< UFGBuildDescriptor > inClass, UPARAM( ref ) TArray< TSubclassOf<  UFGBuildSubCategory > >& out_subCategories ){ }
-float UFGBuildDescriptor::GetBuildMenuPriority( TSubclassOf< UFGBuildDescriptor > inClass ){ return float(); }
+TSubclassOf< class UFGBuildCategory > UFGBuildDescriptor::GetBuildCategory( TSubclassOf< UFGBuildDescriptor > inClass){ return TSubclassOf<class UFGBuildCategory>(); }
+void UFGBuildDescriptor::GetSubCategories( TSubclassOf< UFGBuildDescriptor > inClass, UPARAM( ref ) TArray< TSubclassOf<  UFGBuildSubCategory > >& out_subCategories){ }
+float UFGBuildDescriptor::GetBuildMenuPriority( TSubclassOf< UFGBuildDescriptor > inClass){ return float(); }

@@ -1,5 +1,8 @@
 #pragma once
-
+#include "Engine/Scene.h"
+#include "Array.h"
+#include "UObject/Class.h"
+#include "Interfaces/Interface_PostProcessVolume.h"
 #include "Object.h"
 #include "FGSharedPostProcessSettings.generated.h"
 

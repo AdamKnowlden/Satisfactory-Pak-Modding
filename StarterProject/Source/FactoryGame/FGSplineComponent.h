@@ -1,6 +1,10 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Engine/StaticMesh.h"
+#include "Array.h"
+#include "Components/SplineMeshComponent.h"
+#include "UObject/Class.h"
 
 #include "Components/SplineComponent.h"
 #include "FGSplineComponent.generated.h"

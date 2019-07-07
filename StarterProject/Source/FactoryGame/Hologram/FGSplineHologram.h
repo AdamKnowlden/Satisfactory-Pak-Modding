@@ -1,10 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "UObject/Class.h"
 
-#include "Hologram/FGBuildableHologram.h"
+#include "FGBuildableHologram.h"
 #include "Components/SplineComponent.h"
-#include "FSplinePointData.h"
+#include "../FSplinePointData.h"
 #include "FGSplineHologram.generated.h"
 
 //@todo This is only used by the roads for now, use this for the conveyors/tracks as well.
@@ -37,25 +40,10 @@ protected:
 
 protected:
 	/** The spline component we're placing. */
-	UPROPERTY()
+	UPROPERTY( VisibleAnywhere, Category = "Spline" )
 	class USplineComponent* mSplineComponent;
 
 	/** This is the data needed to create the spline component (local space). */
 	UPROPERTY( ReplicatedUsing = OnRep_SplineData )
 	TArray< FSplinePointData > mSplineData;
-
-	/** What is the maximum length of the spline. */
-	UPROPERTY( EditDefaultsOnly, Category = "Spline" )
-	float mMaxLength;
-	/** What is the minimum length of the spline. */
-	UPROPERTY( EditDefaultsOnly, Category = "Spline" )
-	float mMinLength;
-
-	/** What is the minimum radius of an arc on this spline. */
-	UPROPERTY( EditDefaultsOnly, Category = "Spline" )
-	float mMinBendRadius;
-
-	/** What is the maximum incline of the spline (degrees). */
-	UPROPERTY( EditDefaultsOnly, Category = "Spline" )
-	float mMaxIncline;
 };

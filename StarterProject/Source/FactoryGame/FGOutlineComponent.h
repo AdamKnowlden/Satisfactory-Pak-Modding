@@ -1,6 +1,12 @@
 // Copyright 2016-2018 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Engine/StaticMesh.h"
+#include "Engine/World.h"
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "Components/SplineMeshComponent.h"
+#include "UObject/Class.h"
 
 #include "CoreMinimal.h"
 #include "Components/SceneComponent.h"

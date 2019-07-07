@@ -1,6 +1,7 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "UObject/Class.h"
 
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "Buildables/FGBuildableRailroadTrack.h"
@@ -21,7 +22,7 @@ public:
 	 */
 
 	/** Draw a railroad path. */
-	UFUNCTION( BlueprintCallable, Category = "Railroad|Debug" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Railroad|Debug" )
 	static void DrawDebugRailroadPathResult( const FRailroadTrackPosition& start, const FRailroadPathFindingResult& result, bool isPersistentLines = false );
 
 	/** Draw a railroad path. */
@@ -31,7 +32,7 @@ public:
 	static void DrawDebugTrack( AFGBuildableRailroadTrack* track, float startOffset, float endOffset, const FColor& color, bool isPersistentLines = false );
 
 	/** Draw a railroad position. */
-	UFUNCTION( BlueprintCallable, Category = "Railroad|Debug" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Railroad|Debug" )
 	static void DrawDebugTrackPosition( const FRailroadTrackPosition& position, const FColor& color, bool isPersistentLines = false );
 
 
@@ -40,17 +41,17 @@ public:
 	 */
 	
 	/** @return Is this a valid track position. */
-	UFUNCTION( BlueprintPure, Category = "Railroad|TrackPosition" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|TrackPosition" )
 	static bool IsValid( const struct FRailroadTrackPosition& position );
 
 	/**
 	 * The track segment this position is on.
 	 * @return Track if valid position; otherwise null.
 	 */
-	UFUNCTION( BlueprintPure, Category = "Railroad|TrackPosition" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|TrackPosition" )
 	static class AFGBuildableRailroadTrack* GetTrack( const struct FRailroadTrackPosition& position );
 
 	/** Get the world location and direction of this track position. Zero vectors if the track is not valid. */
-	UFUNCTION( BlueprintPure, Category = "Railroad|TrackPosition" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|TrackPosition" )
 	static void GetWorldLocationAndDirection( const struct FRailroadTrackPosition& position, FVector& out_location, FVector& out_direction );
 };

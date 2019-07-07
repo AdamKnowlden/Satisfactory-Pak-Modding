@@ -8,5 +8,5 @@ void AFGDamageOverTimeVolume::CheckForErrors(){ }
 AFGDamageOverTimeVolume::AFGDamageOverTimeVolume(){ }
 bool AFGDamageOverTimeVolume::EncompassesPoint( FVector point, float sphereRadius , float* out_distanceToPoint ){ return bool(); }
 FPostProcessVolumeProperties AFGDamageOverTimeVolume::GetProperties() const{ return FPostProcessVolumeProperties(); }
-void AFGDamageOverTimeVolume::PostUnregisterAllComponents( void ){ }
+void AFGDamageOverTimeVolume::PostUnregisterAllComponents( void){ }
 void AFGDamageOverTimeVolume::PostRegisterAllComponents(){ }

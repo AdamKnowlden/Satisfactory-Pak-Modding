@@ -1,6 +1,12 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Engine/World.h"
+#include "Array.h"
+#include "UnrealString.h"
+#include "GameFramework/Actor.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "FGSubsystem.h"
 #include "FGSaveInterface.h"
@@ -10,78 +16,7 @@
 #include "RailroadNavigation.h"
 #include "FGRailroadSubsystem.generated.h"
 
-/**
- * Constant data about the train.
- * Changes only when a trains composition is changed.
- */
-USTRUCT(BlueprintType)
-struct FTrainData
-{
-	GENERATED_BODY()
-public:
-	/** Mass off the train including payload. [kg] */
-	UPROPERTY( BlueprintReadOnly )
-	float Mass;
 
-	/** Length of the train between the first and last buffer. [cm] */
-	UPROPERTY( BlueprintReadOnly )
-	float Length;
-
-	/** How much the brakes decelerate the train. [cm/s^2] */
-	UPROPERTY( BlueprintReadOnly )
-	float BrakeDeceleration;
-};
-
-/**
- * Struct representing a train.
- */
-USTRUCT()
-struct FTrain
-{
-	GENERATED_BODY()
-public:
-	FTrain();
-	~FTrain();
-
-	/** Custom train serialization. */
-	friend FArchive& operator<<( FArchive& ar, FTrain& train );
-
-public:
-	/** The id used to identify this train. */
-	UPROPERTY()
-	int32 TrainID;
-
-	/** Train are a doubly linked list, use TTrainIterator to iterate over a train. */
-	UPROPERTY()
-	class AFGRailroadVehicle* FirstVehicle;
-	UPROPERTY()
-	class AFGRailroadVehicle* LastVehicle;
-
-	/** This is the master locomotives that sends its input (throttle/brake/etc) to all other locomotives in the train. */
-	UPROPERTY()
-	class AFGLocomotive* MultipleUnitMaster;
-
-	/** Is this train self driving */
-	bool IsSelfDrivingEnabled;
-
-	/** This trains time table. */
-	UPROPERTY()
-	class UFGRailroadTimeTable* TimeTable;
-
-	/** Constant data about this train such as length, mass etc. */
-	FTrainData TrainData;
-
-	/** Trains momentum. */
-	float Momentum;
-
-	/** Trains velocity. */
-	float Velocity;
-
-	/** Some values for debugging purposes. */
-	float Traction;
-	float Resistance;
-	float Braking;
-};
 
 /**
  * Struct representing a set of interconnected tracks.
@@ -98,14 +33,18 @@ public:
 	UPROPERTY()
 	TArray< class AFGBuildableRailroadTrack* > Tracks;
 
+	/** This is the third rail the locomotives and stations connect to. */
+	UPROPERTY()
+	class UFGPowerConnectionComponent* ThirdRail;
+
 	/** Do this track graph need to be rebuilt, e.g. tracks have been removed. */
-	UPROPERTY( NotReplicated )
 	uint8 NeedFullRebuild:1;
 
 	/** Has this track graph changed, tracks connected, rolling stock added or removed. */
-	UPROPERTY( NotReplicated )
 	uint8 HasChanged:1;
 };
+
+
 
 /**
  * Actor for handling the railroad network and the trains on it.
@@ -115,8 +54,16 @@ class FACTORYGAME_API AFGRailroadSubsystem : public AFGSubsystem, public IFGSave
 {
 	GENERATED_BODY()
 public:
-	/** Replication. */
+	AFGRailroadSubsystem();
+
+	// Begin AActor interface
 	virtual void GetLifetimeReplicatedProps( TArray< FLifetimeProperty >& OutLifetimeProps ) const override;
+	virtual void Serialize( FArchive& ar ) override;
+	virtual void BeginPlay() override;
+	virtual void EndPlay( const EEndPlayReason::Type endPlayReason ) override;
+	virtual void Tick( float dt ) override;
+	virtual void DisplayDebug( class UCanvas* canvas, const class FDebugDisplayInfo& debugDisplay, float& YL, float& YPos ) override;
+	// End AActor interface
 
 	// Begin IFGSaveInterface
 	virtual void PreSaveGame_Implementation( int32 saveVersion, int32 gameVersion ) override;
@@ -127,22 +74,12 @@ public:
 	virtual bool NeedTransform_Implementation() override;
 	virtual bool ShouldSave_Implementation() const override;
 	// End IFSaveInterface
-
-	// Begin AActor interface
-	virtual void Serialize( FArchive& ar ) override;
-	virtual void BeginPlay() override;
-	virtual void Tick( float dt ) override;
-	virtual void DisplayDebug( class UCanvas* canvas, const class FDebugDisplayInfo& debugDisplay, float& YL, float& YPos ) override;
-	// End AActor interface
-
-	/** Ctor */
-	AFGRailroadSubsystem();
-
+	
 	/** Get the railroad subsystem, this should always return something unless you call it really early. */
 	static AFGRailroadSubsystem* Get( UWorld* world );
 
 	/** Get the railroad subsystem from a world context, this should always return something unless you call it really early. */
-	UFUNCTION( BlueprintPure, Category = "Railroad", DisplayName = "GetRailroadSubsystem", Meta = ( DefaultToSelf = "worldContext" ) )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad", DisplayName = "GetRailroadSubsystem", Meta = ( DefaultToSelf = "worldContext" ) )
 	static AFGRailroadSubsystem* Get( UObject* worldContext );
 
 
@@ -152,20 +89,14 @@ public:
 	 */
 
 	/**
-	 * Spawn a new vehicle at the given location and register it as a train.
-	 * @param vehicleClass		Class to spawn.
-	 * @param trackPosition		Where on the track to spawn it, must be valid!
-	 * @param coupleTo			(optional) Couple the new vehicle to an existing one.
-	 * @return The spawned train; nullptr on failure.
+	 * Adds the railroad vehicle to the subsystem, and gives it a train if it does not have one already.
 	 */
-	class AFGRailroadVehicle* SpawnTrain( TSubclassOf< class AFGRailroadVehicle > vehicleClass,
-										  const struct FRailroadTrackPosition& trackPosition,
-										  class AFGRailroadVehicle* coupleTo );
+	void AddRailroadVehicle( AFGRailroadVehicle* vehicle );
 
 	/**
-	 * Destroy the given train, handles decoupling from other wagons as well.
+	 * Removes the railroad vehicle from it's train and the subsystem, handles decoupling.
 	 */
-	void DestroyTrain( class AFGRailroadVehicle* vehicle );
+	void RemoveRailroadVehicle( AFGRailroadVehicle* vehicle );
 
 	/**
 	 * Couples two trains together.
@@ -188,104 +119,58 @@ public:
 		return firstVehicleLength * 0.5f + secondVehicleLength * 0.5f;
 	}
 
-	/**
-	 * @return true if a train with ID exists; false otherwise, INDEX_NONE is always false.
-	 */
-	FORCEINLINE bool IsValidTrain( int32 trainID ) const { return mTrains.Contains( trainID ); }
+	/** Get all trains on the specified track. */
+	UFUNCTION( BlueprintCallable, BlueprintPure = false, Category = "FactoryGame|Railroad" )
+	void GetTrains( int32 trackID, TArray< class AFGTrain* >& out_trains ) const;
 
-	/**
-	 * Get the train data for the given train ID.
-	 * @return true on success; false if train does not exists.
-	 */
-	UFUNCTION( BlueprintCallable, Category = "Railroad" )
-	bool GetTrainData( int32 trainID, FTrainData& out_trainData );
-
-	/**
-	 * Get the vehicle order for the given train, first and last.
-	 * @param index		The trains ID, if invalid then the out pointers will be null.
-	 */
-	UFUNCTION( BlueprintCallable, Category = "Railroad" )
-	void GetTrainOrder( int32 trainID, class AFGRailroadVehicle*& out_firstVehicle, class AFGRailroadVehicle*& out_lastVehicle );
+	/** Get all trains. */
+	UFUNCTION( BlueprintCallable, BlueprintPure = false, Category = "FactoryGame|Railroad" )
+	void GetAllTrains( TArray< class AFGTrain* >& out_trains ) const;
 
 
 
 	/***************************************************************************************************
-	 * Functions to handle Self Driving and Train Controls
+	 * Functions to handle Self Driving.
 	 */
-
-	/**
-	 * Find the train table for the given train.
-	 */
-	UFUNCTION( BlueprintCallable, BlueprintPure = false, Category = "Railroad" )
-	class UFGRailroadTimeTable* FindTimeTable( int32 trainID ) const;
-
-	/**
-	 * Adds a time table to the train if it does not exist already.
-	 */
-	UFUNCTION( BlueprintCallable, Category = "Railroad" )
-	class UFGRailroadTimeTable* FindOrAddTimeTable( int32 trainID );
-
-	/**
-	 * Enable/disable the autopilot on a train, does nothing if invalid train id passed or enabled/disabled twice.
-	 */
-	void SetTrainSelfDrivingEnabled( int32 trainID, bool isEnabled );
-
-	/**
-	 * @return true if the given train has autopilot enabled; false if invalid train id passed.
-	 */
-	bool IsTrainSelfDrivingEnabled( int32 trainID ) const;
 
 	/**
 	 * Finds a path for the given locomotive to the given stop.
 	 *
 	 * @param locomotive The locomotive to find a path for, note that a locomotive can not reverse.
-	 * @param stop The stop the train should find a path to.
+	 * @param station The station the train should find a path to.
 	 *
 	 * @return Result of the pathfinding; Status code indicate if a path was found or not or if an error occured, e.g. bad params.
 	 */
-	UFUNCTION( BlueprintCallable, Category = "Railroad" )
-	FRailroadPathFindingResult FindPathSync( class AFGLocomotive* locomotive, class AFGBuildableRailroadStation* stop );
-
-	/**
-	 * @return The master locomotive in the train; nullptr if MU is disabled or if invalid train ID passed.
-	 */
-	class AFGLocomotive* GetTrainMultipleUnitMaster( int32 trainID ) const;
-
-	/**
-	 * Set the new master locomotive in the train.
-	 * @param trainID The trains ID, if invalid this function does nothing.
-	 * @param locomotive The new master or nullptr to disable MU.
-	 * @param if true the new master is forced; if false the new master will only be set if MU is disabled (current master is nullptr).
-	 * @return true a new master was set or forced; false if not set or invalid trainID.
-	 */
-	bool SetTrainMultipleUnitMaster( int32 trainID, class AFGLocomotive* locomotive, bool force );
-
-	/**
-	 * @return true if we can set the multiple unit master on locomotive without forcing; false if we cannot.
-	 */
-	bool CanSetTrainMultipleUnitMaster( int32 trainID, const class AFGLocomotive* locomotive ) const;
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Railroad" )
+	FRailroadPathFindingResult FindPathSync( class AFGLocomotive* locomotive, class AFGTrainStationIdentifier* station );
 
 
 
 	/***************************************************************************************************
-	 * Functions to handle Train Stops
+	 * Functions to handle Train Stations.
 	 */
 
-	/** Generates a new name to be used for train stops. */
-	FText GenerateTrainStopName() const;
+	/** Generates a new name for a train station. */
+	FText GenerateTrainStationName() const;
 
-	/** @return If the stop name is available; false if another stop with this name already exists. */
-	bool IsTrainStopNameAvailable( const FString& name ) const;
+	/** @return If the station name is available; false if another station with this name already exists. */
+	bool IsTrainStationNameAvailable( const FString& name ) const;
 
-	/** Add a new train stop, call this when a stop is built, makes it available for use in the time tables. */
-	void AddTrainStop( class AFGBuildableRailroadStation* stop );
+	/** Add, update and remove train stations for use in time tables. */
+	void AddTrainStation( class AFGBuildableRailroadStation* station );
+	void UpdateTrainStation( class AFGBuildableRailroadStation* station );
+	void RemoveTrainStation( class AFGBuildableRailroadStation* station );
 
-	/** Remove a train stop, call this when a stop is dismantled. */
-	void RemoveTrainStop( class AFGBuildableRailroadStation* stop );
+	/** Get all stations for the specified track. */
+	UFUNCTION( BlueprintCallable, BlueprintPure = false, Category = "FactoryGame|Railroad" )
+	void GetTrainStations( int32 trackID, TArray< class AFGTrainStationIdentifier* >& out_stations ) const;
 
-	/** Get all available train stops for use in a time table. */
-	UFUNCTION( BlueprintCallable, BlueprintPure = false, Category = "Railroad" )
-	void GetTrainStops( TArray< class AFGBuildableRailroadStation* >& out_stops ) const;
+	/** Get all stations. */
+	UFUNCTION( BlueprintCallable, BlueprintPure = false, Category = "FactoryGame|Railroad" )
+	void GetAllTrainStations( TArray< class AFGTrainStationIdentifier* >& out_stations ) const;
+
+	/** Called to externally update a platforms power connection to use its tracks third rail */
+	void UpdateCargoPlatformPowerConnection( int32 trackGraphID, class AFGBuildableTrainPlatformCargo* cargoPlatform );
 
 
 
@@ -319,8 +204,7 @@ public:
 	class TTrainIterator
 	{
 	public:
-		/** Ctor */
-		TTrainIterator( class AFGRailroadVehicle* vehicle ) :
+		TTrainIterator( AFGRailroadVehicle* vehicle ) :
 			mCurrentVehicle( vehicle )
 		{
 		}
@@ -368,19 +252,18 @@ public:
 		}
 
 		/** Vehicle access */
-		FORCEINLINE class AFGRailroadVehicle* operator*() const
+		FORCEINLINE AFGRailroadVehicle* operator*() const
 		{
 			return mCurrentVehicle;
 		}
-		FORCEINLINE class AFGRailroadVehicle* operator->() const
+		FORCEINLINE AFGRailroadVehicle* operator->() const
 		{
 			return mCurrentVehicle;
 		}
 
 	private:
-		/** Current vehicle */
 		UPROPERTY()
-		class AFGRailroadVehicle* mCurrentVehicle;
+		AFGRailroadVehicle* mCurrentVehicle;
 	};
 
 	/**
@@ -389,8 +272,7 @@ public:
 	class TConstTrainIterator
 	{
 	public:
-		/** Ctor */
-		TConstTrainIterator( const class AFGRailroadVehicle* vehicle ) :
+		TConstTrainIterator( const AFGRailroadVehicle* vehicle ) :
 			mCurrentVehicle( vehicle )
 		{
 		}
@@ -438,38 +320,34 @@ public:
 		}
 
 		/** Vehicle access */
-		FORCEINLINE const class AFGRailroadVehicle* operator*() const
+		FORCEINLINE const AFGRailroadVehicle* operator*() const
 		{
 			return mCurrentVehicle;
 		}
-		FORCEINLINE const class AFGRailroadVehicle* operator->() const
+		FORCEINLINE const AFGRailroadVehicle* operator->() const
 		{
 			return mCurrentVehicle;
 		}
 
 	private:
-		/** Current vehicle */
 		UPROPERTY()
-		const class AFGRailroadVehicle* mCurrentVehicle;
+		const AFGRailroadVehicle* mCurrentVehicle;
 	};
 
 private:
-	void TickTrains( float dt );
 	void TickTrackGraphs( float dt );
+
+	/** Call when updating a stations hidden power connection to update all platforms attached to that station */
+	void RefreshPlatformPowerConnectionsFromStation( class AFGBuildableRailroadStation* station, class UFGCircuitConnectionComponent* connectTo );
 
 	/** Initializes all auto generated station names. */
 	void InitializeStationNames();
 
-	/** Spawns a train, does not register it or make any connections. */
-	class AFGRailroadVehicle* SpawnTrainInternal( TSubclassOf< class AFGRailroadVehicle > vehicleClass, const struct FRailroadTrackPosition& trackPosition );
+	/** Creates a new train with vehicle as the first vehicle. */
+	class AFGTrain* CreateTrain( AFGRailroadVehicle* vehicle ) const;
 
-	/**
-	 * Registers a new train and it's first vehicle. More can be coupled on later.
-	 */
-	int32 RegisterTrain( class AFGRailroadVehicle* vehicle );
-
-	/** Get a new UID for a train. */
-	int32 GenerateUniqueTrainID();
+	/** Reconnects all vehicles in this train to the third rail. */
+	void ReconnectTrainToThirdRail( AFGTrain* train );
 
 	/**
 	 * Finds a path from one railroad position to another.
@@ -485,23 +363,14 @@ private:
 											const FRailroadTrackPosition& end,
 											TArray< FRailroadGraphAStarPathPoint >& out_pathPoints ) const;
 
-	/**
-	 * @todotrains FPhysScene callbacks
-	 *             PhysScene->OnPhysScenePreTick
-	 *             PhysScene->OnPhysSceneStep
-	 *             These should be called from the physics using the physics delta time, see FPhysXVehicleManager::PreTick and ::Update.
-	 */
-	//void PreTickPhysics( FPhysScene* PhysScene, uint32 SceneType, float DeltaTime );
-	//void UpdatePhysics( FPhysScene* PhysScene, uint32 SceneType, float DeltaTime );
+	/** The physics is driven by the physics scene. */
+	void PreTickPhysics( FPhysScene* physScene, uint32 sceneType, float dt );
+	void UpdatePhysics( FPhysScene* physScene, uint32 sceneType, float dt );
+
+	void UpdateSimulationData( class AFGTrain* train, struct FTrainSimulationData& simData );
 
 	/** Called when the vehicles in a train changes, i.e. rolling stock is (de)coupled. */
-	void OnTrainOrderChanged( int32 trainID );
-
-	/** Creates the sound component for the whole train, this is only needed on one vehicle in the train. */
-	class UFGRailroadVehicleSoundComponent* CreateSoundComponentFor( class AFGRailroadVehicle* vehicle );
-
-	/** Called when the multiple unit master is changed on a train. */
-	void OnMultipleUnitChanged( int32 trainID );
+	void OnTrainOrderChanged( class AFGTrain* trainID );
 
 	/** Merge two track graphs to one. */
 	void MergeTrackGraphs( int32 first, int32 second );
@@ -536,17 +405,11 @@ public:
 	TSubclassOf< class UFGRailroadVehicleSoundComponent > mVehicleSoundComponentClass;
 
 private:
+	FDelegateHandle OnPhysScenePreTickHandle;
+	FDelegateHandle OnPhysSceneStepHandle;
+
 	/** Counters for generating UIDs. */
-	int32 mTrainIDCounter;
 	int32 mTrackGraphIDCounter;
-
-	/** All the trains in the world! */
-	UPROPERTY()
-	TMap< int32, FTrain > mTrains;
-
-	/** All the train stops in the game. */
-	UPROPERTY( Replicated )
-	TArray< class AFGBuildableRailroadStation* > mTrainStops;
 
 	/** A random name is picked from here when placing a stop. */
 	UPROPERTY()
@@ -555,4 +418,15 @@ private:
 	/** All the train tracks in the world, separated by connectivity. */
 	UPROPERTY()
 	TMap< int32, FTrackGraph > mTrackGraphs;
+
+	/** If the subsystem needs to do a complete update. */
+	bool mHasTrackGraphsChanged;
+
+	/** All station identifiers in the world. */
+	UPROPERTY( SaveGame, Replicated )
+	TArray< class AFGTrainStationIdentifier* > mTrainStationIdentifiers;
+
+	/** All the trains in the world. */
+	UPROPERTY( SaveGame, Replicated )
+	TArray< class AFGTrain* > mTrains;
 };

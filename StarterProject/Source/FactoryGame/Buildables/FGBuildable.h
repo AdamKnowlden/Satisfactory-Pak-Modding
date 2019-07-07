@@ -1,18 +1,24 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "UObject/CoreNet.h"
+#include "Array.h"
+#include "UnrealString.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "GameFramework/Actor.h"
-#include "FGUseableInterface.h"
-#include "ItemAmount.h"
-#include "FGDismantleInterface.h"
-#include "FGBlueprintFunctionLibrary.h"
+#include "../FGUseableInterface.h"
+#include "../ItemAmount.h"
+#include "../FGDismantleInterface.h"
+#include "../FGBlueprintFunctionLibrary.h"
 #include "Animation/AnimInstance.h"
 #include "Engine/BlueprintGeneratedClass.h"
 #include "Engine/SCS_Node.h"
-#include "FGSaveInterface.h"
-#include "FactoryTick.h"
-#include "FGColorInterface.h"
+#include "../FGSaveInterface.h"
+#include "../FactoryTick.h"
+#include "../FGColorInterface.h"
+#include "../Replication/FGReplicationDetailActorOwnerInterface.h"
 #include "FGBuildable.generated.h"
 
 //@todonow These should CAPS_CASE according to the coding standard
@@ -23,8 +29,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE( FBuildableDismantledSignature );
 
 // Replication graph related delegates
 DECLARE_MULTICAST_DELEGATE_ThreeParams( FOnRegisteredPlayerChanged, class AFGBuildable*, class AFGCharacterPlayer* /* registered player */, bool /* bIsUseStateActive */ );
+DECLARE_MULTICAST_DELEGATE_TwoParams( FOnReplicationDetailActorStateChange, class IFGReplicationDetailActorOwnerInterface*, bool );
 
- 
 /**
  * Base for everything buildable, buildable things can have factory connections, power connections etc.
  *
@@ -99,9 +105,6 @@ public:
 
 	/** Enable/disable our primary actor tick, but don't touch our factory tick */
 	void EnablePrimaryTickFunctions( bool enable );
-
-	/** Register/unregister our factory tick function */
-	void RegisterFactoryTickFunction( bool shouldRegister );
 
 	/** Root of factory ticking hierarchy */
 	void TickFactory( float dt, ELevelTick TickType );
@@ -213,8 +216,19 @@ public:
 	/** Returns the cached bounds */
 	FORCEINLINE FBox GetCachedBounds() { return mCachedBounds; }
 
+	/** Returns list of players currently interacting with building. */
+	FORCEINLINE TArray< class AFGCharacterPlayer* > GetInteractingPlayers() const { return mInteractingPlayers; }
+
 	/** Only used for cheats. Hides/Unhides the actor, and makes sure the instanced meshes hide as well*/
 	void SetHiddenIngameAndHideInstancedMeshes( bool hide = false );
+
+	/** Helper function for getting buildable classes from recipes
+	*	@note Useful when generating child holograms based off their recipe
+	*/
+	static TSubclassOf< AFGBuildable > GetBuildableClassFromRecipe( TSubclassOf< class UFGRecipe > inRecipe );
+
+	/** Event on when buildable's replication detail actor changes state */
+	static FOnReplicationDetailActorStateChange OnBuildableReplicationDetailActorStateChange;
 
 protected:
 	/** Plays construction sound, override this event to play a custom sound. */
