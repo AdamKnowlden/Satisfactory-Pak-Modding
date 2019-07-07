@@ -1,6 +1,10 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Engine/World.h"
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "UObject/Class.h"
 
 #include "Tickable.h"
 #include "FGAggroTargetInterface.h"
@@ -45,33 +49,33 @@ public:
 	/**
 	 * Addes this aggro target as a global aggro target
 	 */
-	UFUNCTION(BlueprintCallable, Category="AI|AggroTargets")
+	UFUNCTION(BlueprintCallable, Category="FactoryGame|AI|Aggro")
 	static void AddToTargetableList( TScriptInterface<class IFGAggroTargetInterface> aggroTarget );
 
 	/**
 	* Removes this aggro target as a global aggro target
 	*/
-	UFUNCTION( BlueprintCallable, Category = "AI|AggroTargets" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|AI|Aggro" )
 	static void RemoveFromTargetableList( TScriptInterface<class IFGAggroTargetInterface> aggroTarget );
 
 	/** Get all available aggro targets */
-	UFUNCTION( BlueprintPure, Category="AI|AggroTargets")
+	UFUNCTION( BlueprintPure, Category="FactoryGame|AI|Aggro")
 	const TArray< class TScriptInterface< IFGAggroTargetInterface > >& GetAggroTargetList() const;
 
 	/** Removes all actors from the pardoned list */
-	UFUNCTION( BlueprintCallable, Category = "AI|AggroTargets" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|AI|Aggro" )
 	void ClearAllPardonedActors();
 
 	/** Give pardon to a actor */
-	UFUNCTION( BlueprintCallable, Category = "AI|AggroTargets" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|AI|Aggro" )
 	void PardonActor( AActor* inActor );
 
 	/** removes pardon from an actor */
-	UFUNCTION( BlueprintCallable, Category = "AI|AggroTargets" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|AI|Aggro" )
 	void UnpardonActor( AActor* inActor );
 
 	/** Is this actor pardoned from being targeted? */
-	UFUNCTION( BlueprintPure, Category = "AI|AggroTargets" ) 
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|AI|Aggro" ) 
 	bool IsActorPardoned( AActor* inActor );
 public:
 	/** Called whenever a aggro target is added */

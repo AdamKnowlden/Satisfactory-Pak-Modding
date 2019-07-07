@@ -1,6 +1,8 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Engine/StaticMesh.h"
+#include "UObject/Class.h"
 
 #include "FactoryGame.h"
 #include "FGColoredInstanceManager.h"
@@ -18,6 +20,8 @@ class FACTORYGAME_API UFGColoredInstanceMeshProxy : public UStaticMeshComponent
 public:
 	UFGColoredInstanceMeshProxy();
 
+	virtual void OnUnregister() override;
+	virtual void OnRegister() override;
 		
 	void SetColorSlot( uint8 colorSlotIndex );
 

@@ -3,6 +3,6 @@
 #include "FGBuildableFactoryBuilding.h"
 
 FFoundationSideSelectionFlags::FFoundationSideSelectionFlags(){ }
-FFoundationSideSelectionFlags::FFoundationSideSelectionFlags( bool defaults ){ }
-FFoundationSideSelectionFlags FFoundationSideSelectionFlags::RotateEdges( int32 steps ) const{ return FFoundationSideSelectionFlags(); }
+FFoundationSideSelectionFlags::FFoundationSideSelectionFlags( bool defaults){ }
+FFoundationSideSelectionFlags FFoundationSideSelectionFlags::RotateEdges( int32 steps) const{ return FFoundationSideSelectionFlags(); }
 AFGBuildableFactoryBuilding::AFGBuildableFactoryBuilding(){ }

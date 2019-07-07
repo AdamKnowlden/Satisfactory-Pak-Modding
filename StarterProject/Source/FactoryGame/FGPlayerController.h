@@ -1,4 +1,9 @@
 #pragma once
+#include "Array.h"
+#include "UnrealString.h"
+#include "GameFramework/Actor.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "FGPlayerControllerBase.h"
 #include "FGGameState.h"
@@ -41,6 +46,9 @@ public:
 	/** Get the RCO of the given class. */
 	UFUNCTION( BlueprintPure, Category = "Remote Call Object", meta = ( DeterminesOutputType = "inClass" ) )
 	class UFGRemoteCallObject* GetRemoteCallObjectOfClass( TSubclassOf< UFGRemoteCallObject > inClass );
+
+	UFUNCTION( BlueprintPure, Category = "Remote Call Object", meta = ( DeterminesOutputType = "inClass" ) )
+	class UFGRemoteCallObject* RegisterRemoteCallObjectClass( TSubclassOf< UFGRemoteCallObject > inClass );
 
 	/**
 	* Called on Server and Owning client when the character we controlled died
@@ -342,9 +350,7 @@ private:
 
 	static void testAndProcesAdaMessages( AFGPlayerController* owner, const FString &inMessage, AFGPlayerState* playerState, float serverTimeSeconds, APlayerState* PlayerState, AFGGameState* fgGameState );
 public:
-	/** These are the default Remote Call Objects for this PlayerController, should be put in config? */
-	UPROPERTY( Config )
-	TArray< FSoftClassPath > mDefaultRemoteCallObjectsClassNames;
+	
 
 	/** Indicates if this playercontroller should trigger sound volumes */
 	UPROPERTY( EditDefaultsOnly, Category = "Sound" )

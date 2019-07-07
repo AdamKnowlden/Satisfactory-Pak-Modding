@@ -1,6 +1,10 @@
 // Copyright 2016-2018 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
@@ -37,6 +41,7 @@ public:
 	UFGMaterialEffectComponent();
 
 	// Begin AActorComponent interface
+	virtual void OnUnregister() override;
 	virtual void Activate( bool reset ) override;
 	virtual void Deactivate() override;
 	virtual void TickComponent( float deltaTime, ELevelTick tickType, FActorComponentTickFunction* thisTickFunction) override;

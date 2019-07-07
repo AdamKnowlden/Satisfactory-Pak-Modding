@@ -5,8 +5,8 @@
 AFGConsumableEquipment::AFGConsumableEquipment(){ }
 bool AFGConsumableEquipment::ShouldSaveState() const{ return bool(); }
 void AFGConsumableEquipment::OnPrimaryFirePressed(){ }
-void AFGConsumableEquipment::GetConsumeable( TSubclassOf<  UFGConsumableDescriptor >& out_consumeable, int32& out_numConsumeable ) const{ }
+void AFGConsumableEquipment::GetConsumeable( TSubclassOf<  UFGConsumableDescriptor >& out_consumeable, int32& out_numConsumeable) const{ }
 void AFGConsumableEquipment::Server_PrimaryFire_Implementation(){ }
 bool AFGConsumableEquipment::Server_PrimaryFire_Validate(){ return bool(); }
-void AFGConsumableEquipment::PlayConsumeEffects_Implementation(  UFGConsumableDescriptor* consumable ){ }
+void AFGConsumableEquipment::PlayConsumeEffects_Implementation(  UFGConsumableDescriptor* consumable){ }
 void AFGConsumableEquipment::AddEquipmentActionBindings(){ }

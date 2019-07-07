@@ -1,4 +1,8 @@
 #pragma once
+#include "Engine/Level.h"
+#include "Engine/World.h"
+#include "Array.h"
+#include "UnrealString.h"
 
 #include "Templates/TypeHash.h"
 

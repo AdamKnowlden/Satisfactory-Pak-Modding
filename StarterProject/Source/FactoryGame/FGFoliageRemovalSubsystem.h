@@ -1,4 +1,11 @@
 #pragma once
+#include "Engine/StaticMesh.h"
+#include "Engine/Level.h"
+#include "Engine/World.h"
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "FGSubsystem.h"
 #include "FGSaveInterface.h"

@@ -1,4 +1,5 @@
 #pragma once
+#include "UnrealString.h"
 
 #include "CoreMinimal.h"
 #include "Misc/AutomationTest.h"

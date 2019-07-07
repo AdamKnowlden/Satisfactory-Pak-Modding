@@ -1,6 +1,10 @@
 // Copyright 2016-2018 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Engine/World.h"
+#include "Array.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "FGSubsystem.h"
 #include "FGSaveInterface.h"
@@ -20,7 +24,7 @@ enum EGamePhase
 	EGP_MidGame			= 1 UMETA( DisplayName = "Development Phase" ),
 	EGP_LateGame		= 2 UMETA( DisplayName = "Expansion Phase" ),
 	EGP_EndGame			= 3 UMETA( DisplayName = "Retention Phase" ),
-	EGP_LaunchTowTruck	= 4 UMETA( DisplayName = "Launch Tow Truck" ),
+	EGP_FoodCourt		= 4 UMETA( DisplayName = "Food Court" ),
 	EGP_Victory			= 5 UMETA( DisplayName = "Victory!" )
 };
 

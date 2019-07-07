@@ -1,6 +1,8 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "UnrealString.h"
+#include "UObject/Class.h"
 
 #include "Animation/AnimNotifies/AnimNotify.h"
 #include "FGAnimNotify_Attack.generated.h"

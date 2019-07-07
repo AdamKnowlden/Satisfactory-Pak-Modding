@@ -1,12 +1,20 @@
 // Copyright 1998-2016 Epic Games, Inc. All Rights Reserved.
 #pragma once
-
+#include "Engine/World.h"
+#include "Array.h"
+#include "UnrealString.h"
+#include "GameFramework/Actor.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
+#include "Engine/World.h"
 #include "FGSaveSystem.h"
 #include "GameFramework/GameMode.h"
 #include "FGSaveInterface.h"
 #include "FGGameMode.generated.h"
 
-UCLASS(minimalapi)
+class UFGRemoteCallObject;
+
+UCLASS(minimalapi, config = Game )
 class AFGGameMode : public AGameMode, public IFGSaveInterface
 {
 	GENERATED_BODY()
@@ -86,6 +94,12 @@ public:
 	/** Debugging stuffs */
 	void Debug_SetStartingPoint( FName startingPoint ) { mDebugStartingPointTagName = startingPoint; }
 
+
+	UFUNCTION( BlueprintPure, Category = "Remote Call Object" )
+	bool RegisterRemoteCallObjectClass( TSubclassOf< UFGRemoteCallObject > inClass );
+
+	void RegisterCallObjectOnAllCurrentPlayers( TSubclassOf<UFGRemoteCallObject> inClass );
+
 public:
 	/** Name of the start location option that is parsed */
 	static const TCHAR* StartLocationOption;
@@ -163,4 +177,10 @@ private:
 
 	UPROPERTY( EditDefaultsOnly, Category = "Default" )
 	bool mIsMainMenu;
+
+	/** These are the default Remote Call Objects for this PlayerController, should be put in config? */
+	UPROPERTY( Config )
+	TArray< FSoftClassPath > mDefaultRemoteCallObjectsClassNames;
+
+	TArray< TSubclassOf< UFGRemoteCallObject > > mRemoteCallObjectsClassNames;
 };

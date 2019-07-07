@@ -1,8 +1,9 @@
 // Copyright 2016-2018 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
-
 #include "UObject/Interface.h"
+#include "UObject/Class.h"
+
 #include "FGVehicleDestroyableInterface.generated.h"
 
 /**
@@ -12,7 +13,9 @@
 UINTERFACE( Blueprintable )
 class UFGVehicleDestroyableInterface : public UInterface
 {
-	GENERATED_BODY()
+	
+ GENERATED_BODY()
+	UFGVehicleDestroyableInterface(const class FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {} 
 };
 
 /**

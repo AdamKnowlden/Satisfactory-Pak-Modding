@@ -1,6 +1,10 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Array.h"
+#include "UnrealString.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "GameFramework/CheatManager.h"
 #include "FGGameState.h"
@@ -264,6 +268,9 @@ public:
 
 	UFUNCTION( exec )
 	void CompleteResearch();
+
+	UFUNCTION( exec )
+	void PurgeAllTrainState();
 
 public:
 	/** This is used to make picking the same classes in the cheat board easier */

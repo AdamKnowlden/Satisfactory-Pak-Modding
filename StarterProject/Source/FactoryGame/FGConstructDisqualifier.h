@@ -1,6 +1,8 @@
 // Copyright 2018 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "Object.h"
 #include "FGConstructDisqualifier.generated.h"
@@ -283,6 +285,61 @@ class UFGCDMustHaveRailRoadTrack : public UFGConstructDisqualifier
 	UFGCDMustHaveRailRoadTrack()
 	{
 		mDisqfualifyingText = LOCTEXT( "UFGCDMustHaveRailRoadTrack", "This must be placed on a railroad track!" );
+	}
+};
+
+UCLASS()
+class UFGCDMustAttachToTrainPlatform : public UFGConstructDisqualifier
+{
+	GENERATED_BODY()
+
+	UFGCDMustAttachToTrainPlatform()
+	{
+		mDisqfualifyingText = LOCTEXT( "UFGCDMustAttachToTrainPlatform", "This must be placed inline with another train platform!" );
+	}
+};
+
+UCLASS()
+class UFGCDTrackTooLong : public UFGConstructDisqualifier
+{
+	GENERATED_BODY()
+
+	UFGCDTrackTooLong()
+	{
+		mDisqfualifyingText = LOCTEXT( "UFGCDTrackTooLong", "The Railroad Track is too long" );
+	}
+};
+
+UCLASS()
+class UFGCDTrackTooShort : public UFGConstructDisqualifier
+{
+	GENERATED_BODY()
+
+		UFGCDTrackTooShort()
+	{
+		mDisqfualifyingText = LOCTEXT( "UFGCDTrackTooShort", "The Railroad Track is too short" );
+	}
+};
+
+UCLASS()
+class UFGCDTrackTooSteep : public UFGConstructDisqualifier
+{
+	GENERATED_BODY()
+
+	UFGCDTrackTooSteep()
+	{
+		mDisqfualifyingText = LOCTEXT( "UFGCDTrackTooSteep", "The Railroad Track is too steep" );
+	}
+};
+
+UCLASS()
+class UFGCDTrackTrunToSharp : public UFGConstructDisqualifier
+{
+	GENERATED_BODY()
+
+	UFGCDTrackTrunToSharp()
+	{
+		mDisqfualifyingText = LOCTEXT( "UFGCDTrackTrunToSharp", "The Railroad Track has a too sharp turn" );
 	}
 };
 

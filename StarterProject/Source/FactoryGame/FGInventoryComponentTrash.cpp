@@ -2,4 +2,7 @@
 
 #include "FGInventoryComponentTrash.h"
 
-void UFGInventoryComponentTrash::OnItemsAdded( int32 idx, int32 num ){ }
+UFGInventoryComponentTrash::UFGInventoryComponentTrash(){ }
+void UFGInventoryComponentTrash::OnItemsAdded( int32 idx, int32 num){ }
+bool UFGInventoryComponentTrash::FilterExcludedItems( TSubclassOf< UObject > object, int32 idx) const{ return bool(); }
+bool UFGInventoryComponentTrash::IsValidItem( TSubclassOf<  UFGItemDescriptor > resource) const{ return bool(); }

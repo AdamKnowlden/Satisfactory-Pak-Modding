@@ -1,4 +1,6 @@
 #pragma once
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "FGEquipment.h"
 #include "FGConsumableEquipment.generated.h"

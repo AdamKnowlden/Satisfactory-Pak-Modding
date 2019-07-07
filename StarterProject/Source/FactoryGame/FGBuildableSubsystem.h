@@ -1,11 +1,18 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Engine/StaticMesh.h"
+#include "Engine/World.h"
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "FGSubsystem.h"
 #include "BuildableColorSlotBase.h"
 #include "FGSaveInterface.h"
 #include "FGBuildingColorSlotStruct.h"
+#include "FactoryTick.h"
 #include "Materials/Material.h"
 #include "FGBuildableSubsystem.generated.h"
 
@@ -24,6 +31,18 @@ struct FDistanceBasedTickRate
 	
 	UPROPERTY( EditDefaultsOnly, Category = "Factory" )
 	float TickRate;
+};
+
+USTRUCT()
+struct FBuildableBucket
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	TSubclassOf< class AFGBuildable > BuildableClass;
+
+	UPROPERTY()
+	TArray< class AFGBuildable* > Buildables;
 };
 
 /**
@@ -49,14 +68,18 @@ public:
 
 	// Begin AActor interface
 	virtual void BeginPlay() override;
+	virtual void EndPlay( const EEndPlayReason::Type EndPlayReason ) override;
 	virtual void Tick( float dt ) override;
 	// End AActor interface
+
+	/** Calls Factory_Tick on all factory buildings */
+	void TickFactory( float dt, ELevelTick TickType );
 
 	/** Get the buildable subsystem in the current world, can be nullptr, e.g. on game ending (destroy) or game startup. */
 	static AFGBuildableSubsystem* Get( UWorld* world );
 
 	/** Get the buildable subsystem in the current world, can be nullptr, e.g. on game ending (destroy) or game startup. */
-	UFUNCTION( BlueprintPure, Category = "Buildable Subsystem", DisplayName = "GetBuildableSubsystem", meta = ( DefaultToSelf = "WorldContext" ) )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Factory", DisplayName = "GetBuildableSubsystem", meta = ( DefaultToSelf = "WorldContext" ) )
 	static AFGBuildableSubsystem* Get( UObject* worldContext );
 
 	/**
@@ -73,7 +96,7 @@ public:
 	void RemoveBuildable( class AFGBuildable* buildable );
 
 	/** Get all buildables of the supplied type. */
-	UFUNCTION( BlueprintCallable, Category = "Buildable Subsystem" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Factory" )
 	void GetTypedBuildable( TSubclassOf< class AFGBuildable > inClass, TArray< class AFGBuildable* >& out_buildables ) const;
 
 	/** Get all buildables of the supplied type. */
@@ -89,13 +112,36 @@ public:
 	void DebugEnableInstancing( bool enabled );
 	void DebugGetFactoryActors( TArray< AActor* >& out_actors );
 
+	/** Returns the factory stat ID of the object used for the profiling tool. */
+	FORCEINLINE TStatId GetFactoryStatID( bool forDeferredUse = false ) const
+	{
+#if STATS
+		// this is done to avoid even registering stats for a disabled group (unless we plan on using it later)
+		if( forDeferredUse || FThreadStats::IsCollectingData( GET_STATID( STAT_UObjectsStatGroupTester ) ) )
+		{
+			if( !mFactoryStatID.IsValidStat() )
+			{
+				CreateFactoryStatID();
+			}
+			return mFactoryStatID;
+		}
+#endif
+		return TStatId(); // not doing stats at the moment, or ever
+	}
+
 protected:
 	// Find and return a local player
 	class AFGPlayerController* GetLocalPlayerController() const;
 
 	/** Distance from a location to closest point of buildables AABB */
 	float GetDistanceSqToBoundingBox( const FVector& point,  class AFGBuildable* buildable ) const;
+
+	/** Register/unregister our factory tick function */
+	void RegisterFactoryTickFunction( bool shouldRegister );
 private:
+	/** Create a stat for the buildable */
+	void CreateFactoryStatID() const;
+
 	void UpdateReplayEffects( float dt );
 
 	void AddBuildableMeshInstances( class AFGBuildable* buildable );
@@ -113,19 +159,19 @@ public:
 	UPROPERTY( BlueprintAssignable, Category = "Build", DisplayName = "OnBuildableConstructedGlobal" )
 	FOnBuildableConstructedGlobal BuildableConstructedGlobalDelegate;
 
-	UFUNCTION( BlueprintCallable, Category = "Customization" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Factory|Customization" )
 	void setColorSlotPrimary( uint8 index, FColor color );
-	UFUNCTION( BlueprintCallable, Category = "Customization" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Factory|Customization" )
 	void setColorSlotSecondary( uint8 index, FColor color );
 
-	UFUNCTION( BlueprintCallable, Category = "Customization" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Factory|Customization" )
 	FColor getColorSlotPrimary( uint8 index );
-	UFUNCTION( BlueprintCallable, Category = "Customization" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Factory|Customization" )
 	FColor getColorSlotSecondary( uint8 index );
 
-	UFUNCTION( BlueprintCallable, Category = "Customization" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Factory|Customization" )
 	FLinearColor getColorSlotPrimaryLinear( uint8 index );
-	UFUNCTION( BlueprintCallable, Category = "Customization" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Factory|Customization" )
 	FLinearColor getColorSlotSecondaryLinear( uint8 index );
 
 
@@ -143,6 +189,10 @@ private:
 	/** List of all buildables. */
 	UPROPERTY()
 	TArray< class AFGBuildable* > mBuildables;
+
+	/** Grouping buildings into buckets by class */
+	UPROPERTY()
+	TArray< FBuildableBucket> mBuildableBuckets;
 
 	/** Hierarchical instances for the factory buildings. */
 	UPROPERTY()
@@ -223,6 +273,14 @@ private:
 	/** Array with all the buildings that should replay their effect */
 	TArray< AFGBuildable* > mColorPropagationArray;
 	bool IsBasedOn( const UMaterialInterface* instance, const UMaterial* base );
+
+	//@todorefactor With meta = ( ShowOnlyInnerProperties ) it does not show and PrimaryActorTick seems to be all custom properties, so I moved to another category but could not expand.
+	/** Controls if we should receive Factory_Tick and how frequent. */
+	UPROPERTY( EditDefaultsOnly, Category = "Factory Tick", meta = ( NoAutoJson = true ) )
+	FFactoryTickFunction mFactoryTickFunction;
+
+	/** Factory Stat id of this object, 0 if nobody asked for it yet */
+	STAT( mutable TStatId mFactoryStatID; )
 public:
 };
 

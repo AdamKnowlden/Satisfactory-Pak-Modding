@@ -1,6 +1,8 @@
 // Copyright 2016-2019 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Array.h"
+#include "UObject/Class.h"
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
@@ -20,6 +22,7 @@ public:
 
 protected:
 	virtual void NativeConstruct() override;
+	virtual void NativeDestruct() override;
 
 	
 	UFUNCTION( BlueprintImplementableEvent, Category = "Map" )
@@ -38,6 +41,7 @@ private:
 	void UpdateFogOfWarTexture();
 	void SetupRepresentationManager();
 	void BindActorRepresentationManager( class AFGActorRepresentationManager* representationManager );
+	void RemoveBindings();
 	
 	UFUNCTION()
 	void OnActorRepresentationAdded( class UFGActorRepresentation* actorRepresentation );

@@ -2,5 +2,7 @@
 
 #include "FGBuildableGeneratorNuclear.h"
 
+void AFGBuildableGeneratorNuclear::GetLifetimeReplicatedProps( TArray<FLifetimeProperty>& OutLifetimeProps) const{ }
 void AFGBuildableGeneratorNuclear::BeginPlay(){ }
 void AFGBuildableGeneratorNuclear::LoadFuel(){ }
+bool AFGBuildableGeneratorNuclear::CanLoadFuel() const{ return bool(); }

@@ -1,9 +1,12 @@
 // Copyright 2016-2019 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "UObject/Class.h"
 
 #include "CoreMinimal.h"
-#include "Creature/Enemy/FGEnemy.h"
+#include "FGEnemy.h"
 #include "FGCrabHatcher.generated.h"
 
 /**
@@ -32,6 +35,9 @@ public:
 	UFUNCTION( BlueprintCallable, Category = "Crab Hatcher" )
 	void SetDidSpawnCrabs( bool inDidSPawn ) { mDidSpawnCrabs = inDidSPawn; }
 
+	UFUNCTION( BlueprintPure, Category = "Crab Hatcher" )
+	FORCEINLINE bool GetDidSpawnCrabs() { return mDidSpawnCrabs; }
+
 	/** Set for mAnimationLength */
 	UFUNCTION( BlueprintCallable, Category = "Crab Hatcher" )
 	void SetAnimationLength( float animLength ) { mAnimationLength = animLength; }
@@ -48,9 +54,14 @@ protected:
 	UPROPERTY( Replicated )
 	bool mThreatNearby;
 
+	UFUNCTION()
+	void OnRep_DidSpawnCrabs();
 	/** Have crabs been spawned? */
-	UPROPERTY( Replicated )
+	UPROPERTY( ReplicatedUsing=OnRep_DidSpawnCrabs )
 	bool mDidSpawnCrabs;
+
+	//bool mDidRespondToSpawnCrabBool = false; //[DavalliusA:Fri/31-05-2019] ugly hack, but unless I do this, the crab thatchers don't detect when the bool was already set on spawning. Meaning it was looking alive on clients. Even though I did a begin play test. So, hack it for now!
+	bool mBeganPlaying = false; //[DavalliusA:Fri/31-05-2019] so we in the on rep don't play the death effects if we get the on rep before begin play... maybe there is a better way to cehck for this?
 
 	/** Time enemy has been under threat */
 	UPROPERTY( Replicated )

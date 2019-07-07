@@ -1,11 +1,11 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "UObject/Class.h"
 
 #include "CoreMinimal.h"
 #include "UObject/ObjectMacros.h"
 #include "UObject/ScriptMacros.h"
-#include "UObject/Interface.h"
 #include "Layout/Margin.h"
 #include "Components/SlateWrapperTypes.h"
 #include "Components/PanelSlot.h"
@@ -17,7 +17,9 @@
 UCLASS()
 class UFGListViewSlot : public UPanelSlot
 {
+	// MODDING EDIT
 	GENERATED_BODY()
+	UFGListViewSlot(const class FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {}
 public:
 	// UVisual interface
 	virtual void ReleaseSlateResources( bool bReleaseChildren ) override;

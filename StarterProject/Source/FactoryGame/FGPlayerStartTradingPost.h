@@ -1,4 +1,5 @@
 #pragma once
+#include "UObject/Class.h"
 
 #include "GameFramework/PlayerStart.h"
 #include "FGPlayerStartTradingPost.generated.h"

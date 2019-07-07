@@ -1,11 +1,14 @@
 // Copyright 2016-2017 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "UObject/Class.h"
 
-#include "Buildables/FGBuildable.h"
+#include "FGBuildable.h"
 #include "Components/SplineComponent.h"
-#include "FSplinePointData.h"
-#include "FGSplineComponent.h"
+#include "../FSplinePointData.h"
+#include "../FGSplineComponent.h"
 #include "FGBuildableRoad.generated.h"
 
 /**

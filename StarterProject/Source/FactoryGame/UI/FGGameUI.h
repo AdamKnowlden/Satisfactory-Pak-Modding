@@ -1,7 +1,10 @@
 #pragma once
+#include "Array.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
-#include "FGSchematic.h"
-#include "FGTutorialIntroManager.h"
+#include "../FGSchematic.h"
+#include "../FGTutorialIntroManager.h"
 #include "FGBaseUI.h"
 #include "FGGameUI.generated.h"
 
@@ -111,6 +114,19 @@ public:
 	/** Allow the gameUI to remove pawn specific HUD */
 	UFUNCTION( BlueprintCallable, BlueprintImplementableEvent, Category = "UI" )
 	void RemovePawnHUD();
+
+	/** Called when we start receiving radiation. */
+	UFUNCTION( BlueprintImplementableEvent, Category = "Radiation" )
+	void OnReceiveRadiationStart();
+
+	/** Called when we stop receiving radiation. */
+	UFUNCTION( BlueprintImplementableEvent, Category = "Radiation" )
+	void OnReceiveRadiationStop();
+
+	/** Called when we have updated radiation intensity. */
+	UFUNCTION( BlueprintImplementableEvent, Category = "Radiation" )
+	void OnRadiationIntensityUpdated( float radiationIntensity, float radiationImmunity );
+
 public:
 	/** Array with messages that the player has stocked up */
 	TArray< TSubclassOf< class UFGMessageBase > > mPendingMessages;

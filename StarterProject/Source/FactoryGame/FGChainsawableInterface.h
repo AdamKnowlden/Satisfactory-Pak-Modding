@@ -1,8 +1,10 @@
 // Copyright 2016-2018 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
-
+#include "Engine/StaticMesh.h"
 #include "UObject/Interface.h"
+#include "UObject/Class.h"
+
 #include "FGChainsawableInterface.generated.h"
 
 /**
@@ -12,7 +14,9 @@
 UINTERFACE( Blueprintable )
 class UFGChainsawableInterface : public UInterface
 {
-	GENERATED_BODY()
+	
+ GENERATED_BODY()
+	UFGChainsawableInterface(const class FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {} 
 };
 
 /**

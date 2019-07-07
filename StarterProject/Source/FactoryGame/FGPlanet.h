@@ -1,4 +1,5 @@
 #pragma once
+#include "UObject/Class.h"
 
 #include "GameFramework/Actor.h"
 #include "FGPlanet.generated.h"

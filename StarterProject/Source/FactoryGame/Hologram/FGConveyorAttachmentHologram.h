@@ -1,9 +1,10 @@
 // Copyright 2017 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "UObject/Class.h"
 
 #include "CoreMinimal.h"
-#include "Hologram/FGFactoryHologram.h"
+#include "FGFactoryHologram.h"
 #include "FGConveyorAttachmentHologram.generated.h"
 
 /**
@@ -22,6 +23,10 @@ public:
 	// End AFGHologram Interface
 
 protected:
+	// Begin AFGHologram interface
+	virtual int32 GetRotationStep() const override;
+	// End of AFGHologram interface
+
 	// Begin AFGBuildableHologram Interface
 	virtual void ConfigureComponents( class AFGBuildable* inBuildable ) const override;
 	virtual void CheckValidPlacement() override;

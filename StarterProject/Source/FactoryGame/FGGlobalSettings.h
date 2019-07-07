@@ -1,9 +1,10 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "Object.h"
-#include "SubclassOf.h"
 #include "FGGlobalSettings.generated.h"
 
 /**

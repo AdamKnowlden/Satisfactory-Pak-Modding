@@ -2,4 +2,4 @@
 
 #include "FGPlayerStartTradingPost.h"
 
-AFGPlayerStartTradingPost::AFGPlayerStartTradingPost( const FObjectInitializer& ObjectInitializer ) : Super(ObjectInitializer) { }
+AFGPlayerStartTradingPost::AFGPlayerStartTradingPost( const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) { }

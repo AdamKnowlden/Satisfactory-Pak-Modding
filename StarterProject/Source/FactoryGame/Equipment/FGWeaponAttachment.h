@@ -1,4 +1,6 @@
 #pragma once
+#include "Array.h"
+#include "UObject/Class.h"
 
 #include "FGEquipmentAttachment.h"
 #include "FGWeaponAttachment.generated.h"

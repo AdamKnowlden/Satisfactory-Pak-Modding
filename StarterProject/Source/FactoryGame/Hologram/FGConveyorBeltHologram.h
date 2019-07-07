@@ -1,11 +1,16 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Engine/StaticMesh.h"
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
-#include "Hologram/FGFactoryHologram.h"
+#include "FGFactoryHologram.h"
 #include "Components/SplineComponent.h"
-#include "FSplinePointData.h"
-#include "FGFactoryConnectionComponent.h"
+#include "../FSplinePointData.h"
+#include "../FGFactoryConnectionComponent.h"
 #include "FGConveyorBeltHologram.generated.h"
 
 #define NUM_CONNECTIONS 2
@@ -70,12 +75,13 @@ private:
 	/**
 	 * This routes the spline to the new location. Inserting bends and straights.
 	 */
-	void AutoRouteSpline( const FVector& connectionPos, const FVector& connectionNormal, const float& connectionClearance );
+	void AutoRouteSpline(
+		const FVector& startConnectionPos,
+		const FVector& startConnectionNormal,
+		const FVector& endConnectionPos,
+		const FVector& endConnectionNormal );
 
-	/** Validates the conveyors incline. */
 	bool ValidateIncline();
-
-	/** Validates the conveyors length. */
 	bool ValidateLength();
 
 private:

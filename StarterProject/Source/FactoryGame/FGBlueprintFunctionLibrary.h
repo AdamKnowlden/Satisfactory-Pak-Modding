@@ -1,6 +1,13 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Engine/World.h"
+#include "Array.h"
+#include "UnrealString.h"
+#include "GameFramework/Actor.h"
+#include "Kismet/BlueprintFunctionLibrary.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "FGUseableInterface.h"
 #include "FGInventoryComponent.h"
@@ -67,6 +74,10 @@ public:
 	/** I wanted to use non natural logarithm in blueprints. */
 	UFUNCTION( BlueprintPure, Category = "Math" )
 	static float LogX( float base, float value );
+
+	/** */
+	UFUNCTION( BlueprintPure, Category = "Component Flags" )
+	static FName GetComponentFlagSoftLanding( );
 
 	/* Returns km/h value based on the input cm/s. */
 	UFUNCTION( BlueprintPure, meta = ( DisplayName = "cm/s to km/h", CompactNodeTitle = "CmS2KmH" ), Category = "Math" )
@@ -229,11 +240,11 @@ public:
 	UFUNCTION( BlueprintPure, Category = "Factory" )
 	static FString LinearColorToHex( FLinearColor inColor );
 
-	/** Adds a popup to the qué */
+	/** Adds a popup to the quï¿½ */
 	UFUNCTION( BlueprintCallable, Category = "UI", meta = ( AutoCreateRefTerm = "ConfirmClickDelegate", DeprecatedFunction, DeprecationMessage="Please use AddPopupWithCloseDelegate instead" ) )
 	static void AddPopup( APlayerController* controller, FText Title, FText Body, const FPopupConfirmClicked& ConfirmClickDelegate, EPopupId PopupID = PID_OK, TSubclassOf< UUserWidget > popupClass = nullptr, UObject* popupInstigator = nullptr );
 
-	/** Adds a popup to the qué */
+	/** Adds a popup to the quï¿½ */
 	UFUNCTION( BlueprintCallable, Category = "UI", meta = ( AutoCreateRefTerm = "CloseDelegate" ) )
 	static void AddPopupWithCloseDelegate( APlayerController* controller, FText Title, FText Body, const FPopupClosed& CloseDelegate, EPopupId PopupID = PID_OK, TSubclassOf< UUserWidget > popupClass = nullptr, UObject* popupInstigator = nullptr );
 

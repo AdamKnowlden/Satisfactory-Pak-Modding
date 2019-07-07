@@ -1,6 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
+#include "UObject/CoreNet.h"
+#include "Array.h"
+#include "UObject/Class.h"
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"

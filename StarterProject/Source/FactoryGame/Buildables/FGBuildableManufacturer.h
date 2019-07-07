@@ -1,13 +1,18 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "UObject/CoreNet.h"
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "FGBuildableFactory.h"
+#include "../Replication/FGReplicationDetailInventoryComponent.h"
+#include "../Replication/FGReplicationDetailActor_Manufacturing.h"
 #include "FGBuildableManufacturer.generated.h"
 
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam( FOnNewRecipeDelegate, TSubclassOf< class UFGRecipe >, newRecipe );
-
 
 /**
  * Base class for all buildings that are producing something out of something, i.e. constructors, smelters, refinery etc.
@@ -37,50 +42,56 @@ public:
 	virtual float CalcProductionCycleTimeForPotential( float potential ) const override;
 	// End AFGBuildableFactory interface
 
+	// Begin IFGReplicationDetailActorOwnerInterface
+	virtual UClass* GetReplicationDetailActorClass() const override { return AFGReplicationDetailActor_Manufacturing::StaticClass(); };
+	// End IFGReplicationDetailActorOwnerInterface
+
 	/**
 	 * Move all items in the input inventory to the given inventory.
 	 * @return true if successful; false if the given inventory is full or does not support the given type of item.
 	 */
-	UFUNCTION( BlueprintCallable, Category = "Recipe" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Factory|Inventory" )
 	virtual bool MoveOrDropInputInventory( AFGCharacterPlayer* pawn );
 
 	/**
 	 * Move all items in the input output to the given inventory.
 	 * @return true if successful; false if the given inventory is full or does not support the given type of item.
 	 */
-	UFUNCTION( BlueprintCallable, Category = "Recipe" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Factory|Inventory" )
 	virtual bool MoveOrDropOutputInventory( AFGCharacterPlayer* pawn );
 
 	/**
 	 * Get the progress of the current production.
 	 * @return - Percent in range [0,1] of the current production progress.
 	 */	
-	virtual float GetProductionProgress() const override { return mCurrentManufacturingProgress; }
+	virtual float GetProductionProgress() const override;
+
+	/** Checks whether or not this manufacturer contains any inputs. If false, this shouldn't contain an input component. */
+	FORCEINLINE bool HasAnyInputConnetions() const { return mInputConnections.Num() > 0; }
 
 	/**
 	 * Gets all the recipes that can be produced.
 	 * @note This is an expensive operation so cache the result.
 	 * @param out_recipes Returns all recipes available to this machine.
 	 */
-	UFUNCTION( BlueprintCallable, Category = "Recipe" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Factory|Recipe" )
 	void GetAvailableRecipes( TArray< TSubclassOf< class UFGRecipe > >& out_recipes ) const;
 
 	/** Returns the speed of which this building manufacture recipes */
-	UFUNCTION(BlueprintPure, Category="Production")
+	UFUNCTION(BlueprintPure, Category="FactoryGame|Factory|Production")
 	FORCEINLINE float GetManufacturingSpeed() const{ return mManufacturingSpeed; }
 
 	/** Get the input inventory from this manufacturer. */
-	UFUNCTION( BlueprintPure, Category = "Inventory" )
-	FORCEINLINE class UFGInventoryComponent* GetInputInventory() { return mInputInventory; }
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Factory|Inventory" )
+	FORCEINLINE class UFGInventoryComponent* GetInputInventory() const { return mInputInventoryHandler->GetActiveInventoryComponent(); }
 
 	/** Get the output inventory from this manufacturer. */
-	UFUNCTION( BlueprintPure, Category = "Inventory" )
-	FORCEINLINE class UFGInventoryComponent* GetOutputInventory() { return mOutputInventory; }
-
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Factory|Inventory" )
+	FORCEINLINE class UFGInventoryComponent* GetOutputInventory() const { return mOutputInventoryHandler->GetActiveInventoryComponent(); }
 
 	/** Get the current recipe for manufacturing. */
-	UFUNCTION( BlueprintPure, Category = "Recipe" )
-	FORCEINLINE TSubclassOf< class UFGRecipe > GetCurrentRecipe() const{ return mCurrentRecipe; }
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Factory|Recipe" )
+	FORCEINLINE TSubclassOf< class UFGRecipe > GetCurrentRecipe() const { return mCurrentRecipe; }
 
 	/**
 	 * Set the current recipe for manufacturing.
@@ -88,7 +99,7 @@ public:
 	 *       This is so the case when players inventory is full can be handled correctly.
 	 * @param recipe - The new recipe.
 	 */
-	UFUNCTION( BlueprintCallable, Category = "Recipe" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Factory|Recipe" )
 	void SetRecipe( TSubclassOf< class UFGRecipe > recipe );
 
 protected:
@@ -104,6 +115,8 @@ protected:
 	/** Called when NewRecipe is replicated */
 	UFUNCTION()
 	void OnRep_CurrentRecipe();
+
+	virtual void OnRep_ReplicationDetailActor() override;
 
 	/** Read the items in the input inventory. */
 	void GetInputInventoryItems( TArray< FInventoryStack >& out_items ) const;
@@ -133,7 +146,13 @@ protected:
 	 */
 	virtual bool HasRequiredIngredients() const;
 
+
 protected:
+	friend class AFGReplicationDetailActor_Manufacturing;
+
+	//UPROPERTY( Replicated, Transient, ReplicatedUsing = OnRep_ReplicationDetailActor )
+	//class AFGReplicationDetailActor_Manufacturing* mReplicationDetailActor;
+
 	/** Called when a new recipe has been set. */
 	UPROPERTY( BlueprintAssignable, Category = "Recipe" )
 	FOnNewRecipeDelegate mCurrentRecipeChanged;
@@ -142,22 +161,29 @@ protected:
 	UPROPERTY( EditDefaultsOnly, Category = "Production" )
 	float mManufacturingSpeed;
 
-	/** Manufacturing progress in range [0,1]. @todoreplication: Only replicate this if someone has this manufacturer open */
-	UPROPERTY( SaveGame, Replicated, Meta = (NoAutoJson = true) )
+	/** Manufacturing progress in range [0,1]. */
+	UPROPERTY( SaveGame, Meta = (NoAutoJson = true) )
 	float mCurrentManufacturingProgress;
 
 	/** Our input inventory, shared for all input connections. */
-	UPROPERTY( SaveGame, Replicated )
+	UPROPERTY( SaveGame )
 	class UFGInventoryComponent* mInputInventory;
 
 	/** Cached input connections (No need for UPROPERTY as they are referenced in component array) */
 	TArray<class UFGFactoryConnectionComponent*> mInputConnections;
 
 	/** Our output inventory, shared for all output connections. */
-	UPROPERTY( SaveGame, Replicated )
+	UPROPERTY( SaveGame )
 	class UFGInventoryComponent* mOutputInventory;
+
+	/** Active Inventory Component pointers which will switch once the replication detail actor has been created */
+	class UFGReplicationDetailInventoryComponent* mInputInventoryHandler;
+	class UFGReplicationDetailInventoryComponent* mOutputInventoryHandler;
 
 	/** The recipe we're currently running. */
 	UPROPERTY( SaveGame, Replicated, ReplicatedUsing = OnRep_CurrentRecipe, Meta = (NoAutoJson = true) )
 	TSubclassOf< class UFGRecipe > mCurrentRecipe;
+
+private:
+	class AFGReplicationDetailActor_Manufacturing* GetCastRepDetailsActor() const { return Cast<AFGReplicationDetailActor_Manufacturing>( mReplicationDetailActor ); };
 };

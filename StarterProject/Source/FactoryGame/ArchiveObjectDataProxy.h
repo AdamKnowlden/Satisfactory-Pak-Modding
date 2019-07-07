@@ -1,4 +1,5 @@
 #pragma once
+#include "Engine/World.h"
 
 #include "Serialization/ArchiveProxy.h"
 #include "EngineGlobals.h"

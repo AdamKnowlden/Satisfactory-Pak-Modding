@@ -1,6 +1,7 @@
 #pragma once
-
 #include "UObject/Interface.h"
+#include "UObject/Class.h"
+
 #include "FGRecipeProducerInterface.generated.h"
 
 /**
@@ -10,7 +11,9 @@
 UINTERFACE( Blueprintable )
 class UFGRecipeProducerInterface : public UInterface
 {
-	GENERATED_BODY()
+	
+ GENERATED_BODY()
+	UFGRecipeProducerInterface(const class FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {} 
 };
 
 /**

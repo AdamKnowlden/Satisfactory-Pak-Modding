@@ -2,6 +2,6 @@
 
 #include "FGAnimPlayer.h"
 
-void UFGAnimPlayer::NativeUpdateAnimation( float DeltaSeconds ){ }
-void UFGAnimPlayer::GetArmSlotData(){ }
-void UFGAnimPlayer::GetBackSlotData(){ }
+void UFGAnimPlayer::NativeUpdateAnimation( float DeltaSeconds){ }
+void UFGAnimPlayer::CacheArmSlotData(){ }
+void UFGAnimPlayer::CacheBackSlotData(){ }

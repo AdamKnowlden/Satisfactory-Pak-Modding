@@ -1,4 +1,8 @@
 #pragma once
+#include "GameFramework/Actor.h"
+#include "Kismet/BlueprintFunctionLibrary.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "FGCombatFunctionLibrary.generated.h"
 

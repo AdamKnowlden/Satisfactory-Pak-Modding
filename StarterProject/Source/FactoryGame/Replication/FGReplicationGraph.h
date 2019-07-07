@@ -1,10 +1,15 @@
 // Copyright 2019 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Engine/World.h"
+#include "Array.h"
+#include "UnrealString.h"
+#include "GameFramework/Actor.h"
+#include "UObject/Class.h"
 
 #include "CoreMinimal.h"
 #include "ReplicationGraph.h"
-#include "FGProductionIndicatorComponent.h"
+#include "../FGProductionIndicatorComponent.h"
 #include "FGReplicationGraph.generated.h"
 
 enum class EClassRepPolicy : uint8
@@ -16,6 +21,9 @@ enum class EClassRepPolicy : uint8
 	CRP_Spatialize_Static,				// Routes to mGridNode: these actors don't move and don't need to be updated every frame.
 	CRP_Spatialize_Dynamic,				// Routes to mGridNode: these actors move frequently and are updated once per frame.
 	CRP_Spatialize_Dormancy,			// Routes to mGridNode: While dormant we treat as static. When flushed/not dormant dynamic. Note this is for things that "move while not dormant".
+	CRP_Deferred_Spatialize_Static,				// Deferred replication on initial load. Then Routes to mGridNode: these actors don't move and don't need to be updated every frame.
+	CRP_Deferred_Spatialize_Dynamic,				// Deferred replication on initial load. Then Routes to mGridNode: these actors move frequently and are updated once per frame.
+	CRP_Deferred_Spatialize_Dormancy,			// Deferred replication on initial load. Then Routes to mGridNode: While dormant we treat as static. When flushed/not dormant dynamic. Note this is for things that "move while not dormant".
 };
 
 USTRUCT()
@@ -85,17 +93,22 @@ protected:
 	 
 	/** Class types of equipment who's dependency to the pawn shouldn't be removed if they're unequipped. */
 	UPROPERTY()
-	TSet<UClass*> mPersistentEquipmentClasses;
+	TSet<UClass*> mPersistentDependencyClasses;
 
 	// Actor Dependencies 
-	/** Callback on when equipment dependencies that should always exist for the pawn is spawned */
-	void OnCharacterPersistentEquipmentSpawned( class AFGCharacterPlayer* pawn, class AFGEquipment* equipment );
+	/** Callback on when actor dependencies for character players that should always exist for the pawn is spawned */
+	void AddPersistentDependencyActor( class AFGCharacterPlayer* pawn, class IFGReplicationDependencyActorInterface* depedencyActor );
+
+	/** Callbacks for handling replication detail actors for manufacturers */
+	void AddReplicationDependencyActor( class AActor* owner, class AFGReplicationDetailActor* replicationDetailActor );
+	void RemoveReplicationDependencyActor( class AActor* owner, class AFGReplicationDetailActor* replicationDetailActor );
+	void OnReplicationDetailActorStateChange( class IFGReplicationDetailActorOwnerInterface* owner, bool newState );
 
 	/** Callback to handle when a player equips any equipment and add it to the pawns dependency list */
-	void OnCharacterPlayerEquip( class AFGCharacterPlayer* pawn, class AFGEquipment* equipment, class AFGEquipmentAttachment* attachment );
+	void OnCharacterPlayerEquip( class AFGCharacterPlayer* pawn, class AFGEquipment* equipment );
 	
 	/** Callback to handle when a player unequips any equipment and removes it to the pawns dependency list */
-	void OnCharacterPlayerUnequip( class AFGCharacterPlayer* pawn, class AFGEquipment* equipment, class AFGEquipmentAttachment* attachment );
+	void OnCharacterPlayerUnequip( class AFGCharacterPlayer* pawn, class AFGEquipment* equipment );
 
 	/** Callback on when the foliage pickup proxy has spawned for a player */
 	void OnCharacterPlayerFoliagePickupSpawned( class AFGCharacterPlayer* pawn, class AFGFoliagePickup* foliagePickup );

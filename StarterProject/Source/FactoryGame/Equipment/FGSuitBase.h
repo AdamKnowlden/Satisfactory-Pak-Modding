@@ -1,8 +1,10 @@
 // Copyright 2016-2018 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Array.h"
+#include "UObject/Class.h"
 
-#include "Equipment/FGEquipment.h"
+#include "FGEquipment.h"
 #include "FGEquipmentAttachment.h"
 #include "FGSuitBase.generated.h"
 

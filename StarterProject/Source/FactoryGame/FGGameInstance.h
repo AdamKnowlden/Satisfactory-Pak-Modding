@@ -1,4 +1,9 @@
 #pragma once
+#include "Engine/World.h"
+#include "Array.h"
+#include "UnrealString.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "Engine/GameInstance.h"
 #include "NAT.h"

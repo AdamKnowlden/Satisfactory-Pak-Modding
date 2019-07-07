@@ -1,9 +1,12 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "UObject/Class.h"
 
 #include "FGBuildableFactory.h"
-#include "FGUseableInterface.h"
+#include "../FGUseableInterface.h"
 #include "FGBuildableRailroadSwitchControl.generated.h"
 
 /**
@@ -39,7 +42,7 @@ public:
 	// End IFGUseableInterface
 
 	/** Get the current switch location. */
-	UFUNCTION( BlueprintCallable, Category = "SwitchControl" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Railroad|Switch" )
 	FORCEINLINE int32 GetSwitchPosition() const { return mSwitchPosition; }
 
 	/** Toggle the switch position to the next track. */

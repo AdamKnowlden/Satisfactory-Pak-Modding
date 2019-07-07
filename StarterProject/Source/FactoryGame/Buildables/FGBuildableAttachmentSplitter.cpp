@@ -4,7 +4,7 @@
 
 AFGBuildableAttachmentSplitter::AFGBuildableAttachmentSplitter(){ }
 void AFGBuildableAttachmentSplitter::BeginPlay(){ }
-void AFGBuildableAttachmentSplitter::Upgrade_Implementation( AActor* newActor ){ }
-void AFGBuildableAttachmentSplitter::GetDismantleRefund_Implementation( TArray< FInventoryStack >& out_refund ) const{ }
-bool AFGBuildableAttachmentSplitter::Factory_GrabOutput_Implementation( UFGFactoryConnectionComponent* connection, FInventoryItem& out_item, float& out_OffsetBeyond, TSubclassOf< UFGItemDescriptor > type ){ return bool(); }
+void AFGBuildableAttachmentSplitter::Upgrade_Implementation( AActor* newActor){ }
+void AFGBuildableAttachmentSplitter::GetDismantleRefund_Implementation( TArray< FInventoryStack >& out_refund) const{ }
+bool AFGBuildableAttachmentSplitter::Factory_GrabOutput_Implementation( UFGFactoryConnectionComponent* connection, FInventoryItem& out_item, float& out_OffsetBeyond, TSubclassOf< UFGItemDescriptor > type){ return bool(); }
 void AFGBuildableAttachmentSplitter::FillDistributionTable(){ }

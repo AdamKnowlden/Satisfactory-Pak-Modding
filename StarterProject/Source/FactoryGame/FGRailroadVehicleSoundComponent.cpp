@@ -3,4 +3,6 @@
 #include "FGRailroadVehicleSoundComponent.h"
 
 UFGRailroadVehicleSoundComponent::UFGRailroadVehicleSoundComponent(){ }
-void UFGRailroadVehicleSoundComponent::TickComponent( float deltaTime, ELevelTick tickType, FActorComponentTickFunction* thisTickFunction ){ }
+void UFGRailroadVehicleSoundComponent::OnRegister(){ Super::OnRegister(); }
+void UFGRailroadVehicleSoundComponent::OnUnregister(){ Super::OnUnregister(); }
+void UFGRailroadVehicleSoundComponent::TickComponent( float deltaTime, ELevelTick tickType, FActorComponentTickFunction* thisTickFunction){ }

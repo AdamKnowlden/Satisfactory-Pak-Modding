@@ -2,5 +2,3 @@
 
 #include "FGNetSerialization.h"
 
-//template< typename Type, typename SerializerType, typename ItemRemover >
-//bool FCustomFastArraySerializer::FastArrayDeltaSerialize( TArray<Type> &Items, FNetDeltaSerializeInfo& Parms, SerializerType& ArraySerializer ){ return bool(); }

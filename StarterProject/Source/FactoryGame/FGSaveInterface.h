@@ -1,4 +1,6 @@
 #pragma once
+#include "Array.h"
+#include "UObject/Class.h"
 
 #include "UObject/Interface.h"
 #include "FGSaveInterface.generated.h"
@@ -46,7 +48,9 @@ bool SAVE_CLASS::ShouldSave_Implementation() const { return true; }
 UINTERFACE( Blueprintable )
 class UFGSaveInterface : public UInterface
 {
-	GENERATED_BODY()
+	
+ GENERATED_BODY()
+	UFGSaveInterface(const class FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {} 
 };
 
 /**

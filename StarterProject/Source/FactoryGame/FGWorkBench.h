@@ -1,5 +1,8 @@
 
 #pragma once
+#include "Array.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "Components/SceneComponent.h"
 #include "FGSaveInterface.h"
@@ -26,78 +29,78 @@ public:
 
 	void TickProducing( float dt );
 
-	UFUNCTION( BlueprintCallable, Category = "Workbench" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Workbench" )
 	void SetRecipe( TSubclassOf< class UFGRecipe > recipe );
 
-	UFUNCTION( BlueprintCallable, Category = "Workbench" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Workbench" )
 	bool CanProduce( TSubclassOf< UFGRecipe > recipe, UFGInventoryComponent* inventory ) const;
 
 	/** Checks if our owner has authority, and assumes that if they have, then so do we */
 	bool HasAuthority() const;
 
-	UFUNCTION( BlueprintPure, BlueprintCallable, Category = "Workbench" )
+	UFUNCTION( BlueprintPure, BlueprintCallable, Category = "FactoryGame|Workbench" )
 	bool IsProducing(); 
 
 	/** Set the mIsPressingProduce */
-	UFUNCTION( BlueprintCallable, Category = "Workbench" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Workbench" )
 	void SetIsPressingProduce( bool isPressingProduce ); 
 
 	/** Produce one step */
-	UFUNCTION( BlueprintCallable, Category = "Workbench" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Workbench" )
 	void Produce( float produceSpeed = 1.0f );
 
-	UFUNCTION( BlueprintImplementableEvent, Category = "Workbench" )
+	UFUNCTION( BlueprintImplementableEvent, Category = "FactoryGame|Workbench" )
 	void CraftComplete();		
 
 	/** Manufacturing progress in range [0,1]. */
-	UFUNCTION( BlueprintPure, Category = "Workbench" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Workbench" )
 	FORCEINLINE float GetManufacturingProgress(){ return mCurrentManufacturingProgress; }
 
 	/** The recipe we're currently running. */
-	UFUNCTION( BlueprintPure, Category = "Workbench" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Workbench" )
 	FORCEINLINE TSubclassOf< class UFGRecipe > GetCurrentRecipe(){ return mCurrentRecipe; }
 
 	/** Returns current workbench user */
-	UFUNCTION( BlueprintPure, Category = "Workbench" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Workbench" )
 	FORCEINLINE class AFGCharacterPlayer* GetWorkBenchUser(){ return mPlayerWorkingAtBench; }
 
 	/** sets current inventory we want */
-	UFUNCTION( BlueprintCallable, Category = "Workbench" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Workbench" )
 	void SetInventory( class UFGInventoryComponent* newInventory );
 
 	/** @return The inventory for the player working at bench; nullptr if no one is working. */
 	class UFGInventoryComponent* GetPlayerInventory() const;
 
-	UFUNCTION( BlueprintPure, Category = "Workbench" )
 	/** @return The inventory this workbench is set to work with */
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Workbench" )
 	class UFGInventoryComponent* GetInventory() const;
 
 	/** sets current workbench user */
-	UFUNCTION( BlueprintCallable, Category = "Workbench" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Workbench" )
 	void SetWorkBenchUser( class AFGCharacterPlayer*  newUser );
 
 	/** Called when we finish a product and wants to give it to the inventory passed */
-	UFUNCTION( BlueprintCallable, Category = "Workbench" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Workbench" )
 	void RemoveIngredientsAndAwardRewards( UFGInventoryComponent* inventory, TSubclassOf< class UFGRecipe > recipe );
 
 	/** The speed of wich we manufacture stuff */
-	UFUNCTION( BlueprintPure, Category = "Workbench" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Workbench" )
 	FORCEINLINE float GetManufacturingSpeed() const { return mManufacturingSpeed; }
 
 	/** Returns the player that is working at this workbench. */
-	UFUNCTION( BlueprintPure, Category = "Workbench" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Workbench" )
 	FORCEINLINE AFGCharacterPlayer* GetPlayerWorkingAtBench(){ return mPlayerWorkingAtBench; }
 
 	/** Returns the player that is working at this workbench. */
-	UFUNCTION( BlueprintPure, Category = "Workbench" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Workbench" )
 	FORCEINLINE bool GetHoldToProduce(){ return mHoldToProduce; }
 
 	/** Change holdToProduce status from blueprint */
-	UFUNCTION( BlueprintCallable, Category = "Workbench" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Workbench" )
 	void SetHoldToProduce( bool newHold ) { mHoldToProduce = newHold; }
 
 	/** Returns the click speed for producing */
-	UFUNCTION( BlueprintPure, Category = "Workbench" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Workbench" )
 	FORCEINLINE float GetProduceClickSpeed(){ return mProduceClickSpeed; }
 public:
 	/** The recipe we're currently running. */

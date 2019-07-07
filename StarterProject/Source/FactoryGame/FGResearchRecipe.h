@@ -1,6 +1,10 @@
 // Copyright 2016-2018 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Array.h"
+#include "UnrealString.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "CoreMinimal.h"
 #include "Resources/FGItemDescriptor.h"
@@ -63,7 +67,7 @@ public:
 
 	static bool IsExcludedFromBuild( TSubclassOf<UFGResearchRecipe> inClass );
 
-	const TArray<TSubclassOf<UFGResearchRecipe>> GetRewardedResearchRecipes() const { return mUnlockedResearch; }
+	const TArray<TSubclassOf<class UFGResearchRecipe>> GetRewardedResearchRecipes() const;
 	const TArray<TSubclassOf<class UFGSchematic>> GetRewardedSchematics() const;
 	bool GetIsRepeatable() const { return mIsRepeatable; }
 
@@ -98,7 +102,7 @@ protected:
 
 	// What research that will be unlocked in the research tree by completing this research
 	UPROPERTY( EditDefaultsOnly, Category = "Rewards", meta = (EditCondition = "!mRewardUsesDropPackage") )
-	TArray<TSubclassOf<UFGResearchRecipe>> mUnlockedResearch;
+	TArray<TSoftClassPtr<UFGResearchRecipe>> mUnlockedResearch;
 
 	// What schematics that will be purchased by completing this research
 	UPROPERTY( EditDefaultsOnly, Category = "Rewards", meta = ( EditCondition = "!mRewardUsesDropPackage" ) )
@@ -115,6 +119,7 @@ protected:
 	UPROPERTY( EditDefaultsOnly, AssetRegistrySearchable, Category="Cooking" )
 	EIncludeInBuilds mIncludeInBuilds;
 #endif
+
 
 	/** Old property for excluding from build, remove when all UFGResearchRecipe is resaved on main*/
 	UPROPERTY()

@@ -2,17 +2,23 @@
 
 #include "FGRailroadTrackHologram.h"
 
-void AFGRailroadTrackHologram::GetLifetimeReplicatedProps( TArray< FLifetimeProperty >& OutLifetimeProps ) const{ }
 AFGRailroadTrackHologram::AFGRailroadTrackHologram(){ }
 void AFGRailroadTrackHologram::BeginPlay(){ }
-USceneComponent* AFGRailroadTrackHologram::SetupComponent( USceneComponent* attachParent, UActorComponent* componentTemplate, const FName& componentName ){ return nullptr; }
-void AFGRailroadTrackHologram::SetHologramLocationAndRotation( const FHitResult& hitResult ){ }
+USceneComponent* AFGRailroadTrackHologram::SetupComponent( USceneComponent* attachParent, UActorComponent* componentTemplate, const FName& componentName){ return nullptr; }
+void AFGRailroadTrackHologram::SetHologramLocationAndRotation( const FHitResult& hitResult){ }
 bool AFGRailroadTrackHologram::MultiStepPlacement(){ return bool(); }
-TArray< FItemAmount > AFGRailroadTrackHologram::GetCost( bool includeChildren ) const{ return TArray<FItemAmount>(); }
-void AFGRailroadTrackHologram::ConfigureActor(  AFGBuildable* inBuildable ) const{ }
-void AFGRailroadTrackHologram::ConfigureComponents(  AFGBuildable* inBuildable ) const{ }
-void AFGRailroadTrackHologram::SetMaterial(  UMaterialInterface* material ){ }
+void AFGRailroadTrackHologram::ConfigureActor(  AFGBuildable* inBuildable) const{ }
+void AFGRailroadTrackHologram::ConfigureComponents(  AFGBuildable* inBuildable) const{ }
+void AFGRailroadTrackHologram::SetLocationAndRotationFromPlatformConnections(  UFGTrainPlatformConnection* connectionOne,  UFGTrainPlatformConnection* connectionTwo){ }
+void AFGRailroadTrackHologram::CheckValidPlacement(){ }
 void AFGRailroadTrackHologram::CheckValidFloor(){ }
 void AFGRailroadTrackHologram::CheckClearance(){ }
 void AFGRailroadTrackHologram::OnRep_SplineData(){ }
-UFGRailroadTrackConnectionComponent* AFGRailroadTrackHologram::FindOverlappingConnectionComponent( const FVector& location, float radius,  UFGRailroadTrackConnectionComponent* ignoredConnection, bool ignoreIsConnected ) const{ return nullptr; }
+int32 AFGRailroadTrackHologram::GetNumCostSections() const{ return int32(); }
+bool AFGRailroadTrackHologram::ValidateGrade(){ return bool(); }
+bool AFGRailroadTrackHologram::ValidateCurvature(){ return bool(); }
+void AFGRailroadTrackHologram::AutoRouteSpline(
+		const FVector& startConnectionPos,
+		const FVector& startConnectionNormal,
+		const FVector& endConnectionPos,
+		const FVector& endConnectionNormal){ }

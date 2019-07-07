@@ -2,18 +2,19 @@
 
 #include "FGRailroadTimeTable.h"
 
-FTimeTableStop::FTimeTableStop(){ }
-UFGRailroadTimeTable::UFGRailroadTimeTable(){ }
-void UFGRailroadTimeTable::PreSaveGame_Implementation( int32 saveVersion, int32 gameVersion ){ }
-void UFGRailroadTimeTable::PostSaveGame_Implementation( int32 saveVersion, int32 gameVersion ){ }
-void UFGRailroadTimeTable::PreLoadGame_Implementation( int32 saveVersion, int32 gameVersion ){ }
-void UFGRailroadTimeTable::PostLoadGame_Implementation( int32 saveVersion, int32 gameVersion ){ }
-void UFGRailroadTimeTable::GatherDependencies_Implementation( TArray< UObject* >& out_dependentObjects ){ }
-bool UFGRailroadTimeTable::NeedTransform_Implementation(){ return bool(); }
-bool UFGRailroadTimeTable::ShouldSave_Implementation() const{ return bool(); }
-void UFGRailroadTimeTable::AddStop( int32 index, const FTimeTableStop& stop ){ }
-void UFGRailroadTimeTable::RemoveStop( int32 index ){ }
-void UFGRailroadTimeTable::GetStops( TArray< FTimeTableStop >& out_stops ) const{ }
-bool UFGRailroadTimeTable::IsValidStop( int32 index ) const{ return bool(); }
-FTimeTableStop UFGRailroadTimeTable::GetStop( int32 index ) const{ return FTimeTableStop(); }
-void UFGRailroadTimeTable::SetStopDuration( int32 index, float duration ){ }
+AFGRailroadTimeTable::AFGRailroadTimeTable(){ }
+void AFGRailroadTimeTable::GetLifetimeReplicatedProps( TArray< FLifetimeProperty >& OutLifetimeProps) const{ }
+void AFGRailroadTimeTable::PreSaveGame_Implementation( int32 saveVersion, int32 gameVersion){ }
+void AFGRailroadTimeTable::PostSaveGame_Implementation( int32 saveVersion, int32 gameVersion){ }
+void AFGRailroadTimeTable::PreLoadGame_Implementation( int32 saveVersion, int32 gameVersion){ }
+void AFGRailroadTimeTable::PostLoadGame_Implementation( int32 saveVersion, int32 gameVersion){ }
+void AFGRailroadTimeTable::GatherDependencies_Implementation( TArray< UObject* >& out_dependentObjects){ }
+bool AFGRailroadTimeTable::NeedTransform_Implementation(){ return bool(); }
+bool AFGRailroadTimeTable::ShouldSave_Implementation() const{ return bool(); }
+bool AFGRailroadTimeTable::AddStop( int32 index, const FTimeTableStop& stop){ return bool(); }
+void AFGRailroadTimeTable::RemoveStop( int32 index){ }
+void AFGRailroadTimeTable::GetStops( TArray< FTimeTableStop >& out_stops) const{ }
+bool AFGRailroadTimeTable::SetStops( const TArray< FTimeTableStop >& stops){ return bool(); }
+bool AFGRailroadTimeTable::IsValidStop( int32 index) const{ return bool(); }
+FTimeTableStop AFGRailroadTimeTable::GetStop( int32 index) const{ return FTimeTableStop(); }
+void AFGRailroadTimeTable::SetStopDuration( int32 index, float duration){ }

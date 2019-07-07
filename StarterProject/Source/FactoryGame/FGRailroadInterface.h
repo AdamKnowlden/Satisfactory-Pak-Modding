@@ -1,7 +1,8 @@
 #pragma once
+#include "UObject/Interface.h"
+#include "UObject/Class.h"
 
 #include "Buildables/FGBuildableRailroadTrack.h"
-#include "UObject/Interface.h"
 #include "FGRailroadInterface.generated.h"
 
 /**
@@ -10,7 +11,9 @@
 UINTERFACE( Blueprintable )
 class UFGRailroadInterface : public UInterface
 {
-	GENERATED_BODY()
+	
+ GENERATED_BODY()
+	UFGRailroadInterface(const class FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {} 
 };
 
 /**
@@ -21,14 +24,18 @@ class IFGRailroadInterface
 	GENERATED_IINTERFACE_BODY()
 
 	/** When this is registered on a track. */
-	UFUNCTION( BlueprintNativeEvent, Category = "Railroad" )
+	UFUNCTION( BlueprintNativeEvent, Category = "FactoryGame|Railroad|Interface" )
 	void RegisteredOnTrack( const FRailroadTrackPosition& position );
 
 	/** When this is unregistered from a track, e.g. the track is dismantled. */
-	UFUNCTION( BlueprintNativeEvent, Category = "Railroad" )
+	UFUNCTION( BlueprintNativeEvent, Category = "FactoryGame|Railroad|Interface" )
 	void UnregisteredFromTrack();
 
 	/** Get the track location. */
-	UFUNCTION( BlueprintCallable, BlueprintNativeEvent, Category = "Railroad" )
+	UFUNCTION( BlueprintCallable, BlueprintNativeEvent, Category = "FactoryGame|Railroad|Interface" )
 	FRailroadTrackPosition GetTrackPosition() const;
+
+	/** Get the track id we're on. */
+	UFUNCTION( BlueprintCallable, BlueprintNativeEvent, Category = "FactoryGame|Railroad|Interface" )
+	int32 GetTrackGraphID() const;
 };

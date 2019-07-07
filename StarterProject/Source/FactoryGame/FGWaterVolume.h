@@ -1,6 +1,9 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "GameFramework/Actor.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "UndefinedBool.h"
 #include "Interfaces/Interface_PostProcessVolume.h"

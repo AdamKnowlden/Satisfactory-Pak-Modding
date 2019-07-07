@@ -1,4 +1,7 @@
 #pragma once
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "UObject/Class.h"
 
 #include "Components/ActorComponent.h"
 #include "FGSaveInterface.h"
@@ -18,7 +21,6 @@ class FACTORYGAME_API UFGHealthComponent : public UActorComponent, public IFGSav
 {
 	GENERATED_BODY()
 public:
-	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const override; // MODDING EDIT: LNK2001
 	/** Override to be able to set some properties on match start */
 	virtual void BeginPlay() override;
 	virtual void PostLoad() override;
@@ -28,6 +30,7 @@ public:
 	virtual void PostEditChangeProperty( FPropertyChangedEvent& PropertyChangedEvent ) override;
 #endif
 	//~ End UObject Interface
+	virtual void GetLifetimeReplicatedProps(class TArray<class FLifetimeProperty, class FDefaultAllocator> & OutReplicatedProps) const override; // MODDING EDIT
 
 	// Begin IFGSaveInterface
 	virtual void PreSaveGame_Implementation( int32 saveVersion, int32 gameVersion ) override;

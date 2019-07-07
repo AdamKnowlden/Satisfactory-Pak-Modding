@@ -1,6 +1,8 @@
 // Copyright 2016-2019 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Array.h"
+#include "SubclassOf.h"
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"

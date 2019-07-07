@@ -1,6 +1,7 @@
 #pragma once
-
 #include "UObject/Interface.h"
+#include "UObject/Class.h"
+
 #include "FGDockableInterface.generated.h"
 
 
@@ -24,7 +25,9 @@ enum class EDockStationType : uint8
 UINTERFACE( Blueprintable )
 class UFGDockableInterface : public UInterface
 {
-	GENERATED_BODY()
+	
+ GENERATED_BODY()
+	UFGDockableInterface(const class FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {} 
 };
 
 /**

@@ -1,10 +1,15 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Engine/StaticMesh.h"
+#include "Array.h"
+#include "UObject/Class.h"
 
+#include "FGSplineHologram.h"
 #include "FGBuildableHologram.h"
-#include "FSplinePointData.h"
+#include "../FSplinePointData.h"
 #include "Components/SplineComponent.h"
+#include "Components/SplineMeshComponent.h"
 #include "FGRailroadTrackHologram.generated.h"
 
 
@@ -12,13 +17,10 @@
  * Hologram used to place train tracks.
  */
 UCLASS()
-class FACTORYGAME_API AFGRailroadTrackHologram : public AFGBuildableHologram
+class FACTORYGAME_API AFGRailroadTrackHologram : public AFGSplineHologram
 {
 	GENERATED_BODY()
-	
 public:
-	virtual void GetLifetimeReplicatedProps( TArray< FLifetimeProperty >& OutLifetimeProps ) const override;
-
 	AFGRailroadTrackHologram();
 
 	virtual void BeginPlay() override;
@@ -27,7 +29,6 @@ public:
 	virtual class USceneComponent* SetupComponent( USceneComponent* attachParent, UActorComponent* componentTemplate, const FName& componentName ) override;
 	virtual void SetHologramLocationAndRotation( const FHitResult& hitResult ) override;
 	virtual bool MultiStepPlacement() override;
-	virtual TArray< FItemAmount > GetCost( bool includeChildren ) const override;
 	// End AFGHologram interface
 
 	// Begin AFGBuildableHologram interface
@@ -35,44 +36,54 @@ public:
 	virtual void ConfigureComponents( class AFGBuildable* inBuildable ) const override;
 	// End AFGBuildableHologram interface
 
-protected:
-	// Begin AFGHologram interface
-	virtual void SetMaterial( class UMaterialInterface* material ) override;
-	// End AFGHologram interface
+	/**
+	 * Automatically create a hologram instance with the specified platform connections
+	 * @note This is used when spawning this railroad segment as a child hologram for a train station or platform
+	 */
+	void SetLocationAndRotationFromPlatformConnections( class UFGTrainPlatformConnection* connectionOne, class UFGTrainPlatformConnection* connectionTwo );
 
+protected:
 	// Begin AFGBuildableHologram interface
+	virtual void CheckValidPlacement() override;
 	virtual void CheckValidFloor() override;
 	virtual void CheckClearance() override;
 	// End AFGBuildableHologram interface
 
-private:
-	UFUNCTION()
-	void OnRep_SplineData();
-
-	/** Check for nearby snapping connections. */
-	class UFGRailroadTrackConnectionComponent* FindOverlappingConnectionComponent( const FVector& location, float radius, class UFGRailroadTrackConnectionComponent* ignoredConnection, bool ignoreIsConnected ) const;
+	// Begin AFGSplineHologram interface
+	virtual void OnRep_SplineData() override;
+	virtual int32 GetNumCostSections() const override;
+	// End AFGSplineHologram interface
 
 private:
-	//@todotrains
-	/** This is the minimum bend radius allowed when building train tracks. */
+	bool ValidateGrade();
+	bool ValidateCurvature();
+
+	/** This routes the spline to the new location. Giving it a nice curvature. */
+	void AutoRouteSpline(
+		const FVector& startConnectionPos,
+		const FVector& startConnectionNormal,
+		const FVector& endConnectionPos,
+		const FVector& endConnectionNormal );
+
+private:
+	/** Length restriction of the track. [cm] */
+	UPROPERTY( EditDefaultsOnly, Category = "Tracks" )
+	float mMinLength;
+	/** Length restriction of the track. [cm] */
+	UPROPERTY( EditDefaultsOnly, Category = "Tracks" )
+	float mMaxLength;
+	/** Turn radius restriction of the track. [cm] */
+	UPROPERTY( EditDefaultsOnly, Category = "Tracks" )
 	float mMinBendRadius;
-
-	/** From how far away we should snap to another track. */
+	/** Grade restriction of the track. [degrees] */
+	UPROPERTY( EditDefaultsOnly, Category = "Tracks" )
+	float mMaxGrade;
+	/** From how far away we should snap to another track. [cm] */
+	UPROPERTY( EditDefaultsOnly, Category = "Tracks" )
 	float mSnapDistance;
 
-	/** The spline component we're placing. */
-	UPROPERTY()
-	class UFGSplineComponent* mSplineComponent;
-
-	/** This is the data needed to create the spline component (local space). */
-	UPROPERTY( ReplicatedUsing = OnRep_SplineData )
-	TArray< FSplinePointData > mSplineData;
-
-	/** This is an additional floor data for the spline data (local space). */
-	TArray< FVector > mFloorData;
-
 	/** Index of the currently moved point. */
-	int32 mCurrentConnection;
+	int32 mActivePointIdx;
 
 	/** The track connections we have. */
 	UPROPERTY()
@@ -81,4 +92,16 @@ private:
 	/** The track connection we snap when building the track. */
 	UPROPERTY()
 	class UFGRailroadTrackConnectionComponent* mSnappedConnectionComponents[ 2 ];
+
+	/** All the generated spline meshes. */
+	UPROPERTY()
+	TArray< USplineMeshComponent* > mSplineMeshes;
+
+	/** This is an additional floor data for the spline data (local space). */
+	TArray< FVector > mFloorData;
+
+	/** Cached from the default buildable. */
+	UPROPERTY()
+	class UStaticMesh* mMesh;
+	float mMeshLength;
 };

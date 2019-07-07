@@ -1,8 +1,11 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Array.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
-#include "Equipment/FGWeapon.h"
+#include "FGWeapon.h"
 #include "FGC4Dispenser.generated.h"
 
 /**

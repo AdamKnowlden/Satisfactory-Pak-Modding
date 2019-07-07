@@ -3,9 +3,9 @@
 #include "FGProductionIndicatorInstanceComponent.h"
 
 UFGProductionIndicatorInstanceComponent::UFGProductionIndicatorInstanceComponent(){ }
-void UFGProductionIndicatorInstanceComponent::OnProductionStatusChanged( EProductionStatus status ){ }
+void UFGProductionIndicatorInstanceComponent::OnProductionStatusChanged( EProductionStatus status){ }
 void UFGProductionIndicatorInstanceComponent::ResetIndicatorStatus(){ }
 void UFGProductionIndicatorInstanceComponent::BeginPlay(){ }
-void UFGProductionIndicatorInstanceComponent::EndPlay( const EEndPlayReason::Type EndPlayReason ){ }
-void UFGProductionIndicatorInstanceComponent::SetInstanced( bool setToInstanced ){ }
+void UFGProductionIndicatorInstanceComponent::EndPlay( const EEndPlayReason::Type EndPlayReason){ }
+void UFGProductionIndicatorInstanceComponent::SetInstanced( bool setToInstanced){ }
 void UFGProductionIndicatorInstanceComponent::OnHiddenInGameChanged(){ }

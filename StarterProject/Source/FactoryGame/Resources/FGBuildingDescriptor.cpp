@@ -8,8 +8,8 @@ FVector UFGBuildingDescriptor::GetCenterOfCollision(){ return FVector(); }
 #endif 
 UFGBuildingDescriptor::UFGBuildingDescriptor(){ }
 void UFGBuildingDescriptor::PostLoad(){ Super::PostLoad(); }
-TSubclassOf< class AFGBuildable > UFGBuildingDescriptor::GetBuildableClass( TSubclassOf< UFGBuildingDescriptor > inClass ){ return TSubclassOf<class AFGBuildable>(); }
-float UFGBuildingDescriptor::GetPowerConsumption( TSubclassOf< UFGBuildingDescriptor > inClass ){ return float(); }
-float UFGBuildingDescriptor::GetPowerProduction( TSubclassOf< UFGBuildingDescriptor > inClass ){ return float(); }
+TSubclassOf< class AFGBuildable > UFGBuildingDescriptor::GetBuildableClass( TSubclassOf< UFGBuildingDescriptor > inClass){ return TSubclassOf<class AFGBuildable>(); }
+float UFGBuildingDescriptor::GetPowerConsumption( TSubclassOf< UFGBuildingDescriptor > inClass){ return float(); }
+float UFGBuildingDescriptor::GetPowerProduction( TSubclassOf< UFGBuildingDescriptor > inClass){ return float(); }
 FText UFGBuildingDescriptor::GetItemNameInternal() const{ return FText(); }
 FText UFGBuildingDescriptor::GetItemDescriptionInternal() const{ return FText(); }

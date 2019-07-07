@@ -1,9 +1,10 @@
 // Copyright 2016-2018 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "UObject/Class.h"
 
 #include "CoreMinimal.h"
-#include "Resources/FGResourceDescriptor.h"
+#include "FGResourceDescriptor.h"
 #include "FGResourceDescriptorGeyser.generated.h"
 
 /**

@@ -1,6 +1,9 @@
 // Copyright 2017 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "GameFramework/Actor.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "FGBuildableManufacturer.h"
 #include "FGBuildableConverter.generated.h"

@@ -1,4 +1,6 @@
 #pragma once
+#include "Engine/World.h"
+#include "UnrealString.h"
 
 #include "Serialization/ArchiveProxy.h"
 #include "EngineGlobals.h"

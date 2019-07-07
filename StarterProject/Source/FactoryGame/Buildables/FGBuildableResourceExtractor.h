@@ -1,6 +1,10 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "UObject/CoreNet.h"
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "UObject/Class.h"
 
 #include "FGBuildableFactory.h"
 #include "../Resources/FGItemDescriptor.h"

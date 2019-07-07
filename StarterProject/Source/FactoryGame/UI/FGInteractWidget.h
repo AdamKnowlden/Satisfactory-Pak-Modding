@@ -1,4 +1,7 @@
 #pragma once
+#include "Array.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "UMG.h"
 #include "UserWidget.h"
@@ -78,13 +81,18 @@ public:
 	/** Getter for mSupportsStacking */
 	UFUNCTION( BlueprintPure, Category = "UI" )
 	FORCEINLINE bool GetSupportsStacking() { return mSupportsStacking; }
+
 protected: 
 	virtual void NativeConstruct() override;
 	virtual void NativeOnRemovedFromFocusPath( const FFocusEvent& InFocusEvent ) override;
+	// Requirement check to verify before calling blueprint Init
+	virtual bool NativeCanCallInit();
+	
 
 private: 
-	/** Internal function that is only used to delay Init by an extra frame */
-	void StepOneInit();
+	/** Internal function that checks for requierments being met before calling init */
+	void NativeTestAndQueueInit();
+
 public:
 	/** If we should take the keyboard input from the player. The player won't be able to move around. */
 	UPROPERTY( EditDefaultsOnly, BlueprintReadWrite, Category = "Input" )
@@ -138,4 +146,5 @@ protected:
 	/** Does this widget support stacking widgets on top? */
 	UPROPERTY( EditDefaultsOnly, Category = "Input" )
 	bool mSupportsStacking;
+
 };

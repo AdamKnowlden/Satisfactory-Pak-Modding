@@ -1,4 +1,5 @@
 #pragma once
+#include "UObject/Class.h"
 
 #include "Object.h"
 #include "FGFoliageIdentifier.generated.h"

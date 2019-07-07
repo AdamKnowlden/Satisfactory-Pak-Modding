@@ -2,22 +2,27 @@
 
 #include "HologramHelpers.h"
 
-UStaticMeshComponent* FHologramHelpers::CreateClearanceComponent(  USceneComponent* attachTo,  UBoxComponent* fromBox ){ return nullptr; }
-UStaticMeshComponent* FHologramHelpers::CreateConnectionRepresentation(  UFGFactoryConnectionComponent* connectionComponent ){ return nullptr; }
-float FHologramHelpers::CalcPoleHeight( const  FHitResult& aimResult, const  FVector& poleLocation ){ return float(); }
-void FSplineUtils::CalcAutoCurveSpline(  FSplinePointData& startPoint,  FSplinePointData& endPoint ){ }
-float FSplineUtils::CalcTangentRatioAtSplit( const  USplineComponent* component, float split ){ return float(); }
+UStaticMeshComponent* FHologramHelpers::CreateClearanceComponent(  USceneComponent* attachTo,  UBoxComponent* fromBox){ return nullptr; }
+UStaticMeshComponent* FHologramHelpers::CreateConnectionRepresentation(  UFGFactoryConnectionComponent* connectionComponent){ return nullptr; }
+float FHologramHelpers::CalcPoleHeight( const  FHitResult& aimResult, const  FVector& poleLocation){ return float(); }
+void FSplineUtils::CalcAutoCurveSpline(  FSplinePointData& startPoint,  FSplinePointData& endPoint){ }
+float FSplineUtils::CalcTangentRatioAtSplit( const  USplineComponent* component, float split){ return float(); }
 bool FSplineUtils::BuildStraightSpline(
 		 FSplineBuilder& builder,
 		const FVector& endPos,
 		const FVector& endForward,
-		float dotTreshold ){ return bool(); }
+		float dotTreshold){ return bool(); }
 bool FSplineUtils::BuildBendStraightBendSpline(
 		 FSplineBuilder& builder,
 		float startRadius,
 		float endRadius,
 		const FVector& endPos,
-		const FVector& endForward ){ return bool(); }
+		const FVector& endForward){ return bool(); }
+bool FSplineUtils::BuildCurveSpline(
+		 FSplineBuilder& builder,
+		float minTurnRadius,
+		const FVector& endPos,
+		FVector endForward){ return bool(); }
 void FSplineUtils::CalcBendDirections(
 		const FVector& startPos,
 		const FVector& startForward,
@@ -26,7 +31,7 @@ void FSplineUtils::CalcBendDirections(
 		const FVector& endForward,
 		float endRadius,
 		bool& out_isStartCW,
-		bool& out_isEndCW ){ }
+		bool& out_isEndCW){ }
 void FSplineUtils::CalcBendAngles(
 		const FVector& startPos,
 		const FVector& startForward,
@@ -37,8 +42,8 @@ void FSplineUtils::CalcBendAngles(
 		float endRadius,
 		bool isEndCW,
 		float& out_startAngle,
-		float& out_endAngle ){ }
-float FSplineUtils::CalcStraightTangentMagnitude( const FVector& startPos, const FVector& endPos ){ return float(); }
-void FSplineBuilder::Start( const FVector& pos, const FVector& tan ){ }
-void FSplineBuilder::Segment( const FVector& pos, const FVector& tan ){ }
-void FSplineBuilder::ModifySegment( const FVector& pos, const FVector& tan ){ }
+		float& out_endAngle){ }
+float FSplineUtils::CalcStraightTangentMagnitude( const FVector& startPos, const FVector& endPos){ return float(); }
+void FSplineBuilder::Start( const FVector& pos, const FVector& tan){ }
+void FSplineBuilder::Segment( const FVector& pos, const FVector& tan){ }
+void FSplineBuilder::ModifySegment( const FVector& pos, const FVector& tan){ }

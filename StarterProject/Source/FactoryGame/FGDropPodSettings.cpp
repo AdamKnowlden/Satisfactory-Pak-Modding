@@ -2,4 +2,4 @@
 
 #include "FGDropPodSettings.h"
 
-const FDropPackage UFGDropPodSettings::GetRandomDropPackage(  UWorld* world ){ return FDropPackage(); }
+const FDropPackage UFGDropPodSettings::GetRandomDropPackage(  UWorld* world){ return FDropPackage(); }

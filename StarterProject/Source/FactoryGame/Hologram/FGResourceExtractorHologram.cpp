@@ -3,7 +3,7 @@
 #include "FGResourceExtractorHologram.h"
 
 void AFGResourceExtractorHologram::BeginPlay(){ }
-bool AFGResourceExtractorHologram::TrySnapToActor( const FHitResult& hitResult ){ return bool(); }
+bool AFGResourceExtractorHologram::TrySnapToActor( const FHitResult& hitResult){ return bool(); }
 void AFGResourceExtractorHologram::CheckValidPlacement(){ }
-void AFGResourceExtractorHologram::ConfigureActor(  AFGBuildable* inBuildable ) const{ }
+void AFGResourceExtractorHologram::ConfigureActor(  AFGBuildable* inBuildable) const{ }
 void AFGResourceExtractorHologram::CheckResourcesAvailable(){ }

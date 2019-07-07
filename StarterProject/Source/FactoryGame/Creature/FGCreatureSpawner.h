@@ -1,10 +1,13 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Array.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "GameFramework/Actor.h"
 #include "FGCreature.h"
-#include "FGSaveInterface.h"
+#include "../FGSaveInterface.h"
 #include "FGCreatureSpawner.generated.h"
 
 /** Data we need to know/save about spawns in this spawner */

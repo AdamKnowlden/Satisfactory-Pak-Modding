@@ -1,9 +1,12 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Array.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "GameFramework/Actor.h"
-#include "ItemAmount.h"
+#include "../ItemAmount.h"
 #include "Components/MeshComponent.h"
 #include "FGHologram.generated.h"
 

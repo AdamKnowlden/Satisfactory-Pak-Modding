@@ -1,8 +1,11 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "GameFramework/Actor.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
-#include "AI/FGAttack.h"
+#include "FGAttack.h"
 #include "FGAttackRanged.generated.h"
 
 /**
@@ -19,9 +22,9 @@ public:
 	virtual void PerformAttack( TScriptInterface< IFGAggroTargetInterface >	aggroTarget, class AFGEnemy* sourceActor ) override;
 
 	/** Has the actual logic for spawning projectiles ( so that we can override in blueprint */
-	UFUNCTION( BlueprintNativeEvent, Category = "Projectile" ) 
+	UFUNCTION( BlueprintNativeEvent, Category = "FactoryGame|Enemy|Attack" ) 
 	void SpawnProjectile( AActor* targetActor, class AFGEnemy* sourceActor );
 public:
-	UPROPERTY( EditDefaultsOnly, Category = "Projectile" )
+	UPROPERTY( EditDefaultsOnly, Category = "Attack" )
 	TSubclassOf< class AFGProjectile > mProjectileClass;
 };

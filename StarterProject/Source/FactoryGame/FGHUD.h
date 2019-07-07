@@ -1,5 +1,9 @@
 //Copyright 2016 Coffee Stain Studios.All Rights Reserved.
 #pragma once 
+#include "Engine/World.h"
+#include "GameFramework/Actor.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 #include "GameFramework/HUD.h"
 #include "Resources/FGItemDescriptor.h"
 #include "FGHUDBase.h"
@@ -170,6 +174,10 @@ public:
 	UFUNCTION( BlueprintImplementableEvent, Category = "HUD" )
 	void RemoveEquipmentHUD( EEquipmentSlot slot );
 
+	/** Returns the latest created pawn HUD widget. Can return nullptr */
+	UFUNCTION( BlueprintPure, Category = "HUD" )
+	FORCEINLINE UUserWidget* GetPawnHUD() { return mPawnHUD; }
+
 private:
 	/** Setup our preview for a building/vehicle from our current set preview class */
 	void SetupActorPreview();
@@ -257,4 +265,8 @@ private:
 	/** The actor class we want to preview, we don't use buildable as we want to support vehicles too */
 	UPROPERTY()
 	TSubclassOf<class AActor> mPreviewActorClass;
+
+	/** The latest created pawn HUD widget */
+	UPROPERTY()
+	UUserWidget* mPawnHUD;
 };

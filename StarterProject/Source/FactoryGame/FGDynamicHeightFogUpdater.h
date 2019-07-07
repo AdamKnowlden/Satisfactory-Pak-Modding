@@ -1,4 +1,7 @@
 #pragma once
+#include "Engine/World.h"
+#include "Array.h"
+#include "UObject/Class.h"
 
 #include "Object.h"
 #include "FGExponentialHeightFog.h"

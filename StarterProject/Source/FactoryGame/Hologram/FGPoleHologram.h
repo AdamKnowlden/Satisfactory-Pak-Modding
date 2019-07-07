@@ -1,8 +1,12 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Engine/StaticMesh.h"
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "UObject/Class.h"
 
-#include "Hologram/FGFactoryHologram.h"
+#include "FGFactoryHologram.h"
 #include "../Resources/FGPoleDescriptor.h"
 #include "FGPoleHologram.generated.h"
 
@@ -46,6 +50,9 @@ private:
 	UFUNCTION()
 	void OnRep_PoleMesh();
 
+	/** Updates the relative offset for mPoleHeightComponent based on mPoleMesh */
+	void UpdatePoleHeightRelativeLoc();
+
 protected:
 	/** The most fitting mesh for our aim height. */
 	UPROPERTY( ReplicatedUsing = OnRep_PoleMesh )
@@ -59,6 +66,9 @@ private:
 	/** Can this pole be stacked. */
 	bool mCanStack;
 	float mStackHeight;
+
+	/** Used to determine whether the relative offset needs to be updated for the pole mesh */
+	bool mPoleHeightMarkedDirty : 1;
 
 	/** The pole mesh. */
 	UPROPERTY()

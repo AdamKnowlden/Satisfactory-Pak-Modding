@@ -1,4 +1,5 @@
 #pragma once
+#include "UObject/Class.h"
 
 #include "Blueprint/UserWidget.h"
 #include "FGMenuBase.generated.h"

@@ -1,6 +1,7 @@
 // Copyright 2018 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "UObject/Class.h"
 
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "FGMapFunctionLibrary.generated.h"

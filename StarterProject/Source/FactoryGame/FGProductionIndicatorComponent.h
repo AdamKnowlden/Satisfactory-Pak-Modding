@@ -1,6 +1,8 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Array.h"
+#include "UObject/Class.h"
 
 #include "Buildables/FGBuildableFactory.h"
 #include "FGProductionIndicatorComponent.generated.h"
@@ -16,6 +18,8 @@ class FACTORYGAME_API UFGProductionIndicatorComponent : public UActorComponent
 public:
 	UFGProductionIndicatorComponent();
 
+	virtual void OnUnregister() override;
+	virtual void OnRegister() override;
 		
 	virtual void TickComponent( float deltaTime, enum ELevelTick tickType, FActorComponentTickFunction *thisTickFunction ) override;
 

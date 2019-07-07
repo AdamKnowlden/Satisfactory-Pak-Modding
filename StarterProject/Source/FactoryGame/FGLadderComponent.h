@@ -1,6 +1,9 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "UObject/Class.h"
 
 #include "Components/BoxComponent.h"
 #include "FGLadderComponent.generated.h"
@@ -14,6 +17,8 @@ public:
 	UFGLadderComponent( const FObjectInitializer& ObjectInitializer );
 
 	// Begin UActorComponent interface
+	virtual void OnRegister() override;
+	virtual void OnUnregister() override;
 	virtual void BeginPlay() override;
 	virtual void EndPlay( const EEndPlayReason::Type endPlayReason ) override;
 	virtual void TickComponent( float deltaTime, enum ELevelTick tickType, FActorComponentTickFunction* thisTickFunction ) override;

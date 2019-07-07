@@ -3,17 +3,17 @@
 #include "FGConveyorLiftHologram.h"
 
 AFGConveyorLiftHologram::AFGConveyorLiftHologram(){ }
-void AFGConveyorLiftHologram::GetLifetimeReplicatedProps( TArray< FLifetimeProperty >& OutLifetimeProps ) const{ }
+void AFGConveyorLiftHologram::GetLifetimeReplicatedProps( TArray< FLifetimeProperty >& OutLifetimeProps) const{ }
 void AFGConveyorLiftHologram::BeginPlay(){ }
 void AFGConveyorLiftHologram::Destroyed(){ }
-bool AFGConveyorLiftHologram::IsValidHitResult( const FHitResult& hitResult ) const{ return bool(); }
-void AFGConveyorLiftHologram::SetHologramLocationAndRotation( const FHitResult& hitResult ){ }
+bool AFGConveyorLiftHologram::IsValidHitResult( const FHitResult& hitResult) const{ return bool(); }
+void AFGConveyorLiftHologram::SetHologramLocationAndRotation( const FHitResult& hitResult){ }
 bool AFGConveyorLiftHologram::MultiStepPlacement(){ return bool(); }
-bool AFGConveyorLiftHologram::TryUpgrade( const FHitResult& hitResult ){ return bool(); }
+bool AFGConveyorLiftHologram::TryUpgrade( const FHitResult& hitResult){ return bool(); }
 AActor* AFGConveyorLiftHologram::GetUpgradedActor() const{ return nullptr; }
 void AFGConveyorLiftHologram::CheckValidFloor(){ }
-void AFGConveyorLiftHologram::ConfigureActor(  AFGBuildable* inBuildable ) const{ }
-void AFGConveyorLiftHologram::ConfigureComponents(  AFGBuildable* inBuildable ) const{ }
+void AFGConveyorLiftHologram::ConfigureActor(  AFGBuildable* inBuildable) const{ }
+void AFGConveyorLiftHologram::ConfigureComponents(  AFGBuildable* inBuildable) const{ }
 int32 AFGConveyorLiftHologram::GetRotationStep() const{ return int32(); }
 int32 AFGConveyorLiftHologram::GetNumCostSections() const{ return int32(); }
 void AFGConveyorLiftHologram::OnRep_TopTransform(){ }

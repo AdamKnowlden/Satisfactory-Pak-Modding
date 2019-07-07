@@ -1,9 +1,12 @@
 // Copyright 2016-2019 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Array.h"
+#include "UnrealString.h"
+#include "UObject/Class.h"
 
 #include "CoreMinimal.h"
-#include "Buildables/FGBuildableWall.h"
+#include "FGBuildableWall.h"
 #include "FGBuildableSignWall.generated.h"
 
 

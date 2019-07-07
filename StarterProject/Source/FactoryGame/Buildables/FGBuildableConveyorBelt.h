@@ -1,15 +1,36 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Engine/StaticMesh.h"
+#include "Array.h"
+#include "UnrealString.h"
+#include "GameFramework/Actor.h"
+#include "UObject/Class.h"
 
-#include "FGUseableInterface.h"
+#include "../FGUseableInterface.h"
 #include "FGBuildableConveyorBase.h"
-#include "FGSignificanceInterface.h"
+#include "../FGSignificanceInterface.h"
 #include "Components/SplineComponent.h"
-#include "FSplinePointData.h"
-#include "FGSplineComponent.h"
+#include "../FSplinePointData.h"
+#include "../FGSplineComponent.h"
+#include "../FGRemoteCallObject.h"
 #include "FGBuildableConveyorBelt.generated.h"
 
+//[DavalliusA:Tue/18-06-2019] moved to base... keeping it here for now till we know it works.
+//UCLASS()
+//class UFGConveyorRemoteCallObject : public UFGRemoteCallObject
+//{
+//	GENERATED_BODY()
+//public:
+//	virtual void GetLifetimeReplicatedProps( TArray< FLifetimeProperty >& OutLifetimeProps ) const override;
+//
+//	/** Compact representation of mSplineComponent, used for replication and save game */
+//	UPROPERTY( Replicated, Meta = ( NoAutoJson ) )
+//	bool mForceNetField_UFGConveyorRemoteCallObject = false;
+//
+//	UFUNCTION( Reliable, Server, WithValidation, Category = "Use" )
+//	void Server_OnUse( class AFGBuildableConveyorBelt* target, class AFGCharacterPlayer* byCharacter, int32 itemIndex, int8 repVersion );
+//};
 
 /**
  * Valid state for picking up conveyor belt items.
@@ -24,6 +45,8 @@ public:
 public:
 	/** index for the looked at item in mItems */
 	int32 mItemIndex;
+
+	int8 mRepVersion;
 };
 
 UCLASS()
@@ -135,6 +158,8 @@ public:
 
 	UFUNCTION( BlueprintPure, Category = "Significance" )
 	FORCEINLINE bool GetIsSignificant() { return mIsSignificant; }
+
+	void OnUseServerRepInput( class AFGCharacterPlayer* byCharacter, int32 itemIndex, int8 repVersion );
 protected:
 	// Begin AFGBuildableFactory interface
 	virtual bool VerifyDefaults( FString& out_message ) override;
@@ -145,14 +170,20 @@ protected:
 	// End AFGBuildableConveyorBase interface
 
 private:
+	void UpdateItemTransformTick( const FConveyorBeltItem& item, TMap<FName, int32>& instanceCounts, class AFGRadioactivitySubsystem* radioactiveSubsystem );
+
+private:
 	friend class AFGConveyorBeltHologram;
 
 	/** Meshes for items. */
 	UPROPERTY( Meta = ( NoAutoJson ) )
 	TMap< FName, class UInstancedStaticMeshComponent* > mItemMeshMap;
 
+	UFUNCTION()
+	void OnRep_SplineData();
+
 	/** Compact representation of mSplineComponent, used for replication and save game */
-	UPROPERTY( SaveGame, Replicated, Meta = (NoAutoJson) )
+	UPROPERTY( SaveGame, ReplicatedUsing = OnRep_SplineData, Meta = (NoAutoJson) )
 	TArray< FSplinePointData > mSplineData;
 
 	/** The spline component for this splined factory. */

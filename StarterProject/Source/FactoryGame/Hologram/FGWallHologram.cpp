@@ -4,5 +4,5 @@
 
 AFGWallHologram::AFGWallHologram(){ }
 void AFGWallHologram::BeginPlay(){ }
-bool AFGWallHologram::TrySnapToActor( const FHitResult& hitResult ){ return bool(); }
+bool AFGWallHologram::TrySnapToActor( const FHitResult& hitResult){ return bool(); }
 int32 AFGWallHologram::GetRotationStep() const{ return int32(); }

@@ -1,4 +1,8 @@
 #pragma once
+#include "Array.h"
+#include "UnrealString.h"
+#include "GameFramework/Actor.h"
+#include "UObject/Class.h"
 
 #include "Online.h"
 #include "FGInputLibrary.h"
@@ -68,12 +72,30 @@ public:
 	void SetMouseSensitivity( float newSense );
 
 	/** Get current sensitivity */
-	UFUNCTION( BlueprintPure, Category = "Input" )
+	DEPRECATED(4.21, "Use GetMouseSensitivityX/GetMouseSensitivityY instead")
+	UFUNCTION( BlueprintPure, Category = "Input", meta=(DeprecatedFunction,DeprecationMessage = "Use GetMouseSensitivityX/GetMouseSensitivityY instead") )
 	float GetMouseSensitivity();
 
-	/** Get default value for mouse sensitivity */
+	/** Get current sensitivity in X axis */
 	UFUNCTION( BlueprintPure, Category = "Input" )
+	float GetMouseSensitivityX();
+
+	/** Get current sensitivity in X axis*/
+	UFUNCTION( BlueprintPure, Category = "Input" )
+	float GetMouseSensitivityY();
+
+	/** Get default value for mouse sensitivity */
+	DEPRECATED(4.21, "Use GetDefaultMouseSensitivityX/GetDefaultMouseSensitivityY instead")
+	UFUNCTION( BlueprintPure, Category = "Input", meta=(DeprecatedFunction,DeprecationMessage = "Use GetDefaultMouseSensitivityX/GetDefaultMouseSensitivityY instead") )
 	float GetDefaultMouseSensitivity();
+
+	/** Get default value for mouse sensitivity in X axis*/
+	UFUNCTION( BlueprintPure, Category = "Input" )
+	float GetDefaultMouseSensitivityX();
+
+	/** Get default value for mouse sensitivity in Y axis*/
+	UFUNCTION( BlueprintPure, Category = "Input" )
+	float GetDefaultMouseSensitivityY();
 
 	/** Returns readable name for an action */
 	UFUNCTION( BlueprintPure, Category = "Input" )
@@ -89,14 +111,6 @@ public:
 	/** Set CurrentNetSpeed to the lower of its current value and Cap, can update during the game to the new value if client updates it's bandwidth */
 	UFUNCTION(Reliable, Server, WithValidation)
 	void Server_UpdateCappedBandwidth(int32 cap);
-
-	// DEBUG FUNCTIONS TO BE REMOVED AFTER https://questions.satisfactorygame.com/6612/frame-drops-every-few-minutes-constant-freezes?show=17767#c17767 is closed
-	UFUNCTION( exec )
-	void SetPresenceEnabled( bool enabled );
-
-	UFUNCTION( exec )
-	void SetSessionEnabled( bool enabled );
-	// END DEBUG FUNCTIONS
 
 protected:
 	/** Used to discard any input when we are dead */

@@ -1,6 +1,10 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "FGCreatureController.h"
 #include "FGAggroTargetInterface.h"
@@ -111,7 +115,7 @@ public:
 	*
 	* @return - If we should ignore this target altogether.
 	*/
-	UFUNCTION( BlueprintCallable, Category = "Aggro" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|AI|Aggro" )
 	bool IsOnIgnoreList( const TScriptInterface< IFGAggroTargetInterface > aggroTargetInterface ) const;
 
 	/**
@@ -120,7 +124,7 @@ public:
 	*
 	* @return - If we should aggro against this target.
 	*/
-	UFUNCTION( BlueprintCallable, Category = "Aggro" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|AI|Aggro" )
 	bool ShouldAddAggroTarget( const TScriptInterface< IFGAggroTargetInterface > aggroTargetInterface ) const;
 
 	/**
@@ -130,39 +134,39 @@ public:
 	* @param full -	if a full update should be done. (expensive)
 	*					Extended checks every target if it should still be in the aggro list.
 	*/
-	UFUNCTION( BlueprintCallable, Category = "Aggro" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|AI|Aggro" )
 	void UpdateAggroTargets( float dt, bool fullCheck = false );
 
 	/**
 	 * Sweeps through all aggro entries and removes the invalid ones
 	 */
-	UFUNCTION( BlueprintCallable, Category = "Aggro" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|AI|Aggro" )
 	void RemoveInvalidAggroTargets();
 
 	/**
 	 * Finds an appropriate target from the list of aggro targets that exist                                                                    
 	 */
-	UFUNCTION( BlueprintCallable, Category = "Aggro" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|AI|Aggro" )
 	void FindAndAssignTarget();
 
 	/**
 	 * Assigns a new aggrotarget                                                                    
 	 */
-	UFUNCTION( BlueprintCallable, Category = "Aggro" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|AI|Aggro" )
 	void SetCurrentAggroTarget( TScriptInterface< IFGAggroTargetInterface > newAggroTargetInterface );
 
 	/** Called if we change aggro target */
 	void UpdateAggroTarget( TScriptInterface< IFGAggroTargetInterface > oldTarget, TScriptInterface< IFGAggroTargetInterface > newTarget );
 
 	/** Do stuff when we found a new target */
-	UFUNCTION( BlueprintNativeEvent, Category = "Aggro" )
+	UFUNCTION( BlueprintNativeEvent, Category = "FactoryGame|AI|Aggro" )
 	void OnAggroTargetUpdated();
 
 	/** Do stuff when clearing the target */
 	void OnAggroTargetRemoved( const TScriptInterface< IFGAggroTargetInterface > oldTarget  );
 
 	/** Called when we lose an aggro target and have no other target set */
-	UFUNCTION( BlueprintImplementableEvent, Category = "Aggro" )
+	UFUNCTION( BlueprintImplementableEvent, Category = "FactoryGame|AI|Aggro" )
 	void OnAggroTargetLost( AActor* lostActor );
 
 	/** Add a new aggro target to our aggro target list, can't be in the list before */
@@ -174,7 +178,7 @@ public:
 	* @param aggroTarget - The target to add aggro to.
 	* @param aggroToAdd - How much aggro do we want to add to the target.
 	*/
-	UFUNCTION( BlueprintCallable, Category = "Aggro" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|AI|Aggro" )
 	void AddToAggroByTarget( const TScriptInterface< IFGAggroTargetInterface > target, float damage );
 
 	/** aggro thresholds for setting a target and releasing a target may be different */
@@ -208,15 +212,15 @@ public:
 	 *
 	 * @param target - the actor we want to trace against
 	 */
-	UFUNCTION(BlueprintPure,Category="AI")
+	UFUNCTION(BlueprintPure,Category="FactoryGame|AI")
 	bool CanSeeActor( AActor* target );
 
 	/** Returns the aggro target that currently has the most aggro */
-	UFUNCTION( BlueprintPure, Category = "AI" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|AI" )
 	FORCEINLINE TScriptInterface< IFGAggroTargetInterface > GetMostDesirableAggroTarget() { return mMostDesirableAggroTarget; }
 
 	/** Gets targeting desire from a aggro target */
-	UFUNCTION( BlueprintCallable, Category = "AI" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|AI" )
 	float GetTargetingDesire( TScriptInterface< IFGAggroTargetInterface > aggroTarget );
 
 	/** function for sorting our array of aggrotargets */
@@ -229,7 +233,7 @@ public:
 	*
 	* @return - the targeting desire.
 	*/
-	UFUNCTION( BlueprintCallable, Category = "Aggro" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|AI|Aggro" )
 	float GetTargetingDesireFromAggroEntry( FAggroEntry outTarget );
 
 	/** Updates the aggro */
@@ -326,30 +330,30 @@ public:
 	void UpdateAggroAndFindAndAssignTarget();
 
 	/** Gathers all aggro targets into the current list. Note, this doesn't clear the current aggro list */
-	UFUNCTION( BlueprintCallable, Category = "Aggro" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|AI|Aggro" )
 	void GatherAggroTargets();
 
-	UFUNCTION( BlueprintImplementableEvent, BlueprintCallable, Category = "Aggro" )
+	UFUNCTION( BlueprintImplementableEvent, BlueprintCallable, Category = "FactoryGame|AI|Aggro" )
 	void ClearAllAggroTargetsAndUpdate();
 
 	/** Returns index of current pattern */
-	UFUNCTION( BlueprintPure, Category = "AI" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|AI" )
 	FORCEINLINE int32 GetAttackPatternIndex() { return mAttackPatternIndex; }
 
 	/** Returns the attack class found in the attack pattern */
-	UFUNCTION( BlueprintCallable, Category = "AI" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|AI" )
 	TSubclassOf< UFGAttack > GetCurrentAttackFromPattern(){ return mAttackPattern[ mAttackPatternIndex ]; }
 
 	/** Updates the attack from attackpattern to the next in line ( will loop ) */
-	UFUNCTION( BlueprintCallable, Category = "AI" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|AI" )
 	void UpdateAttackPattern();
 
 	/** Returns the last valid location for target */
-	UFUNCTION( BlueprintPure, Category = "AI" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|AI" )
 	FORCEINLINE FVector GetTargetLastValidLocation() { return mLastValidLocation; }
 
 	/** Resets the variable mLastValidLocation to an invalid location */
-	UFUNCTION( BlueprintCallable, Category = "AI" ) 
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|AI" ) 
 	void ResetLastValidTargetLocation() { mLastValidLocation = FAISystem::InvalidLocation; } 
 public:
 	/** Handle that cares about how often we update the aggro for our AI */

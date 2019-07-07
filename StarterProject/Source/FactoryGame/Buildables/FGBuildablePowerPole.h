@@ -1,6 +1,8 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Array.h"
+#include "UObject/Class.h"
 
 #include "FGBuildable.h"
 #include "FGBuildablePowerPole.generated.h"
@@ -74,7 +76,7 @@ private:
 	UPROPERTY( VisibleAnywhere )
 	class UFGColoredInstanceMeshProxy* mMeshComponentProxy = nullptr;
 
-	UPROPERTY( Replicated )
+	UPROPERTY( Replicated, meta = (NoAutoJson = true)  )
 	int32 mCachedNumConnectionsToPole;
 
 	bool mIsDismantled;

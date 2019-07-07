@@ -1,6 +1,8 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "UnrealString.h"
+#include "UObject/Class.h"
 
 #include "GameplayTaskResource.h"
 #include "FGGameplayResource_Attack.generated.h"

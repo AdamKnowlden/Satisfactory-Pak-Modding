@@ -1,6 +1,7 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "UnrealString.h"
 
 #include "FGSaveSession.h"
 #include "GameFramework/Actor.h"

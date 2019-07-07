@@ -1,4 +1,7 @@
 #pragma once
+#include "Engine/World.h"
+#include "Array.h"
+#include "UnrealString.h"
 
 #include "FGWorldCreationInterface.h"
 #include "FGEngineCommon.generated.h"

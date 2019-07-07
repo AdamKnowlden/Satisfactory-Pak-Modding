@@ -1,14 +1,19 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "UObject/CoreNet.h"
+#include "Array.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "GameFramework/Actor.h"
-#include "ItemAmount.h"
-#include "FGSaveInterface.h"
+#include "../ItemAmount.h"
+#include "../FGSaveInterface.h"
+#include "../CharacterAnimationTypes.h"
+#include "../Replication/FGReplicationDependencyActorInterface.h"
 #include "Components/InputComponent.h"
 #include "Blueprint/UserWidget.h"
 #include "FGEquipment.generated.h"
-
 
 //Equipments are equip on different slots on the player. One EQ per slot. These are the slots.
 UENUM( BlueprintType )
@@ -25,7 +30,7 @@ enum class EEquipmentSlot :uint8
  * Base class for all kinds of equipment in the game.
  */
 UCLASS( meta = (AutoJson = true) )
-class FACTORYGAME_API AFGEquipment : public AActor, public IFGSaveInterface
+class FACTORYGAME_API AFGEquipment : public AActor, public IFGSaveInterface, public IFGReplicationDependencyActorInterface
 {
 	GENERATED_BODY()
 public:
@@ -87,6 +92,11 @@ public:
 	/** Sets the current attachment for this weapon */
 	void SetSecondaryAttachment( class AFGEquipmentAttachment* newAttachment );
 
+	/** Get the arms animation to play on the player */
+	FORCEINLINE EArmEquipment GetArmsAnimation() const{ return mArmAnimation; }
+
+	/** Get the back animation to play on the player */
+	FORCEINLINE EBackEquipment GetBackAnimation() const{ return mBackAnimation; }
 
 	/**
 	 * Get the attachment for this equipment.
@@ -244,6 +254,14 @@ protected:
 	/** The cost of using this equipment */
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category = "Equipment" )
 	TArray< FItemAmount > mCostToUse;
+
+	/** Arms animation this should play on the when the equipment is equipped (only used if mEquipmentSlot == ES_ARMS) */
+	UPROPERTY( EditDefaultsOnly, Category = "Equipment|Animation" )
+	EArmEquipment mArmAnimation;
+
+	/** Arms animation this should play on the when the equipment is equipped (only used if mEquipmentSlot == ES_BACK) */
+	UPROPERTY( EditDefaultsOnly, Category = "Equipment|Animation" )
+	EBackEquipment mBackAnimation;
 
 	/** If the owner is persistent throughout the lifetime of this equipment */
 	UPROPERTY( EditDefaultsOnly, Category = "Equipment", AdvancedDisplay )

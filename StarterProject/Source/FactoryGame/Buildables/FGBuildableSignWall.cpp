@@ -3,7 +3,7 @@
 #include "FGBuildableSignWall.h"
 
 AFGBuildableSignWall::AFGBuildableSignWall(){ }
-void AFGBuildableSignWall::GetLifetimeReplicatedProps( TArray<FLifetimeProperty>& OutLifetimeProps ) const{ }
+void AFGBuildableSignWall::GetLifetimeReplicatedProps( TArray<FLifetimeProperty>& OutLifetimeProps) const{ }
 void AFGBuildableSignWall::BeginPlay(){ }
 void AFGBuildableSignWall::SetSignData( FSignWallData signData, bool bUpdate ){ }
 void AFGBuildableSignWall::UpdateSignElements(){ }

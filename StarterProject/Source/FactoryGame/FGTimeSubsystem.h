@@ -1,4 +1,8 @@
 #pragma once
+#include "Engine/World.h"
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "UObject/Class.h"
 
 #include "FGSubsystem.h"
 #include "FGSaveInterface.h"
@@ -27,7 +31,6 @@ public:
 	AFGTimeOfDaySubsystem();
 	
 	// Begin AActor interface
-	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const override; // MODDING EDIT: LNK2001
 	virtual void BeginPlay() override;
 	virtual void Tick( float dt ) override;
 	// End AActor interface
@@ -41,6 +44,8 @@ public:
 	virtual bool NeedTransform_Implementation() override;
 	virtual bool ShouldSave_Implementation() const override;
 	// End IFSaveInterface
+
+	virtual void GetLifetimeReplicatedProps(class TArray<class FLifetimeProperty, class FDefaultAllocator> & OutReplicatedProps) const override; // MODDING EDIT
 
 	/** Set the value of daySeconds, most useful for editor preview */
 	void SetDaySeconds( float daySeconds );

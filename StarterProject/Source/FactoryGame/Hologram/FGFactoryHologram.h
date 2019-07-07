@@ -1,10 +1,13 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Engine/StaticMesh.h"
+#include "GameFramework/Actor.h"
+#include "UObject/Class.h"
 
 #include "FGBuildableHologram.h"
 #include "FGBuildGuide.h"
-#include "FGFactoryConnectionComponent.h"
+#include "../FGFactoryConnectionComponent.h"
 #include "FGFactoryHologram.generated.h"
 
 /**

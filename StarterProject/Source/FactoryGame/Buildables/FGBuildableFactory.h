@@ -1,13 +1,21 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "UObject/CoreNet.h"
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "FGBuildable.h"
-#include "FGRecipeProducerInterface.h"
-#include "FGSignificanceInterface.h"
+#include "../FGRecipeProducerInterface.h"
+#include "../FGSignificanceInterface.h"
+#include "../Replication/FGReplicationDetailInventoryComponent.h"
+#include "../Replication/FGReplicationDetailActor_BuildableFactory.h"
 #include "FGBuildableFactory.generated.h"
 
 DECLARE_MULTICAST_DELEGATE_ThreeParams( EProductionStatusChange, class AFGBuildable*, EProductionStatus /*oldStatus*/, EProductionStatus /*newStatus*/);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam( FOnReplicationDetailActorCreated, class AActor*, replicationDetailActorOwner );
 
 /**
  * Production status of the factory, i.e. displayed on the indicator.
@@ -23,7 +31,7 @@ enum class EProductionStatus : uint8
 	IS_MAX
 };
 
-DECLARE_MULTICAST_DELEGATE_OneParam( EProductionStatusUpdateDeligate, EProductionStatus );
+DECLARE_MULTICAST_DELEGATE_OneParam( EProductionStatusUpdateDeligate, EProductionStatus ); //@todonow Spelling Delegate and F instead of E
 
 /** Delegate for when some binary state has changed */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam( FBuildingStateChanged, bool, state );
@@ -33,23 +41,26 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam( FBuildingStateChanged, bool, state 
  * @todorefactor Comments about the Factory_ and non factory code.
  */
 UCLASS( Abstract )
-class FACTORYGAME_API AFGBuildableFactory : public AFGBuildable, public IFGSignificanceInterface
+class FACTORYGAME_API AFGBuildableFactory : public AFGBuildable, public IFGSignificanceInterface, public IFGReplicationDetailActorOwnerInterface
 {
 	GENERATED_BODY()
 public:
+	AFGBuildableFactory();
+
 	/** Replication */
 	virtual void GetLifetimeReplicatedProps( TArray<FLifetimeProperty>& OutLifetimeProps ) const override;
 	virtual void PreReplication( IRepChangedPropertyTracker& ChangedPropertyTracker ) override;
 	virtual bool GetNetDormancy( const FVector& ViewPos, const FVector& ViewDir, class AActor* Viewer, AActor* ViewTarget, UActorChannel* InChannel, float Time, bool bLowBandwidth ) override;
-
-	/** Ctor */
-	AFGBuildableFactory();
 
 	// Begin AActor interface
 	virtual void BeginPlay() override;
 	virtual void EndPlay( const EEndPlayReason::Type EndPlayReason );
 	virtual void Tick( float dt ) override;
 	// End AActor interface
+
+	// Begin IFGSaveInterface
+	virtual void PreSaveGame_Implementation( int32 saveVersion, int32 gameVersion ) override;
+	// End IFGSaveInterface
 
 	//Begin IFGSignificanceInterface
 	virtual void GainedSignificance_Implementation() override;
@@ -61,22 +72,33 @@ public:
 	virtual void Factory_Tick( float dt ) override;
 	// End Factory_ interface
 
+	// Begin IFGDismantleInterface
+	virtual void GetDismantleRefund_Implementation( TArray< FInventoryStack >& out_refund ) const override;
+	// End IFGDismantleInterface
+
+	// Begin IFGReplicationDetailActorOwnerInterface
+	virtual AFGReplicationDetailActor* GetReplicationDetailActor() override { return GetOrCreateReplicationDetailActor(); };
+	virtual void OnBuildableReplicationDetailStateChange( bool newStateIsActive ) override;
+	virtual void OnReplicationDetailActorCreated() override;
+	virtual UClass* GetReplicationDetailActorClass() const override { return AFGReplicationDetailActor_BuildableFactory::StaticClass(); };
+	// End IFGReplicationDetailActorOwnerInterface
+
 	/** Get the connections to this factory. */
-	UFUNCTION( BlueprintCallable, BlueprintPure = false, Category = "Factory" )
+	UFUNCTION( BlueprintCallable, BlueprintPure = false, Category = "FactoryGame|Factory" )
 	TArray< UFGFactoryConnectionComponent* > GetConnectionComponents() const;
 
 	/**
 	 * Check if we have power.
 	 * @return true if we have power; false if we do not have power or does not run on power.
 	 */
-	UFUNCTION( BlueprintPure, Category = "Power" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Factory|Power" )
 	virtual bool HasPower() const;
 
 	/**
 	 * Check if this machine runs on power.
 	 * @return - true if this machine runs on power; false if it does not.
 	 */
-	UFUNCTION( BlueprintPure, Category = "Power" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Factory|Power" )
 	bool RunsOnPower() const;
 
 	/**used for callback to vcchanged lites and such on indication objects*/
@@ -86,28 +108,28 @@ public:
 	 * Get the power info for this factory.
 	 * @return The power info for this factory; nullptr if this factory does not run on power.
 	 */
-	UFUNCTION( BlueprintPure, Category = "Power" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Factory|Power" )
 	FORCEINLINE class UFGPowerInfoComponent* GetPowerInfo() const { return mPowerInfo; }
 
 	/** Get the power consumption for production. */
 	float GetIdlePowerConsumption() const;
 
 	/** The power consumption when producing. */
-	UFUNCTION( BlueprintPure, Category = "Power" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Factory|Power" )
 	float GetProducingPowerConsumption() const;
 
 	/** The unmodified power consumption when producing. */
-	UFUNCTION( BlueprintPure, Category = "Power" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Factory|Power" )
 	float GetDefaultProducingPowerConsumption() const;
 
 	/** Helper to get the power consumption for production at a certain potential. */
-	UFUNCTION( BlueprintPure, Category = "Power" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Factory|Power" )
 	float CalcProducingPowerConsumptionForPotential( float potential ) const;
 
 	/**
 	 * Check if this building has been configured by the player, has recipe set etc.
 	 */
-	UFUNCTION( BlueprintPure, Category = "Production" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Factory|Production" )
 	virtual bool IsConfigured() const;
 
 	/**
@@ -115,7 +137,7 @@ public:
 	 *
 	 * @return - true if producing; otherwise false.
 	 */
-	UFUNCTION( BlueprintPure, Category = "Production" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Factory|Production" )
 	virtual bool IsProducing() const;
 
 	/**
@@ -123,103 +145,103 @@ public:
 	 *
 	 * @return - true if we can start production; otherwise false.
 	 */
-	UFUNCTION( BlueprintPure, BlueprintNativeEvent, Category = "Production" )
+	UFUNCTION( BlueprintPure, BlueprintNativeEvent, Category = "FactoryGame|Factory|Production" )
 	bool CanProduce() const;
 
 	/** Set if this factory should pause it's production or not. */
-	UFUNCTION( BlueprintCallable, Category = "Production" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Factory|Production" )
 	virtual void SetIsProductionPaused( bool isPaused );
 
 	/** Is this factory's production manually paused. */
-	UFUNCTION( BlueprintCallable, Category = "Production" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Factory|Production" )
 	FORCEINLINE bool IsProductionPaused() const { return mIsProductionPaused; }
 
 	//@todomods This should be moddable without performance impact.
 	/** @return The status to display on the production indicator. */
-	UFUNCTION( BlueprintPure, Category = "Production" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Factory|Production" )
 	virtual EProductionStatus GetProductionIndicatorStatus() const;
 
 	/** Returns the current progress of the production. */
-	UFUNCTION( BlueprintPure, Category = "Production" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Factory|Production" )
 	virtual float GetProductionProgress() const;
 
 	/** The current production cycle time for the current recipe with modifiers. */
-	UFUNCTION( BlueprintPure, Category = "Production" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Factory|Production" )
 	virtual float GetProductionCycleTime() const;
 
 	/** The unmodified production cycle time for the current recipe. */
-	UFUNCTION( BlueprintPure, Category = "Production" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Factory|Production" )
 	virtual float GetDefaultProductionCycleTime() const;
 
 	/** Calculates the production cycle time of this factory with a certain recipe without modifiers. */
-	UFUNCTION( BlueprintPure, Category = "Production" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Factory|Production" )
 	virtual float GetProductionCycleTimeForRecipe( TSubclassOf< UFGRecipe > recipe ) const;
 
 	/** Calculates the production cycle time of this factory with a certain potential */
-	UFUNCTION( BlueprintPure, Category = "Production" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Factory|Production" )
 	virtual float CalcProductionCycleTimeForPotential( float potential ) const;
 
 	/** A measure of how productive this factory is. */
-	UFUNCTION( BlueprintPure, Category = "Productivity" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Factory|Productivity" )
 	float GetProductivity();
 
 	/** Get the inventory that we place crystal in to unlock the slider of potential */
-	UFUNCTION( BlueprintPure, Category = "Productivity" )
-	FORCEINLINE UFGInventoryComponent* GetPotentialInventory() { return mInventoryPotential; }
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Factory|Productivity" )
+	FORCEINLINE UFGInventoryComponent* GetPotentialInventory() const { return mInventoryPotentialHandler->GetActiveInventoryComponent(); }
 
 	/** Gets you the current potential */
-	UFUNCTION( BlueprintCallable, Category = "Productivity" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Factory|Productivity" )
 	FORCEINLINE float GetCurrentPotential() const { return mCurrentPotential; }
 
 	/** Gets you the pending potential */
-	UFUNCTION( BlueprintCallable, Category = "Productivity" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Factory|Productivity" )
 	FORCEINLINE float GetPendingPotential() const { return mPendingPotential; }
 
 	/** Set a new pending potential, the current one will be changed to this when we finish a production cycle */
-	UFUNCTION( BlueprintCallable, Category = "Productivity" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Factory|Productivity" )
 	virtual void SetPendingPotential( float newPendingPotential );
 
 	/** Get the minimum potential possible */
-	UFUNCTION( BlueprintCallable, Category = "Productivity" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Factory|Productivity" )
 	FORCEINLINE float GetMinPotential() const { return mMinPotential; }
 
 	/** Get the maximum potential possible depending on the num crystals in inventories */
-	UFUNCTION( BlueprintCallable, Category = "Productivity" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Factory|Productivity" )
 	float GetCurrentMaxPotential() const;
 
 	/** Get the max potential, as if you had all slots filled with crystals */
-	UFUNCTION( BlueprintCallable, Category = "Productivity" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Factory|Productivity" )
 	float GetMaxPossiblePotential() const;
 
 	/** Get mCanChangePotential */
-	UFUNCTION( BlueprintCallable, Category = "Productivity" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Factory|Productivity" )
 	FORCEINLINE bool GetCanChangePotential() const { return mCanChangePotential; }
 
-	UFUNCTION( BlueprintPure, Category = "Significance" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Factory|Significance" )
 	FORCEINLINE bool GetIsSignificant() { return mIsSignificant; }
 
 	/** Called when we want the looping SFX/VFX for production to start */
-	UFUNCTION( BlueprintImplementableEvent, BlueprintCallable, Category = "Factory" )
+	UFUNCTION( BlueprintImplementableEvent, BlueprintCallable, Category = "FactoryGame|Factory|Effects" )
 	void StartProductionLoopEffects();
 
 	/** Called when we want the looping SFX/VFX for production to stop */
-	UFUNCTION( BlueprintImplementableEvent, BlueprintCallable, Category = "Factory" )
+	UFUNCTION( BlueprintImplementableEvent, BlueprintCallable, Category = "FactoryGame|Factory|Effects" )
 	void StopProductionLoopEffects();
 
 	/** Called when we want the looping SFX/VFX for idling ( power but no production ) to start */
-	UFUNCTION( BlueprintImplementableEvent, BlueprintCallable, Category = "Factory" )
+	UFUNCTION( BlueprintImplementableEvent, BlueprintCallable, Category = "FactoryGame|Factory|Effects" )
 	void StartIdlingLoopEffects();
 
 	/** Called when we want the looping SFX/VFX for idling ( power but no production ) to stop */
-	UFUNCTION( BlueprintImplementableEvent, BlueprintCallable, Category = "Factory" )
+	UFUNCTION( BlueprintImplementableEvent, BlueprintCallable, Category = "FactoryGame|Factory|Effects" )
 	void StopIdlingLoopEffects();
 protected:
 	/** Called whenever HasPower has changed, exposed here for cleaner/more optimized ways of changing state when the factory has power */
-	UFUNCTION( BlueprintImplementableEvent, Category="Power")
+	UFUNCTION( BlueprintImplementableEvent, Category="FactoryGame|Factory|Power")
 	void OnHasPowerChanged( bool newHasPower );
 
 	/** Called whenever IsProducing has changed, exposed here for cleaner/more optimized ways of changing state when the factory is producing */
-	UFUNCTION( BlueprintImplementableEvent, Category = "Production" )
+	UFUNCTION( BlueprintImplementableEvent, Category = "FactoryGame|Factory|Production" )
 	void OnIsProducingChanged( bool newIsProducing );
 
 	// Begin AFGBuildable interface
@@ -230,14 +252,14 @@ protected:
 	virtual void Factory_ProductionCycleCompleted( float overProductionRate );
 
 	/** Try to collect input from connected buildings. */
-	UFUNCTION( BlueprintNativeEvent, Category = "Production" )
+	UFUNCTION( BlueprintNativeEvent, Category = "FactoryGame|Factory|Production" )
 	void Factory_CollectInput();
 
 	/** Start the production, client get this call replicated after the server. You must call Super if overriding this. */
 	virtual void Factory_StartProducing();
 
 	/** Calls blueprint when we start producing. */
-	UFUNCTION( BlueprintImplementableEvent, Category = "Production", meta = (DisplayName = "Factory_StartProducing") )
+	UFUNCTION( BlueprintImplementableEvent, Category = "FactoryGame|Factory|Production", meta = (DisplayName = "Factory_StartProducing") )
 	void Factory_ReceiveStartProducing();
 
 	/** Tick the production. */
@@ -247,28 +269,36 @@ protected:
 	virtual void Factory_TickProductivity( float dt );
 
 	/** Calls blueprint when we tick production. */
-	UFUNCTION( BlueprintImplementableEvent, Category = "Production", meta=(DisplayName="Factory_TickProducing") )
+	UFUNCTION( BlueprintImplementableEvent, Category = "FactoryGame|Factory|Production", meta=(DisplayName="Factory_TickProducing") )
 	void Factory_ReceiveTickProducing( float deltaTime );
 
 	/** Stops the production, client get this call replicated after the server. You must call Super if overriding this. */
 	virtual void Factory_StopProducing();
 
 	/** Calls blueprint when we stop producing. */
-	UFUNCTION( BlueprintImplementableEvent, Category = "Production", meta = (DisplayName = "Factory_StopProducing") )
+	UFUNCTION( BlueprintImplementableEvent, Category = "FactoryGame|Factory|Production", meta = (DisplayName = "Factory_StopProducing") )
 	void Factory_ReceiveStopProducing();
 
 	/** Function for updating sfx/vfx at intervals */
 	virtual void NativeUpdateEffects( float DeltaSeconds );
 
 	/** Calls blueprint when we update effects. */
-	UFUNCTION( BlueprintImplementableEvent, Category = "Effects", meta = ( DisplayName = "UpdateEffects" ) )
+	UFUNCTION( BlueprintImplementableEvent, Category = "FactoryGame|Factory|Effects", meta = ( DisplayName = "UpdateEffects" ) )
 	void ReceiveUpdateEffects( float DeltaSeconds );
+
+	UFUNCTION()
+	virtual void OnRep_ReplicationDetailActor();
+
+	virtual class AFGReplicationDetailActor* GetOrCreateReplicationDetailActor();
+
 private:
 	/** Calls Start/Stop Producing on client */
 	UFUNCTION()
 	void OnRep_IsProducing();
 	UFUNCTION()
 	void OnPotentialInventoryItemRemoved( TSubclassOf< class UFGItemDescriptor > itemClass, int32 numRemoved );
+
+	class AFGReplicationDetailActor_BuildableFactory* GetCastRepDetailsActor() const { return Cast<AFGReplicationDetailActor_BuildableFactory>( mReplicationDetailActor ); } // @todo: make this a static function instead
 
 public:
 	/** Power consumption of this factory. */
@@ -291,6 +321,8 @@ public:
 	static EProductionStatusChange OnProductionStatusChange;
 
 protected:
+	friend class AFGReplicationDetailActor_BuildableFactory;
+
 	/** Power simulation info */
 	UPROPERTY( SaveGame, Replicated )
 	class UFGPowerInfoComponent* mPowerInfo;
@@ -345,10 +377,6 @@ protected:
 	UPROPERTY( EditDefaultsOnly, Category = "Productivity" )
 	bool mCanChangePotential;
 
-	/** The input we place a crystal in to unlock the potential */
-	UPROPERTY( SaveGame, Replicated )
-	class UFGInventoryComponent* mInventoryPotential;
-	
 	/** This is the current potential (overclock, overcharge) of this factory [0..N] */
 	UPROPERTY( SaveGame, Replicated, Meta = (NoAutoJson = true) )
 	float mCurrentPotential;
@@ -373,7 +401,20 @@ protected:
 	UPROPERTY( SaveGame, Replicated, Meta = (NoAutoJson = true) )
 	bool mIsProductionPaused;
 
+	UPROPERTY( Replicated, Transient, ReplicatedUsing = OnRep_ReplicationDetailActor )
+	class AFGReplicationDetailActor* mReplicationDetailActor;
+
+	/** Event for when ReplicationDetailActors are created. Will only be dispatched if this buildable inherits from the ReplicationDetailActorOwnerInterface. */
+	UPROPERTY( BlueprintAssignable, Category = "Replication Detail Actor Owner Interface" )
+	FOnReplicationDetailActorCreated OnReplicationDetailActorCreatedEvent;
+
 private:
+	/** The input we place a crystal in to unlock the potential */
+	UPROPERTY( SaveGame )
+	class UFGInventoryComponent* mInventoryPotential;
+
+	class UFGReplicationDetailInventoryComponent* mInventoryPotentialHandler;
+
 	/** A replicated compressed version of the productivity */
 	UPROPERTY( Replicated, Meta = (NoAutoJson = true) )
 	uint8 mCurrentProductivity;

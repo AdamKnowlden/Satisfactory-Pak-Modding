@@ -1,6 +1,8 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "UObject/NoExportTypes.h"
 #include "FGLootSettings.generated.h"

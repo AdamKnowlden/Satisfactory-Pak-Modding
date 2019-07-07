@@ -1,11 +1,13 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 #pragma once
-
-#include "PhysicsPublic.h"
-#include "PhysXPublic.h"
+#include "UObject/Class.h"
+#include "PhysxUserData.h"
 #include "VehicleWheel.h"
 #include "FGVehicleWheel.generated.h"
 
+#if WITH_PHYSX
+#include "PhysXPublic.h"
+#endif
 
 UCLASS(BlueprintType, Blueprintable)
 class FACTORYGAME_API UFGVehicleWheel : public UVehicleWheel
@@ -27,7 +29,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = Wheel)
 	bool mAutoGenerateCollisionCylinder;
 
-	// MODDING EDIT: PhysX not found
+	// MODDING EDIT
 	///** PhysXWheel User defineable data that is passed to the shader */
 	//FPhysxWheelUserData mPhysxWheelUserData;
 

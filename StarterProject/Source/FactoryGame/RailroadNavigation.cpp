@@ -5,14 +5,14 @@
 FRailroadPathPoint::FRailroadPathPoint(){ }
 FRailroadPathFindingResult::FRailroadPathFindingResult(){ }
 FRailroadGraphAStarPathPoint::FRailroadGraphAStarPathPoint( int32 unused ){ }
-FRailroadGraphAStarPathPoint::FRailroadGraphAStarPathPoint( const FRailroadGraphAStarPathPoint& point ){ }
-int32 FRailroadGraphAStarHelper::GetNeighbourCount( const FRailroadGraphAStarPathPoint& nodeRef ) const{ return int32(); }
-bool FRailroadGraphAStarHelper::IsValidRef( const FRailroadGraphAStarPathPoint& nodeRef ) const{ return bool(); }
-FRailroadGraphAStarPathPoint FRailroadGraphAStarHelper::GetNeighbour( const FRailroadGraphAStarPathPoint& nodeRef, const int32 neighbourIndex ) const{ return FRailroadGraphAStarPathPoint(); }
-FRailroadGraphAStarPathPoint FRailroadGraphAStarHelper::GetNeighbour( const FRailroadTrackPosition& position ) const{ return FRailroadGraphAStarPathPoint(); }
+FRailroadGraphAStarPathPoint::FRailroadGraphAStarPathPoint( const FRailroadGraphAStarPathPoint& point){ }
+int32 FRailroadGraphAStarHelper::GetNeighbourCount( const FRailroadGraphAStarPathPoint& nodeRef) const{ return int32(); }
+bool FRailroadGraphAStarHelper::IsValidRef( const FRailroadGraphAStarPathPoint& nodeRef) const{ return bool(); }
+FRailroadGraphAStarPathPoint FRailroadGraphAStarHelper::GetNeighbour( const FRailroadGraphAStarPathPoint& nodeRef, const int32 neighbourIndex) const{ return FRailroadGraphAStarPathPoint(); }
+FRailroadGraphAStarPathPoint FRailroadGraphAStarHelper::GetNeighbour( const FRailroadTrackPosition& position) const{ return FRailroadGraphAStarPathPoint(); }
 FRailroadGraphAStarFilter::FRailroadGraphAStarFilter(){ }
 float FRailroadGraphAStarFilter::GetHeuristicScale() const{ return float(); }
-float FRailroadGraphAStarFilter::GetHeuristicCost( const FRailroadGraphAStarPathPoint& startNodeRef, const FRailroadGraphAStarPathPoint& endNodeRef ) const{ return float(); }
-float FRailroadGraphAStarFilter::GetTraversalCost( const FRailroadGraphAStarPathPoint& startNodeRef, const FRailroadGraphAStarPathPoint& endNodeRef ) const{ return float(); }
-bool FRailroadGraphAStarFilter::IsTraversalAllowed( const FRailroadGraphAStarPathPoint& nodeA, const FRailroadGraphAStarPathPoint& nodeB ) const{ return bool(); }
+float FRailroadGraphAStarFilter::GetHeuristicCost( const FRailroadGraphAStarPathPoint& startNodeRef, const FRailroadGraphAStarPathPoint& endNodeRef) const{ return float(); }
+float FRailroadGraphAStarFilter::GetTraversalCost( const FRailroadGraphAStarPathPoint& startNodeRef, const FRailroadGraphAStarPathPoint& endNodeRef) const{ return float(); }
+bool FRailroadGraphAStarFilter::IsTraversalAllowed( const FRailroadGraphAStarPathPoint& nodeA, const FRailroadGraphAStarPathPoint& nodeB) const{ return bool(); }
 bool FRailroadGraphAStarFilter::WantsPartialSolution() const{ return bool(); }

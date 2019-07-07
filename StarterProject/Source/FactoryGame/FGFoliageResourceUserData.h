@@ -1,10 +1,13 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Engine/StaticMesh.h"
+#include "Array.h"
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "Engine/AssetUserData.h"
 #include "ItemDrop.h"
-#include "Engine/StaticMesh.h"
 #include "FGFoliageResourceUserData.generated.h"
 
 /**

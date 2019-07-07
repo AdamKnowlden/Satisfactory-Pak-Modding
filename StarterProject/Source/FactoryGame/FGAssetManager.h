@@ -1,4 +1,7 @@
 #pragma once
+#include "Array.h"
+#include "UnrealString.h"
+#include "UObject/Class.h"
 
 #include "Engine/AssetManager.h"
 #include "IncludeInBuild.h"

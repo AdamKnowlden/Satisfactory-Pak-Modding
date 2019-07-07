@@ -1,8 +1,10 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Engine/StaticMesh.h"
+#include "Array.h"
 
-#include "FSplinePointData.h"
+#include "../FSplinePointData.h"
 
 /**
  * Shared magic between holograms
@@ -89,6 +91,22 @@ struct FSplineUtils
 		float endRadius,
 		const FVector& endPos,
 		const FVector& endForward );
+
+	/**
+	 * Calculates a spline using one bend.
+	 *
+	 * @param builder		The spline builder to append to, this must have at least on point in it already.
+	 * @param minTurnRadius The minimum turn radius allowed.
+	 * @param endPos		Where to end the spline.
+	 * @param endForward	Where the end tangent is facing. 0,0,0 if it should be calculated using the start.
+	 *
+	 * @return false if the radius requirement could not be satisfied.
+	 */
+	static bool BuildCurveSpline(
+		struct FSplineBuilder& builder,
+		float minTurnRadius,
+		const FVector& endPos,
+		FVector endForward );
 
 private:
 	/** Internal helpers for building routing the splines. */

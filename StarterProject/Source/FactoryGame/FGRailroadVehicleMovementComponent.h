@@ -1,11 +1,12 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Array.h"
+#include "UObject/Class.h"
 
 #include "GameFramework/PawnMovementComponent.h"
 #include "WheeledVehicleMovementComponent.h"
 #include "FGRailroadVehicle.h"
-#include "UObject/Interface.h"
 #include "FGRailroadVehicleMovementComponent.generated.h"
 
 /**
@@ -84,9 +85,11 @@ inline float RadiansToGrade( float rad )
 UCLASS()
 class FACTORYGAME_API UFGRailroadVehicleMovementComponent : public UPawnMovementComponent
 {
+	// MODDING EDIT
 	GENERATED_BODY()
 
 public:
+	UFGRailroadVehicleMovementComponent(const class FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {}
 	/** Get the owning railroad vehicle. */
 	class AFGRailroadVehicle* GetOwningRailroadVehicle() const;
 
@@ -99,8 +102,8 @@ public:
 	/** Skeletal mesh needs some special handling in the vehicle case */
 	virtual void FixupSkeletalMesh();
 
-	/** Updates the user input. */
-	virtual void PreTick( float dt );
+	/** Updates the user input and propagates it from the master locomotive. */
+	virtual void TickSlaveInput( float dt, const class UFGLocomotiveMovementComponent* master );
 
 	/** Tick the traction and friction forces acting upon this vehicle. */
 	virtual void TickTractionAndFriction( float dt );
@@ -115,33 +118,33 @@ public:
 	void UpdateCouplerRotationAndLength();
 
 	/** Get the total mass of this vehicle, tare + payload. [kg] */
-	UFUNCTION( BlueprintPure, Category = "Game|Components|RailroadVehicleMovement" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|Movement" )
 	virtual float GetMass() const;
 
 	/** If this vehicle is moving. Within a small threshold. */
-	UFUNCTION( BlueprintPure, Category = "Game|Components|RailroadVehicleMovement" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|Movement" )
 	FORCEINLINE bool IsMoving() const { return !FMath::IsNearlyZero( mVelocity, mZeroForwardVelocityTolerance ); }
 
 	/** Speed of this vehicle along the track. In the direction of the train. [cm/s] */
-	UFUNCTION( BlueprintPure, Category = "Game|Components|RailroadVehicleMovement" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|Movement" )
 	FORCEINLINE float GetForwardSpeed() const { return mVelocity; }
 
 	/** Speed of this vehicle in relative to it's orientation. [cm/s] */
-	UFUNCTION( BlueprintPure, Category = "Game|Components|RailroadVehicleMovement" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|Movement" )
 	FORCEINLINE float GetRelativeForwardSpeed() const
 	{
 		return GetOwningRailroadVehicle()->IsOrientationReversed() ? -mVelocity : mVelocity;
 	}
 
 	/** Arbitrary maximum speed of this vehicle along the track. [cm/s] */
-	UFUNCTION( BlueprintPure, Category = "Game|Components|RailroadVehicleMovement" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|Movement" )
 	FORCEINLINE float GetMaxForwardSpeed() const { return KmHToCmS( mMaxVelocity ); }
 
 	/** Update the speed of this vehicle to be used in calculations. [cm/s] */
 	FORCEINLINE void SetForwardSpeed( float velocity ) { mVelocity = velocity; }
 
 	/** Get the tractive force for this vehicle, this have a direction. [N] [kg cm/s^2] */
-	UFUNCTION( BlueprintPure, Category = "Game|Components|RailroadVehicleMovement" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|Movement" )
 	FORCEINLINE float GetTractiveForce() const { return mTractiveForce; }
 
 	/** Get the tractive force for this vehicle, this has no direction. [N] [kg cm/s^2] */
@@ -151,41 +154,46 @@ public:
 	FORCEINLINE float GetGradientForce() const { return mGradientResistance; }
 
 	/** Get the force by the dynamic + air brakes, this has no direction. [N] [kg cm/s^2] */
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|Movement" )
 	FORCEINLINE float GetBrakingForce() const { return mDynamicBrakingForce + mAirBrakingForce; }
 
 	/** Get dynamic braking force. [N] [kg cm/s^2] */
-	UFUNCTION( BlueprintPure, Category = "Game|Components|RailroadVehicleMovement" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|Movement" )
 	FORCEINLINE float GetDynamicBrakingForce() const { return mDynamicBrakingForce; }
 
 	/** Get air braking force. [N] [kg cm/s^2] */
-	UFUNCTION( BlueprintPure, Category = "Game|Components|RailroadVehicleMovement" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|Movement" )
 	FORCEINLINE float GetAirBrakingForce() const { return mAirBrakingForce; }
 
 	/** Get max air braking force. [N] [kg cm/s^2] */
-	UFUNCTION( BlueprintPure, Category = "Game|Components|RailroadVehicleMovement" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|Movement" )
 	FORCEINLINE float GetMaxAirBrakingEffort() const { return kNToN( MToCm( mMaxAirBrakingEffort ) ) ; }
 
 	/** An estimated braking force that the vehicle can apply in it's operational speed range. [N] [kg cm/s^2] */
 	FORCEINLINE float GetMinBrakingEffort() const { return mMinBrakingEffort; }
 
 	/** Get the current payload mass for vehicle. [kg] */
-	UFUNCTION( BlueprintPure, Category = "Game|Components|RailroadVehicleMovement" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|Movement" )
 	FORCEINLINE float GetPayloadMass() const { return mPayloadMass; }
 
 	/** Set the current payload mass for vehicle. [kg] */
-	UFUNCTION( BlueprintCallable, Category = "Game|Components|RailroadVehicleMovement" )
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Railroad|Movement" )
 	void SetPayloadMass( float payload ) { mPayloadMass = payload; }
 
 	/** Slope of the track. [radians] */
-	UFUNCTION( BlueprintPure, Category = "Game|Components|RailroadVehicleMovement" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|Movement" )
 	FORCEINLINE float GetTrackGrade() const { return mTrackGrade; }
 
 	/**
 	 * Expressed as degree of curvature over 30 m. [radians]
 	 * 5 degrees means the forward direction (of the track) changes by 5 degrees over 30 m.
 	 */
-	UFUNCTION( BlueprintPure, Category = "Game|Components|RailroadVehicleMovement" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|Movement" )
 	FORCEINLINE float GetTrackCurvature() const { return mTrackCurvature; }
+
+	/** Get the angle of the boogie relative to the locomotive. [radians] */
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|Movement" )
+	float GetWheelsetAngle() const;
 
 	/** Helper functions to get some vehicle force data. */
 	FORCEINLINE float GetRollingResistance() const { return mRollingResistance; }
@@ -201,19 +209,23 @@ public:
 	// End UActorComponent Interface
 
 	/** Get number of wheel sets */
-	UFUNCTION( BlueprintPure, Category = "Game|Components|RailroadVehicleMovement" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|Movement" )
 	int32 GetNumWheelsets() const { return mWheelsetSetups.Num(); };
 
 	/** Get the rotation for a wheelset. */
-	UFUNCTION( BlueprintPure, Category = "Game|Components|RailroadVehicleMovement" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|Movement" )
 	FVector GetWheelsetRotation( int32 index ) const;
 
+	/** Get the rotation for the wheels around the axle. [degrees]. */
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|Movement" )
+	float GetWheelRotation() const { return mWheelRotation; }
+
 	/** Get the offset for a wheelset relative to the root bone along the forward (X) axis. */
-	UFUNCTION( BlueprintPure, Category = "Game|Components|RailroadVehicleMovement" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|Movement" )
 	float GetWheelsetOffset( int32 index ) const;
 
 	/** Get the couplers rotation for a coupler. */
-	UFUNCTION( BlueprintPure, Category = "Game|Components|RailroadVehicleMovement" )
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Railroad|Movement" )
 	FVector GetCouplerRotationAndExtention( int32 index, UPARAM( DisplayName="Extention" ) float& out_extention ) const;
 
 protected:
@@ -239,6 +251,10 @@ protected:
 	UPROPERTY( EditAnywhere, Category = "VehicleSetup" )
 	TArray< FWheelsetSetup > mWheelsetSetups;
 
+	/** The radius of the wheels. [cm] */
+	UPROPERTY( EditAnywhere, Category = "VehicleSetup" )
+	float mWheelRadius;
+
 	/** Couplers for this train. Front is 0 and back is 1. */
 	UPROPERTY( EditAnywhere, Category = "VehicleSetup" )
 	TArray< FCouplerSetup > mCouplerSetups;
@@ -249,6 +265,9 @@ protected:
 	/** If we have a coupler then this is its target rotation and length. */
 	TArray< FVector > mCouplerRotation;
 	TArray< float > mCouplerExtention;
+
+	/** The actual rotation of the wheel, same for every wheel in the vehicle. [degrees] */
+	float mWheelRotation;
 
 	/**
 	 * Mass to set the vehicle chassis to. It's much easier to tweak vehicle settings when
@@ -296,6 +315,9 @@ protected:
 	/** An estimated braking force that the vehicle can apply in it's operational speed range. [N] [kg cm/s^2] */
 	float mMinBrakingEffort;
 
+	/** Direction of this vehicle in the consist. */
+	float mOrientation; //@todotrains cache this when the consist changes and use it in all calculations.
+
 	/**
 	 * Velocity of this vehicle. [cm/s]
 	 */
@@ -313,6 +335,9 @@ protected:
 	 * This is an approximation.
 	 */
 	float mTrackCurvature;
+
+	/** What is the propagated air brake pressure from the master locomotive, used by railcars. [0,1] */
+	float mAirBrakePressure;
 
 	/**
 	 * The traction force for this vehicle, used for the engines. [N], [kg cm/s^2]

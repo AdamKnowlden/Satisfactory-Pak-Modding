@@ -1,4 +1,6 @@
 #pragma once
+#include "SubclassOf.h"
+#include "UObject/Class.h"
 
 #include "Templates/SubclassOf.h"
 #include "UObject/Interface.h"
@@ -75,7 +77,9 @@ protected:
 UINTERFACE( Blueprintable )
 class UFGUseableInterface : public UInterface
 {
-	GENERATED_BODY()
+	
+ GENERATED_BODY()
+	UFGUseableInterface(const class FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {} 
 };
 
 /**

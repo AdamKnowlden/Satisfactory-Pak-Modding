@@ -1,9 +1,11 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Array.h"
+#include "UObject/Class.h"
 
 #include "GameFramework/Actor.h"
-#include "Equipment/FGWeapon.h"
+#include "FGWeapon.h"
 #include "FGResourceMiner.generated.h"
 
 UCLASS()

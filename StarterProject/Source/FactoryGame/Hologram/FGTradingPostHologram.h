@@ -1,8 +1,11 @@
 // Copyright 2016 Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
+#include "Array.h"
+#include "GameFramework/Actor.h"
+#include "UObject/Class.h"
 
-#include "Hologram/FGFactoryHologram.h"
+#include "FGFactoryHologram.h"
 #include "FGTradingPostHologram.generated.h"
 
 /**
@@ -24,8 +27,8 @@ protected:
 	virtual void SetHologramLocationAndRotation( const FHitResult& hitResult ) override;
 	// End AFGHologram interface
 
-	/** Gets the class of the buildable the recipe is specifying */
-	TSubclassOf< AFGBuildable > GetBuildableClassFromRecipe( TSubclassOf< class UFGRecipe > inRecipe );
+	// Moved GetBuildableClassFromRecipe to a static helper in AFGBuildable
+
 private:
 	/** The generator holograms */
 	UPROPERTY( Replicated )

@@ -1,4 +1,7 @@
 #pragma once
+#include "Engine/World.h"
+#include "UnrealString.h"
+#include "UObject/Class.h"
 
 #include "Engine/GameEngine.h"
 #include "FGEngineCommon.h"
