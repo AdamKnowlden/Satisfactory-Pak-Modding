@@ -1,6 +1,7 @@
 #pragma once
-#include "UObject/Class.h"
 #include "Curves/CurveFloat.h"
+#include "UObject/Class.h"
+
 #include "Engine/DeveloperSettings.h"
 #include "FGDeveloperSettings.generated.h"
 

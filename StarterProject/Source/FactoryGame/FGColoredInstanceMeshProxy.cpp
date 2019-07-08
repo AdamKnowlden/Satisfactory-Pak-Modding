@@ -9,5 +9,5 @@ void UFGColoredInstanceMeshProxy::SetColorSlot( uint8 colorSlotIndex){ }
 void UFGColoredInstanceMeshProxy::BeginPlay(){ }
 void UFGColoredInstanceMeshProxy::instantiateInternal(){ }
 void UFGColoredInstanceMeshProxy::SetInstanced( bool setToInstanced){ }
-void UFGColoredInstanceMeshProxy::CreateRenderState_Concurrent(){ }
+void UFGColoredInstanceMeshProxy::CreateRenderState_Concurrent(){ Super::CreateRenderState_Concurrent(); }
 void UFGColoredInstanceMeshProxy::OnHiddenInGameChanged(){ }

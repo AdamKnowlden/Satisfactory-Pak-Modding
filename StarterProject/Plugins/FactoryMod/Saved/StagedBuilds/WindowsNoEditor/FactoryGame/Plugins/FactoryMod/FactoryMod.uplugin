@@ -1,0 +1,18 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0.0",
+	"FriendlyName": "Satisfactory Modding SDK",
+	"Description": "Enable Modding for Satisfactory!",
+	"Category": "Modding",
+	"CreatedBy": "VirtusModz",
+	"CreatedByURL": "http://google.com/",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"EngineVersion": "4.21.0",
+	"EnabledByDefault": true,
+	"CanContainContent": true,
+	"IsBetaVersion": true,
+	"Installed": false
+}

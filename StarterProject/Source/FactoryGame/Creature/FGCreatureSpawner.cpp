@@ -4,7 +4,9 @@
 
 AFGCreatureSpawner::AFGCreatureSpawner(){ }
 void AFGCreatureSpawner::BeginPlay(){ }
+#if WITH_EDITOR
 void AFGCreatureSpawner::PostEditMove( bool bFinished){ }
+#endif
 void AFGCreatureSpawner::PreSaveGame_Implementation( int32 saveVersion, int32 gameVersion){ }
 void AFGCreatureSpawner::PostSaveGame_Implementation( int32 saveVersion, int32 gameVersion){ }
 void AFGCreatureSpawner::PreLoadGame_Implementation( int32 saveVersion, int32 gameVersion){ }
