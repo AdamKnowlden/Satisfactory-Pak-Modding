@@ -2,7 +2,10 @@
 
 #include "FGBuildablePole.h"
 
-AFGBuildablePole::AFGBuildablePole(){ }
+AFGBuildablePole::AFGBuildablePole(){ 
+	mSnapOnly0 = CreateDefaultSubobject<UFGFactoryConnectionComponent>(TEXT("SnapOnly0"));
+	mSnapOnly0->SetupAttachment(RootComponent);
+}
 void AFGBuildablePole::GetLifetimeReplicatedProps( TArray< FLifetimeProperty >& OutLifetimeProps) const{ }
 void AFGBuildablePole::BeginPlay(){ }
 void AFGBuildablePole::SetPoleHeight( float height){ }

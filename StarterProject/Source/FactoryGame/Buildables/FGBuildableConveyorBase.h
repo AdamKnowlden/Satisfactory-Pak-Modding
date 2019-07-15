@@ -8,6 +8,7 @@
 #include "SubclassOf.h"
 #include "UObject/Class.h"
 
+#include "../FGFactoryConnectionComponent.h"
 #include "FGBuildable.h"
 #include "../FGRemoteCallObject.h"
 #include "FGBuildableConveyorBase.generated.h"

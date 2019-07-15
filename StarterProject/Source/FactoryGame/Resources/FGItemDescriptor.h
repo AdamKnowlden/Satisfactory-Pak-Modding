@@ -193,7 +193,7 @@ public:
 	 * This is specified in the native constructor and is meant to be per class.
 	 * E.g. vehicle descriptors get name and description from the vehicle class so the defaults are useless.
 	 */
-	UPROPERTY( EditDefaultsOnly, Transient ) // MODDING EDIT
+	UPROPERTY( EditDefaultsOnly, Category = "Item" )
 	bool mUseDisplayNameAndDescription;
 
 	/** Readable name of the item */
