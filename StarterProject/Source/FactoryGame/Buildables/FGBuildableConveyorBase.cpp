@@ -13,13 +13,7 @@ void FConveyorBeltItems::UpdateLastestIDFromState(){ }
 float FConveyorBeltItems::ConsumeAndUpdateConveyorOffsetDept( float dt){ return float(); }
 FConveyorBeltItems::ItemHolderHistory* FConveyorBeltItems::GetHistoryVersion( FG_ConveyorVersionType version){ return nullptr; }
 void FConveyorBeltItems::MarkItemDirty( FConveyorBeltItem& item){ }
-AFGBuildableConveyorBase::AFGBuildableConveyorBase(){
-	mConnection0 = CreateDefaultSubobject<UFGFactoryConnectionComponent>(TEXT("ConveyorAny0"));
-	mConnection0->SetupAttachment(RootComponent);
-
-	mConnection1 = CreateDefaultSubobject<UFGFactoryConnectionComponent>(TEXT("ConveyorAny1"));
-	mConnection1->SetupAttachment(RootComponent);
-}
+AFGBuildableConveyorBase::AFGBuildableConveyorBase(){ }
 void AFGBuildableConveyorBase::GetLifetimeReplicatedProps( TArray< FLifetimeProperty >& OutLifetimeProps) const{ }
 void AFGBuildableConveyorBase::BeginPlay(){ }
 void AFGBuildableConveyorBase::EndPlay( const EEndPlayReason::Type endPlayReason){ }
