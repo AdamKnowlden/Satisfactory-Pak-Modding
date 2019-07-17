@@ -1,6 +1,19 @@
-![](https://i.imgur.com/t0sgenB.jpg)
+# Satisfactory Pak Modding
 
 Starter project, tools and all information regarding pak modding in Satisfactory.
 
-Required Unreal Engine Version: 4.21.2
-Required Visual Studio Version: 2017 or 2019
+# Wiki
+
+https://github.com/PXA-Renegade/Satisfactory-Pak-Modding/wiki
+
+# Required Tools
+
+Unreal Engine 4 (version 4.21.2)
+Visual Studio 2017 or 2019
+The Starter Project
+SPL or SML
+Wwise
+
+# Disclaimer
+
+This software is provided by the author "as is". In no event shall the author be liable for any direct, indirect, incidental, special, exemplary, or consequential damages (including, but not limited to procurement of substitute goods or services; loss of use, data, or profits; or business interruption) however caused and on any theory of liability, whether in contract, strict liability, or tort (including negligence or otherwise) arising in any way out of the use of this software, even if advised of the possibility of such damage.
