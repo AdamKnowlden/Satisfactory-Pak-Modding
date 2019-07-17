@@ -8,11 +8,13 @@ https://github.com/PXA-Renegade/Satisfactory-Pak-Modding/wiki
 
 # Required Tools
 
-Unreal Engine 4 (version 4.21.2)
-Visual Studio 2017 or 2019
-The Starter Project
-SPL or SML
-Wwise
+* Unreal Engine 4 (version 4.21.2)
+* Visual Studio 2017 or 2019
+* The Starter Project
+* SPL or SML
+* Wwise
+
+_(Note: Links can be found in the guide)_
 
 # Disclaimer
 
